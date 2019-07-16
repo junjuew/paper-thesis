@@ -1,0 +1,107 @@
+\section{Introduction}
+
+Wearable Cognitive Assistance has emerged as a new genre of applications that
+pushes the boundaries of augmented cognition. These applications continuously
+process data from body-worn sensors and provide just-in-time guidance to help a
+user complete a specific task. For example, an IKEA Lamp
+assistant~\cite{chen2018application} has been built to assist the assembly of a
+table lamp. To use the application, a user wears a head-mounted smart glass that
+continuously captures her actions and surroundings from a first-person
+viewpoint. In real-time, the camera stream is analyzed to identify the state of
+the assembly. Audiovisual instructions are generated based on the detected
+state. The instructions either demonstrate a subsequent procedure or alert and
+correct a mistake.
+
+Although Wearable Cognitive Assistance shares the vision of cognition
+enhancement with many previous research
+efforts~\cite{kidd1999aware}~\cite{loomis1998navigation}~\cite{cheverst2000developing}~\cite{tanuwidjaja2014chroma},
+its design goals advance the frontier of mobile computing in multiple aspects.
+First, wearable devices, particularly head-mounted smart glasses, are used to
+reduce the discomfort caused by carrying a bulky computation device. Users are
+freed from holding a smartphone and therefore able to interact with the physical
+world using both hands. The convenience of this interaction model comes at the
+cost of constrained computation resources. The small form-factor of smart
+glasses significantly limits their onboard computation capability due to size,
+cooling, and battery life reasons. Second, placed at the center of computation
+is the unstructured high-dimensional image and video data. Only these data types
+can satisfy the need to extract rich semantic information to identify
+the progress and mistakes a user makes. Furthermore, state-of-art computer vision
+algorithms used to analyze image data are both compute-intensive and challenging
+to develop. Third, many cognitive assistants give real-time feedback to users
+and have stringent end-to-end latency requirements. An instruction that arrives
+too late often provides no value and may even confuse or annoy users. This
+latency-sensitivity further increases their high demands of system resource and
+optimizations.
+
+To meet the latency and the compute requirements, previous research leverages
+edge computing and offloads computation to a cloudlet. A
+cloudlet~\cite{satyanarayanan2009case} is a small data-center located at the
+edge of the Internet, one wireless hop away from users. Researchers have
+developed an application framework for wearable cognitive assistance, named
+Gabriel, that leverages cloudlets, optimizes for end-to-end latency, and eases
+application
+development~\cite{chen2018application}~\cite{ha2014towards}~\cite{chen2017empirical}.
+On top of Gabriel, several prototype applications have been built, such as
+Ping-Pong Assistance, Lego Assistance, Sandwich Assistance, and Ikea Lamp
+Assembly Assistance. Using these applications as benchmarks,
+~\cite{chen2017empirical} presents empirical measurements detailing the latency
+contributions of individual system components. Furthermore, a multi-algorithm
+approach was proposed to reduce the latency of computer vision computation by
+executing multiple algorithms in parallel and conditionally selecting a fast and
+accurate algorithm for the near future.
+
+While previous research has demonstrated the technical feasibility of wearable
+cognitive assistants and meeting latency requirements, many practical concerns
+have not been addressed. First, previous work operates the wireless networks and
+cloudlets at low utilization in order to meet application latency. The economics
+of practical deployment preclude operation at such low utilization. In contrast,
+resources are often highly utilized and congested when serving many users. How
+to efficiently scale Gabriel applications to a large number of users remains to
+be answered. Second, previous work on the Gabriel framework reduces application
+development efforts by managing client-server communication, network flow
+control, and cognitive engine discovery. However, the framework does not address
+the most time-consuming parts of creating a wearable cognitive assistance
+application. Experience has shown that developing computer vision modules that
+analyze video feeds is a time-consuming and painstaking process that requires
+special expertise and involves rounds of trial and error. Developer tools that
+alleviate the time and the expertise needed can greatly facilitate the creation
+of these applications.
+
+This proposal lays out my plan to address these challenges. In order to meet
+latency requirements when utilization is high, restricting the freedom of using
+resources while taking account of workload characteristics is needed. The scarce
+resource can either be the wireless links or the cloudlets. First, upload
+bandwidth in cellular networks is limited compared to download bandwidth and has
+high variance. Existing wireless infrastructure cannot afford to continuously
+stream high-definition videos from many users. I plan to address this problem
+with application-level mechanisms that exploit the attributes of the workload to
+reduce bandwidth consumption. Second, accelerators, such as GPUs, on cloudlets
+are both limited and heterogeneous. Due to the high demands of accelerators from
+state-of-art computer vision algorithms, the intelligent discovery of
+accelerator resources and the usage coordination among applications are required to
+serve more users. I plan to work on these problems in an edge computing context
+to address how to discover appropriate cloudlets for offload and how to
+coordinate among applications with different latency requirements to share
+scarce accelerators.
+
+In order to address the difficulty of development, I plan to build tools to
+reduce the expertise and time needed when creating wearable cognitive
+assistants. First, state-of-art computer vision uses Deep Neural Networks (DNNs)
+for critical tasks, including image classification, object detection, and
+semantic segmentation. DNNs champion end-to-end learning instead of hand-crafted
+features. The absence of manually created features provides an opportunity to
+build developer tools that replace ad-hoc trial and error development process.
+On the other hand, DNNs requires a significant amount of labeled data for training. I
+plan to build tools that help label examples and automate the creation of
+DNN-based object detectors.
+
+My thesis is that these efforts can help to scale wearable cognitive assistance.
+Notably, we claim that:
+
+\textbf{Two critical challenges to the widespread adoption of wearable cognitive
+  assistance are 1) the need to operate cloudlets and wireless network at low
+  utilization to achieve acceptable end-to-end latency 2) the level of specialized
+  skills and the long development time needed to create new applications. These
+  challenges can be effectively addressed through system optimizations,
+  functional extensions, and the addition of new software development tools to
+  the Gabriel platform.}

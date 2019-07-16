@@ -1,0 +1,67 @@
+{\let\clearpage\relax \section{Related Work}}
+
+\subsection{Edge Computing}
+
+Gabriel applications offload computation to a cloudlet, a small data-center at
+the edge of the internet~\cite{satyanarayanan2009case}. The high bandwidth and
+low latency offered by cloudlets~\cite{ha2013impact}~\cite{hu2016quantifying}
+lay the foundation of wearable cognitive assistance~\cite{ha2014towards}.
+Previous research has worked on VM synthesis~\cite{ha2013just} to enable rapid
+provisioning of applications onto a cloudlet. In addition, user mobility is
+supported through VM handoff~\cite{ha2017you}, which migrates user states from
+one cloudlet to another. These pioneer work into cloudlet together with
+decade-long research into computational
+offload~\cite{cuervo2010maui}~\cite{gordon2012comet}~\cite{flinn2012cyber}
+provides the infrastructure support that makes wearable cognitive assistance
+applications feasible. Previous measurement of edge computing's impact on mobile
+applications tested compute-intensive and latency-sensitive applications when
+network utilization is low~\cite{chen2017empirical}. This work relaxes such assumption and
+focuses on supporting more users when the resource utilization is high.
+
+\subsection{Cognitive Assistance Applications}
+This work builds on top of existing efforts into creating wearable cognitive
+assistance~\cite{ha2014towards}~\cite{chen2015early}~\cite{chen2017empirical}.
+While previous work has focused on identifying latency requirements and system
+optimizations to meet latency constraints, this work focuses on making wearable
+cognitive assistance economically feasible. Other earlier works have also
+explored providing cognitive assistance to users. For instance,
+~\cite{loomis1998navigation} created a navigation system for the blind twenty
+years ago. Rhema~\cite{tanveer2015rhema} used Google Glass to help people with
+public speaking. ~\cite{williams2015designing} provided people with aphasia
+conversational cues on a head-worn display.
+
+Most of these applications run solely on mobile devices and are highly
+constrained by the limited compute budget. Gabriel applications use an offload
+approach to leverage beefy static computational resources. Gabriel applications
+can use state-of-art DNN-based computer vision algorithms to perform
+complex CV tasks.
+
+\subsection{Mobile System Support for Computer Vision Workload}
+With the proliferation of smartphones and cameras, many research works have
+studied mobile system supports for computer vision workload.
+~\cite{likamwa2015starfish} designed and built a system to efficiently support
+many concurrent computer vision applications on a mobile device.
+~\cite{lane2015zoe} built a custom wearable device that supports continuous
+inference on sensor data using a low power budget. More recently, many more
+efforts have been focused on DNNs. ~\cite{yao2017deepsense} and
+~\cite{huynh2017deepmon} accelerated DNN inference on commodity mobile GPUs.
+~\cite{han2016mcdnn} looked at where to schedule DNNs of different
+accuracy and speed tradeoff under resource constraints.
+~\cite{likamwa2016redeye} executed convolutional layers in analog domain before
+sensor read-out to reduce power consumption.
+
+Besides, many researchers have worked on algorithmic optimizations to reduce
+DNN computation. ~\cite{han2015deep}~\cite{iandola2016squeezenet} compressed DNN
+models by pruning insignificant weights. ~\cite{han2016eie} showcased a DNN
+hardware accelerator exploiting model compression techniques.
+~\cite{wu2016quantized}~\cite{gong2014compressing} studied weight quantization
+for faster inference. ~\cite{howard2017mobilenets}~\cite{sandler2018inverted} designed DNNs with
+depth-wise separable convolutions to decrease DNN parameters and increase
+inference speed on mobile devices.
+
+While Gabriel applications can benefit from improvement on mobile system support
+for DNNs, we recognize the lasting trend in the performance gap between mobile
+devices and static elements. The offload approach we adopt enables us to
+leverage powerful computational resources at the edge of the internet. The
+improvement in mobile system support for DNNs can help us build better early
+discard filters and perform more dynamic adaptation to user context.
