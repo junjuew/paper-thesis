@@ -1,74 +1,4 @@
-%for a more compact document, add the option openany to avoid
-%starting all chapters on odd numbered pages
-\documentclass[12pt,openany]{cmuthesis}
-
-% This is a template for a CMU thesis.  It is 18 pages without any content :-)
-% The source for this is pulled from a variety of sources and people.
-% Here's a partial list of people who may or may have not contributed:
-%
-%        bnoble   = Brian Noble
-%        caruana  = Rich Caruana
-%        colohan  = Chris Colohan
-%        jab      = Justin Boyan
-%        josullvn = Joseph O'Sullivan
-%        jrs      = Jonathan Shewchuk
-%        kosak    = Corey Kosak
-%        mjz      = Matt Zekauskas (mattz@cs)
-%        pdinda   = Peter Dinda
-%        pfr      = Patrick Riley
-%        dkoes = David Koes (me)
-
-% My main contribution is putting everything into a single class files and small
-% template since I prefer this to some complicated sprawling directory tree with
-% makefiles.
-
-% some useful packages
-\usepackage{times}
-\usepackage{fullpage}
-\usepackage{graphicx}
-\usepackage{amsmath}
-\usepackage[numbers,sort]{natbib}
-\usepackage[backref,pageanchor=true,plainpages=false, pdfpagelabels, bookmarks,bookmarksnumbered,
-%pdfborder=0 0 0,  %removes outlines around hyper links in online display
-]{hyperref}
-\usepackage{subfigure}
-\usepackage{comment}
-\usepackage{url}
-\usepackage{subfigure}
-\usepackage{color}
-\usepackage{ifthen}
-\usepackage{framed}
-\usepackage{multirow}
-\usepackage{color,soul,xspace}
-\usepackage{epsfig}
-\usepackage{makecell}
-\usepackage{booktabs}
-
-\newenvironment{captiontext}{%
-   \vspace{-0.1in}\begin{center}%
-     \begin{minipage}{0.9\linewidth}%
-       \renewcommand{\baselinestretch}{0.9}%
-         \small}%
-   {\renewcommand{\baselinestretch}{1.0}%
-      \end{minipage}%
-      \end{center}}
-
-% Abbreviations
-\newcommand{\lc}[1]{\lowercase{#1}}
-\newcommand{\uc}[1]{\uppercase{#1}}
-\newcommand{\xc}[1]{\small\sc #1}
-
-
-% Approximately 1" margins, more space on binding side
-%\usepackage[letterpaper,twoside,vscale=.8,hscale=.75,nomarginpar]{geometry}
-%for general printing (not binding)
-\usepackage[letterpaper,twoside,vscale=.8,hscale=.75,nomarginpar,hmarginratio=1:1]{geometry}
-
-% Provides a draft mark at the top of the document. 
-\draftstamp{\today}{DRAFT}
-
-\begin{document} 
-\frontmatter
+\input{texdefs.tex}
 
 %initialize page style, so contents come out right (see bot) -mjz
 \pagestyle{empty}
@@ -165,18 +95,9 @@ Padmanabhan Pillai (Intel Labs)
 \subsection{Evaluation}
 \subsection{Discussion}
 
-\section{Application-Aware Techniques to Reduce Offered Load}
-\subsection{Adaptation-Relevant Taxonomy}
-\subsection{Adaptive Sampling}
-\subsection{IMU-based Approaches: Passive Phase Suppression + Evaluation of Image Quality}
-\subsection{Evaluation}
-\subsection{Discussion}
+\input{workload-reduction/main.tex}
 
-\section{Cloudlet Resource Management for Graceful Degradation of Service}
-\subsection{Application Utility and Profiles}
-\subsection{Profiling-based Resource Allocation}
-\subsection{Evaluation of Cloudlet Resource Management}
-\subsection{End-to-End Evaluation of Resource Management}
+\input{cloudlet-resource-management/main.tex}
 
 \section{Simplifying Application Development}
 \subsection{Tools For Painless Object Detection (TPOD)}
@@ -193,6 +114,8 @@ Padmanabhan Pillai (Intel Labs)
 
 % \input{introduction}
 % \input{motivation}
+% \input{workload-reduction/arch.tex}
+% \input{cloudlet-resource-management/server.tex}
 % \input{bandwidth}
 % \input{virtualization}
 % \input{acceleration}
@@ -212,6 +135,6 @@ Padmanabhan Pillai (Intel Labs)
 %\newcommand{\bibpreamble}{This text goes between the ``Bibliography''
 %  header and the actual list of references}
 \bibliographystyle{plainnat}
-\bibliography{proposal} %your bib file
+\bibliography{thesis} %your bib file
 
 \end{document}

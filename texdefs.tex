@@ -1,0 +1,114 @@
+% for a more compact document, add the option openany to avoid
+%starting all chapters on odd numbered pages
+\documentclass[12pt, draft]{cmuthesis}
+
+\usepackage{comment}
+\usepackage{url}
+\usepackage{ifthen}
+\usepackage{framed}
+\usepackage{multirow}
+\usepackage{subcaption}
+\usepackage{times}
+\usepackage{amssymb}
+\usepackage[export]{adjustbox}
+\usepackage{rotating}
+% \usepackage{times}
+\usepackage{fullpage}
+\usepackage{amsmath}
+\usepackage[numbers,sort]{natbib}
+\usepackage[backref,pageanchor=true,plainpages=false, pdfpagelabels, bookmarks,bookmarksnumbered,
+%pdfborder=0 0 0,  %removes outlines around hyper links in online display
+]{hyperref}
+% \usepackage{subfigure}
+\usepackage{color,soul,xspace}
+\usepackage{makecell}
+\usepackage{booktabs}
+\usepackage{graphicx}
+
+
+%% fix the conflict between times and new acmart template
+% \renewcommand{\textrightarrow}{$\rightarrow$}
+
+%%%
+%%%  Comments
+%%%
+\newcommand{\showComments}{yes}
+\newcommand{\note}[2]{
+	\ifthenelse{\equal{\showComments}{yes}}{\textcolor{#1}{#2}}{}
+}
+
+\newcommand{\showRevision}{no}
+\newcommand{\revision}[1]{
+	\ifthenelse{\equal{\showRevision}{yes}}{\textcolor{red}{#1}}{#1}
+}
+
+
+\newcommand{\TODO}[1]{\note{red}{#1}}
+
+
+% FOR SUBMISSION ONLY: Eliminate copyright box at bottom of first page
+% Use \toappear{} if you want a blank ACM copyright box instead of suppressing it
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd{\maketitle}{\@copyrightspace}{}{}{}
+\makeatother
+
+
+% Itemize and Enumerate with less white space wasted
+\newenvironment{smitemize}%
+  {\begin{list}{$\bullet$}%
+     {\setlength{\parsep}{1pt}%
+      \setlength{\topsep}{1pt}%
+      \setlength{\itemsep}{1pt}}}%
+  {\end{list}}
+
+\newenvironment{smenumerate}{
+\begin{enumerate}
+  \setlength{\itemsep}{2.5pt}
+  \setlength{\parskip}{0pt}
+  \setlength{\parsep}{0pt}
+}{\end{enumerate}}
+
+\newenvironment{mypara}{
+   \vspace{0.1in}
+   \textbf}
+{\plain}
+
+
+\newcommand{\lc}[1]{\lowercase{#1}}
+\newcommand{\uc}[1]{\uppercase{#1}}
+\newcommand{\xc}[1]{\small\sc #1}
+\usepackage{epsfig}
+
+
+\newenvironment{captiontext}{%
+   \par\vspace{0.1in}\renewcommand{\baselinestretch}{0.9}\footnotesize}%
+   {\renewcommand{\baselinestretch}{1.0}\par}
+
+
+%
+% defining the \BibTeX command - from Oren Patashnik's original BibTeX documentation.
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08emT\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+\usepackage{setspace} % for \onehalfspacing and \singlespacing macros
+\usepackage{etoolbox}
+\AtBeginEnvironment{quote}{\singlespacing\small}
+
+% \settopmatter{printacmref=false} % Removes citation information below abstract
+% \renewcommand\footnotetextcopyrightpermission[1]{} % removes footnote with conference information in first column
+% \pagestyle{plain}
+
+
+% Abbreviations
+
+
+% Approximately 1" margins, more space on binding side
+%\usepackage[letterpaper,twoside,vscale=.8,hscale=.75,nomarginpar]{geometry}
+%for general printing (not binding)
+\usepackage[letterpaper,twoside,vscale=.8,hscale=.75,nomarginpar,hmarginratio=1:1]{geometry}
+
+% Provides a draft mark at the top of the document. 
+\draftstamp{\today}{DRAFT}
+
+\begin{document} 
+\frontmatter
