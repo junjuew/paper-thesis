@@ -62,7 +62,7 @@ The lowest sampling rate in passive phase still needs to meet application's
 latency requirement. Figure~\ref{fig:lego-sampling-model} shows the system model
 to calculate the largest sampling period S that still meets the latency bound.
 In particular,
-$$kS + processing\_delay \leq latency\_bound $$ $k$ represents the
+$$(k-1)S + processing\_delay \leq latency\_bound $$ $k$ represents the
 cumulative number of frames an event needs to be detected in order to be
 certain an event actually occurred. The LEGO application empirically sets this
 value to be 5. 
@@ -182,7 +182,6 @@ Trace  & \begin{tabular}[c]{@{}c@{}}Sample\\ Half Freq\end{tabular} & \begin{tab
 {\small (b) PING PONG}\\[0.1in]
 \caption{\small Effectiveness of IMU-based Frame Suppression}
 \label{tab:imu-result}
-\vspace{-0.3in}
 \end{table}
 
 
@@ -192,9 +191,9 @@ Trace  & \begin{tabular}[c]{@{}c@{}}Sample\\ Half Freq\end{tabular} & \begin{tab
 In many applications, passive phases can often be associated with the
 user's head movement. We illustrate with two applications here. In
 LEGO, during the passive phase, which begins after the user receives
-the next instructions, a user typically turns away from the LEGO board
+the next instruction, a user typically turns away from the LEGO board
 and starts searching for the next brick to use in a parts box. During
-this period, the computer vision algorithm will detect no meaningful
+this period, the computer vision algorithm would detect no meaningful
 task states if the frames are transmitted.  In PING PONG, an active
 phase lasts throughout a rally.  Passive phases are in between actual
 game play, when the user takes a drink, switches sides, or, most

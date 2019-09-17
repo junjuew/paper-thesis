@@ -1,6 +1,6 @@
 %% dkoes 5/10/2006
 
-\LoadClassWithOptions{article}
+\LoadClassWithOptions{book}
 
 
 %% dkoes - Here's a bunch of stuff taken from mjz-titlepage.sty that makes
@@ -58,27 +58,22 @@
 {\large \begin{tabular}[t]{c}\@author\end{tabular}\par}
 \vfill
 {\sc \@trnumber\par}
-\smallskip
+% \smallskip % CRM: deleting as per Catherine's instructions
 {\large \@date\par}
 \end{center}
 \vfill}
 \end{minipage}
 \end{center}
 
-\vskip 1em
-\begin{center}
-  \large Thesis Proposal
-  \end{center}
+\vskip 3em
 
-\vskip 1em
 \begin{center}
     School of Computer Science \\
     Carnegie Mellon University \\
     Pittsburgh, PA 15213
 \end{center}
-
-\vskip 2em
 \begin{center}
+ \bigskip % CRM: adding as per Catherine's instructions
     {\bf Thesis Committee:} \\
     \@committee
 \end{center}
@@ -101,32 +96,48 @@
 % keywords go at bottom of page ii (the rear of the titlepage)
 % if keywords are omitted, this page is blank
 
-%% \clearpage
-%% \thispagestyle{empty}
-%% \@ifundefined{@keywords}{}{\vspace*{\fill} {\bf Keywords:} \@keywords}
-%% \cleardoublepage
+\clearpage
+\thispagestyle{empty}
+\@ifundefined{@keywords}{}{\vspace*{\fill} {\bf Keywords:} \@keywords}
+\cleardoublepage
 }
 
-%% \newenvironment{dedication}
-%%   {\cleardoublepage \thispagestyle{empty} \vspace*{\stretch{1}} \begin{center} \em}
-%%   {\end{center} \vspace*{\stretch{3}} \clearpage}
+\newenvironment{dedication}
+  {\cleardoublepage \thispagestyle{empty} \vspace*{\stretch{1}} \begin{center} \em}
+  {\end{center} \vspace*{\stretch{3}} \clearpage}
 
 
-%% \newenvironment{psuedochapter}[1]
-%%   {\cleardoublepage
-%%    \thispagestyle{empty}
-%%    \vspace*{\stretch{1}} 
-%%    \begin{center} \large {\bf #1} \end{center}
-%% %   \addcontentsline{toc}{chapter}{\numberline{}#1} --not yet mjz 
-%%    \begin{quotation}}
-%%   {\end{quotation} 
-%%    \vspace*{\stretch{3}}
-%%    \clearpage}
+\newenvironment{psuedochapter}[1]
+  {\cleardoublepage
+   \thispagestyle{empty}
+   \vspace*{\stretch{1}} 
+   \begin{center} \large {\bf #1} \end{center}
+%   \addcontentsline{toc}{chapter}{\numberline{}#1} --not yet mjz 
+   \begin{quotation}}
+  {\end{quotation} 
+   \vspace*{\stretch{3}}
+   \clearpage}
 
-%% \newenvironment{abstract}
-%% 	{\begin{psuedochapter}{Abstract}}{\end{psuedochapter}}
+\newenvironment{abstract}
+	{\begin{psuedochapter}{Abstract}}{\end{psuedochapter}}
 
-%% \newenvironment{acknowledgments}	{\begin{psuedochapter}{Acknowledgments}}{\end{psuedochapter}}
+% \newenvironment{acknowledgments}
+%	{\begin{psuedochapter}{Acknowledgments}}{\end{psuedochapter}}
+
+%% DRL: for some reason, if you use pseudochapter macro, with more than
+%% one page of stuff
+%% the ``acknowledgements'' title ends up on
+%% the bottom of a page, with the text on the next page??
+\newenvironment{acknowledgments}[0]
+  {\cleardoublepage
+   \thispagestyle{empty}
+   \vspace*{.8in} 
+   \begin{center} \large {\bf Acknowledgments} \end{center}
+%   \addcontentsline{toc}{chapter}{\numberline{}#1} --not yet mjz 
+   \begin{quotation}}
+  {\end{quotation} 
+   \vspace*{\stretch{3}}
+   \clearpage}
 
 
 
@@ -235,34 +246,12 @@
     \end{minipage}
 }}
 
-\newcommand\frontmatter{%
-    \clearpage
-  %\@mainmatterfalse
-  \pagenumbering{roman}}
-
 % mainmatter is ignoring openany, fix
-\newcommand\mainmatter{%
+\renewcommand\mainmatter{%
+  \if@openright
+    \cleardoublepage
+  \else
     \clearpage
-  %\@mainmattertrue
+  \fi
+  \@mainmattertrue
   \pagenumbering{arabic}}
-
-\newcommand\backmatter{%
-    \clearpage
- % \@mainmatterfalse
-   }
-
-\def\@makechapterhead#1{%
-  \vspace*{50\p@}%
-  {\parindent \z@ \raggedright \normalfont
-    \ifnum \c@secnumdepth >\m@ne
-      \if@mainmatter
-        %\huge\bfseries \@chapapp\space \thechapter
-        \Huge\bfseries \thechapter.\space%
-        %\par\nobreak
-        %\vskip 20\p@
-      \fi
-    \fi
-    \interlinepenalty\@M
-    \Huge \bfseries #1\par\nobreak
-    \vskip 40\p@
-}}

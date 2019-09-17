@@ -1,0 +1,63 @@
+\section{Profiling-based Resource Allocation}
+
+Given a workload of concurrent applications running on a cloudlet, and
+the number of clients requesting service from each application, our
+resource allocator determines how many instances to launch and how
+much resource (CPU cores, memory, etc.) to allocate for each
+application instance.  We assume queueing delays are limited by the
+token mechanism described in the Gabriel framework~\cite{Ha2014},
+which limits the number of outstanding requests on a per-client basis.
+
+
+\subsection{Maximizing Overall System Utility}
+
+As described earlier, for each application $a \in $ \{FACE, LEGO, PING PONG, POOL, \ldots \}, 
+we construct a resource to utility mapping
+$u_a: \mathbf{r} \rightarrow \mathbb{R}$ for one instance of the application on cloudlet, 
+where $\mathbf{r}$ is a resource vector of allocated CPU, memory, etc. We formulate the 
+following optimization problem which maximizes the system-wide total utility,
+subject to a tunable maximum per-client limit:
+
+\begin{equation}
+  \begin{aligned}
+  \max_{\{k_a, \mathbf{r}_a\}} \quad & \sum_a{k_a \cdot u_a(\mathbf{r}_a)} \\
+  \textrm{s.t.} \quad & \sum_a k_a \cdot \mathbf{r}_a \preccurlyeq \hat{\mathbf{r}} \\
+      & 0 \preccurlyeq \mathbf{r}_a  \quad \forall a \\
+      & k_a \cdot u_a(\mathbf{r}_a) \le \gamma \cdot c_a \quad \forall a \\
+      & k_a \in \mathbb{Z}
+  \end{aligned}
+  \end{equation}
+
+In above, $c_a$ is the number of mobile clients requesting service from application $a$.
+The total resource vector of the cloudlet is  $\hat{\mathbf{r}}$. 
+ For each application $a$, we determine how many instances to launch --- $k_a$, and 
+allocate resource vector $\mathbf{r}_a$ to each of them.
+A tunable knob $\gamma$ regulates the maximum utility allotted 
+per application, and serves to enforce a form of partial fairness (no application
+can be given excessive utility, though some may still receive none). 
+The larger $\gamma$ is, the more aggressive our scheduling algorithm
+will be in maximizing global utility and
+suppressing low-utility applications. 
+%In our system model, the maximum $\gamma$ is 30 for
+%clients at 30 FPS. 
+By default, we set $\gamma=10$, which, based on our definition of
+utility, roughly means resources will be allocated so 
+no more than one third of frames (from a 30FPS source) 
+will be processed within satisfactory latency bounds for a given
+client.
+
+Solving the above optimization problem is computationally difficult. We thus use an
+iterative greedy allocation algorithm as follows:
+For each application profile $u_a(\mathbf{r})$, we find the resource point that gives
+the highest $\frac{u_a(\mathbf{r})}{|\mathbf{r}|}$, i.e., \emph{utility-to-resource} ratio. 
+Denote this point as $\mathbf{r}^*_a$. We start with the application with the largest 
+$\frac{u_a(\mathbf{r}^*_a)}{|\mathbf{r}^*_a|}$. We allocate $k_a$ application instances,
+each with resource $\mathbf{r}^*_a$, such that $k_a$ is the largest integer with
+$k_a \cdot u_a(\mathbf{r}^*_a) \le \gamma \cdot c_a$. 
+If there is leftover resource, we move to the application with the next highest 
+utility-to-resource ratio and repeat the process.
+
+In our implementation,
+we exploit the \texttt{cpu-shares} and \texttt{memory-reservation} control options 
+of Linux Docker containers. It puts a soft limit on containers' resource utilization only when 
+they are in contention, but allows them to use as much left-over resource as needed.

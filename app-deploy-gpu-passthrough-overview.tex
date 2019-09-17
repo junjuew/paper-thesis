@@ -1,0 +1,227 @@
+\section{Enabling GPU Usage for Cloudlets}
+\label{enable-gpu-for-cloudlets}
+
+Many edge workloads require a GPU to meet latency requirements. However,
+sharing and virtualizing GPU devices for computation remain a challenge.
+In below, I will describe our group's setup to allow multi-tenancy on
+GPUs.
+
+\subsection{Architecture}\label{architecture}
+
+The figure below represents the architecture. We adopt a containers on
+top of virtual machines approach to allow GPU sharing. The GPU device is
+dedicated to a particular VM through GPU-passthrough on the host.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{GPU-Support-in-Cloudlet.png}
+\caption{Architecture}
+\end{figure}
+
+\subsection{Setup}\label{setup}
+
+\subsubsection{GPU-Passthrough to a libvirt
+VM}\label{gpu-passthrough-to-a-libvirt-vm}
+
+The setup process is automated through Ansible. Please see
+\href{https://github.com/junjuew/ansible-dotfiles/}{repo}. Use following
+command to set up GPU passthrough.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ansible-playbook} \NormalTok{-i hosts-gpu-passthrough gpu-passthrough-playbook.yml}
+\end{Highlighting}
+\end{Shaded}
+
+\subsubsection{Container Access to GPU}\label{container-access-to-gpu}
+
+nvidia-docker enables containers to access GPU easily. See
+\href{https://github.com/junjuew/ansible-dotfiles/}{repo} for
+installation.
+
+\subsection{Performance Overhead}\label{performance-overhead}
+
+\textbf{In all of our benchmark measurements, the overheads introduced
+by virtualization are between 0\% and 2.3\%.}
+
+We used two benchmarks to measure the overhead introduced by VM and
+container virtuation. The first benchmark
+\href{https://github.com/baidu-research/DeepBench}{DeepBench} is
+compute-intensive. In particular, we focused on convolution operation
+--- the core workload of convolutional neural networks. The second
+benchmark
+\href{https://github.com/parallel-forall/code-samples/blob/master/series/cuda-cpp/optimize-data-transfers/bandwidthtest.cu}{BandwidthTest}
+evaluates the data transfer bandwidth between the host and the GPU.
+
+\subsubsection{HW \& SW Setup}\label{hw-sw-setup}
+
+The GPU in test is NVIDIA Tesla GTX 1080 Ti GPU.
+
+\begin{itemize}
+\tightlist
+\item
+  Max GPU Clock: 1911 MHz(Graphics), 5505 MHz(Memory)
+\item
+  Default Computing mode
+\end{itemize}
+
+The software in bare-metal, VM, and container-inside-VM is kept the
+same.
+
+\begin{itemize}
+\tightlist
+\item
+  Ubuntu 16.04
+\item
+  linux kernel 4.4.0-130
+\item
+  396.37 NVIDIA driver + cuda 9.0 + cudnn 7.1.4.18
+\end{itemize}
+
+The VM is created using qemu-kvm 2.6.2 and libvirt. GPU passthrough is
+achieved through vfio. The container-inside-VM is created using
+nvidia-docker 2.0.3 and docker 18.03.1.
+
+\subsubsection{Convolution Kernels ---
+Compute}\label{convolution-kernels-compute}
+
+We used floating point general matrix multiplication from
+\href{https://github.com/baidu-research/DeepBench}{this benchmark}. The
+benchmark is invoked with
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{./conv_bench} \NormalTok{inferenct float}
+\end{Highlighting}
+\end{Shaded}
+
+The benchmark uses \emph{cudnnFindConvolutionForwardAlgorithm} in cudnn
+to determine the convolution algorithm to use at runtime. In our
+experiments, such dynamic algorithm selection results in large variance
+of execution time as different algorithms are used across different
+runs. It is unclear why cudnn would select different algorithms even
+when convolution parameters are kept the same. To obtain reproducible
+results, we manuallly fixed the convolutional algorithm to be
+CUDNN\_CONVOLUTION\_FWD\_ALGO\_IMPLICIT\_PRECOMP\_GEMM in the code. See
+\href{https://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html\#api-introduction}{here}
+for more on what the algorithm does.
+
+We used the same convolutional kernels as described in
+\href{https://github.com/baidu-research/DeepBench}{DeepBench} ``Server
+Inference Setup'' for comparison.
+
+\paragraph{Convolution Experiment
+Parameters}\label{convolution-experiment-parameters}
+
+\begin{longtable}[c]{@{}llllll@{}}
+\toprule
+Experiment & Input Size & Filter Size & \# of Filters & Padding (h, w) &
+Stride (h, w)\tabularnewline
+\midrule
+\endhead
+1 & W = 341, H = 79, C = 32, N = 4 & R = 5, S = 10 & 32 & 0,0 &
+2,2\tabularnewline
+2 & W = 224, H = 224, C = 3, N = 1 & R = 7, S = 7 & 64 & 3, 3 & 2,
+2\tabularnewline
+3 & W = 56, H = 56, C = 256, N = 1 & R = 1, S = 1 & 128 & 0, 0 & 2,
+2\tabularnewline
+4 & W = 7, H = 7, C = 512, N = 2 & R = 1, S = 1 & 2048 & 0, 0 & 1,
+1\tabularnewline
+\bottomrule
+\end{longtable}
+
+\paragraph{Convolution Speed}\label{convolution-speed}
+
+\begin{longtable}[c]{@{}ccccc@{}}
+\toprule
+Virtualization & Exp 1 (us) & Exp 2 (us) & Exp 3 (us) & Exp 4
+(us)\tabularnewline
+\midrule
+\endhead
+bare-metal & 381 +- 9 & 44 +- 1 & 39 +- 1 & 68 +- 1\tabularnewline
+VM & 384 +- 11 & 45 +- 1 & 39 +- 1 & 67 +- 1\tabularnewline
+Container inside VM & 386 +- 9 & 45 +- 1 & 39 +- 1 & 68 +-
+2\tabularnewline
+\bottomrule
+\end{longtable}
+
+\subsubsection{Bandwidth Test ---
+Bandwidth}\label{bandwidth-test-bandwidth}
+
+We benchmarked memory bandwidth between the host and the GPU device
+using
+\href{https://github.com/parallel-forall/code-samples/blob/master/series/cuda-cpp/optimize-data-transfers/bandwidthtest.cu}{bandwidthtest.cu}.
+You can learn more about pinned transfer bandwdith
+\href{https://devblogs.nvidia.com/how-optimize-data-transfers-cuda-cc/}{here}.
+
+\paragraph{Pinned Transfer Bandwidth}\label{pinned-transfer-bandwidth}
+
+\begin{longtable}[c]{@{}ccc@{}}
+\toprule
+\begin{minipage}[b]{0.16\columnwidth}\centering\strut
+Virtualization
+\strut\end{minipage} &
+\begin{minipage}[b]{0.39\columnwidth}\centering\strut
+Host To Device Bandwidth (GB/s)
+\strut\end{minipage} &
+\begin{minipage}[b]{0.36\columnwidth}\centering\strut
+Device to Host Bandwidth (GB/s)
+\strut\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.16\columnwidth}\centering\strut
+bare-metal
+\strut\end{minipage} &
+\begin{minipage}[t]{0.39\columnwidth}\centering\strut
+6.17 +- 0.00
+\strut\end{minipage} &
+\begin{minipage}[t]{0.36\columnwidth}\centering\strut
+6.67 +- 0.01
+\strut\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.16\columnwidth}\centering\strut
+VM
+\strut\end{minipage} &
+\begin{minipage}[t]{0.39\columnwidth}\centering\strut
+6.13 +- 0.00
+\strut\end{minipage} &
+\begin{minipage}[t]{0.36\columnwidth}\centering\strut
+6.66 +- 0.00
+\strut\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.16\columnwidth}\centering\strut
+Container inside VM
+\strut\end{minipage} &
+\begin{minipage}[t]{0.39\columnwidth}\centering\strut
+6.12 +- 0.02
+\strut\end{minipage} &
+\begin{minipage}[t]{0.36\columnwidth}\centering\strut
+6.58 +- 0.02
+\strut\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\subsubsection{Experiments Data}\label{experiments-data}
+
+Complete experiment results are in \url{data} directory.
+
+\begin{itemize}
+\tightlist
+\item
+  baremetal-conv, vm-conv, container-conv: Convolution kernel benchmark
+  results for bare-metal, vm, and container-inside-VM.
+\item
+  run.sh: Convolution kernel result summary script
+\item
+  bandwidth-test: BandwithTest benchmark results for bare-metal, vm, and
+  container-inside-VM.
+\item
+  conv-dynamic-algorithm: Unmodified convolution kernel benchmark
+  results, which select convolution algorithms at runtime.
+\item
+  gemm-test: GEMM kernel benchmark results using DeepBench. Note that
+  the data has high variance since not enough runs are executed.
+\item
+  vm-ssd-*: Object detection benchmark results on VM using
+  \href{www.github.com/junjuew/cvutils}{cvutils}. Note that this
+  benchmark includes extra processing time on CPU as well. It should not
+  be used for measuring virtualization overhead.
+\end{itemize}

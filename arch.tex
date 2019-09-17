@@ -68,43 +68,41 @@ allocations.
     &{\normalsize\bf Question}  & {\normalsize\bf Example} & {\normalsize\bf Load-reduction Technique} \\
     & & & \\ 
     \hline
-    1&How rarely are instructions given, compared to task duration? 
+    1&How often are instructions given, compared to task duration? 
         & Instructions for each step in IKEA lamp assembly are 
             rare compared to the total task time, e.g., 6 instructions over 
             a 10 minute task.
-        & Define active and idle phaseswith explicit trigger conditions \\ \hline
+        & Enable adaptive sampling based on active and passive phases. \\ \hline
     2&Is intermittent processing of input frames sufficient for giving instructions?
         & Recognizing a face in any one frame is sufficient for
-whispering the person's name;
-            Overlaying names over faces requires 
-            continuous processing. 
-        & Semantic deduplication; Frame selection   \\ \hline
-    3&Will a user wait for system reponse before proceeding?  
+whispering the person's name.
+        & Select and process key frames.  \\ \hline
+    3&Will a user wait for system responses before proceeding?  
         & A first-time user of a medical device will pause until  an instruction is received.
-        & Semantic deduplication; Frame selection   \\ \hline
-    4&Does user have a pre-defined workspace in the scene?
+        & Select and process key frames. \\ \hline
+    4&Does the user have a pre-defined workspace in the scene?
         & Lego pieces are assembled on the lego board. Information outside the board can
              be safely ignored.
-        & Focus processing attention on the region of interest \\ \hline
+        & Focus processing attention on the region of interest. \\ \hline
     5&Does the vision processing involve identifying and locating objects?
         & Identifying a toy lettuce for a toy sandwich.
-        & Use tracking as cheap approximation for detection \\ \hline
+        & Use tracking as cheap approximation for detection. \\ \hline
     6&Are the vision processing algorithms insensitive to image resolution?
-        & Many classification DNNs limit resolutions to  
+        & Many image classification DNNs limit resolutions to  
             the size of their input layers.
-        & Downscale sampled frames before transmission from device    \\ \hline
+        & Downscale sampled frames on device before transmission.    \\ \hline
     7&Can the vision processing algorithm trade off accuracy and computation? 
-        & DNN MobileNet is computationally cheaper than ResNet, but less accurate. 
-        & Ad-hoc computation fidelity change; Downscaling   \\ \hline
-    8&Is there inherent human-level latency for a state change?
-        & It takes at least a few seconds for a human to drill a hole.
-        & Frame sampling and processing suppression based on heuristics   \\ \hline
-    9&Can IMU be used for identifying the start and end of user activities?
-        & A user's head moves when searching for a Lego block.
-        & IMU-based frame suppression \\ \hline
-    10&Is the wearable device powerful enough to run part of computer vision pipeline?
+        & Image classification DNN MobileNet is computationally cheaper than ResNet, but less accurate. 
+        & Change computation fidelity based on resource utilization. \\ \hline
+    % 8&Is there inherent human-level latency for a state change?
+    %     & It takes at least a few seconds for a human to drill a hole.
+    %     & Frame sampling and processing suppression based on heuristics   \\ \hline
+    8&Can IMUs be used to identify the start and end of user activities?
+        & User's head movement is significantly larger when searching for a Lego block.
+        & Enable IMU-based frame suppression. \\ \hline
+    9&Is the Tier-3 device powerful enough to run parts of the processing pipeline?
         & A Jetson TX2 can run MobileNet-based image recognition in real-time.
-        & Partition vision pipeline between Tiers 2 and 3.    \\ \hline
+        & Partition the vision pipeline between Tier-3 and Tier-2.   \\ \hline
     \end{tabular}
 \vspace{0.1in}
     \caption{\small Application characteristics and corresponding applicable techniques to reduce load}
@@ -126,7 +124,7 @@ times. Hence, a small mean with short tail is the desired ideal. Finally,
 different applications have varying degrees of benefit or utility at different
 levels of latency.  Thus, our adaptation strategy incorporates
 application-specific utility as a function of latency as well as policies
-addressing fairness or application priorities.  
+maximizing the total utility of the system.
 
 
 \subsection{Leveraging Application Characteristics}
@@ -217,7 +215,7 @@ expanded.
 
 \begin{figure}[]
     \centering
-\includegraphics[width=\linewidth]{FIGS/fig-design-space.pdf}
+    \includegraphics[width=1.1\linewidth, trim=14em 5em 6em 2em, clip]{FIGS/fig-design-space.pdf}
     \caption{\small Design Space of WCA Applications}
     \label{figs:design-space}
 \end{figure}
