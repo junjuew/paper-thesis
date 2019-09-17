@@ -10,9 +10,9 @@ clean:
 	rm -f $(OBJECTS)
 
 thesis.pdf: thesis.bbl $(SOURCES)
-	$(LATEX) thesis
-	$(LATEX) thesis
+	$(LATEX) -interaction nonstopmode -file-line-error thesis
+	$(LATEX)  -interaction nonstopmode -file-line-error thesis
 
 thesis.bbl: $(SOURCES)
-	$(LATEX) thesis
+	$(LATEX) -interaction nonstopmode -file-line-error thesis
 	bibtex thesis
