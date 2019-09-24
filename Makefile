@@ -11,7 +11,7 @@ clean:
 
 thesis.pdf: thesis.bbl $(SOURCES)
 	$(LATEX) -interaction nonstopmode -file-line-error thesis
-	$(LATEX)  -interaction nonstopmode -file-line-error thesis
+	$(LATEX) -interaction nonstopmode -file-line-error thesis
 
 thesis.bbl: $(SOURCES)
 	$(LATEX) -interaction nonstopmode -file-line-error thesis
