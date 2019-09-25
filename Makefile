@@ -10,8 +10,10 @@ clean:
 	rm -f $(OBJECTS)
 
 thesis.pdf: thesis.bbl $(SOURCES)
+	bibtex thesis
 	$(LATEX) -interaction nonstopmode -file-line-error thesis
 	$(LATEX) -interaction nonstopmode -file-line-error thesis
+	latexmk -c thesis.tex
 
 thesis.bbl: $(SOURCES)
 	$(LATEX) -interaction nonstopmode -file-line-error thesis

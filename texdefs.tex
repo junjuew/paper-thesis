@@ -12,21 +12,23 @@
 \usepackage{amssymb}
 \usepackage[export]{adjustbox}
 \usepackage{rotating}
-% \usepackage{times}
+\usepackage{times}
 \usepackage{fullpage}
 \usepackage{amsmath}
 \usepackage[numbers,sort]{natbib}
 \usepackage[backref,pageanchor=true,plainpages=false, pdfpagelabels, bookmarks,bookmarksnumbered]{hyperref}
 %pdfborder=0 0 0,  %removes outlines around hyper links in online display
 % \usepackage{subfigure}
-\usepackage{color,soul,xspace}
+\usepackage{color}
+\usepackage{soul}
+\usepackage{xspace}
 \usepackage{makecell}
 \usepackage{booktabs}
 \usepackage{graphicx}
 
+%% paramgraph
 
-%% fix the conflict between times and new acmart template
-% \renewcommand{\textrightarrow}{$\rightarrow$}
+\setlength{\parskip}{6pt}
 
 %%%
 %%%  Comments
@@ -77,7 +79,6 @@
 \newcommand{\lc}[1]{\lowercase{#1}}
 \newcommand{\uc}[1]{\uppercase{#1}}
 \newcommand{\xc}[1]{\small\sc #1}
-\usepackage{epsfig}
 
 
 \newenvironment{captiontext}{%
@@ -95,7 +96,7 @@
 
 % \settopmatter{printacmref=false} % Removes citation information below abstract
 % \renewcommand\footnotetextcopyrightpermission[1]{} % removes footnote with conference information in first column
-% \pagestyle{plain}
+\pagestyle{plain}
 
 
 % Abbreviations
