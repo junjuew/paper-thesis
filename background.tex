@@ -2,6 +2,7 @@
 \label{chapter: background}
 
 \section{Edge Computing}
+\label{sec: bg-edge}
 
 \begin{figure*}[t]
 \begin{minipage}[c]{2.5in}
@@ -138,6 +139,8 @@ investigate.
 
 
 \section{Gabriel Platform}
+\label{sec: bg-gabriel}
+
 \begin{figure}
 \centering
 \includegraphics[width=0.8\linewidth]{FIGS/fig-backend-structure-simple-crop.pdf}
@@ -149,18 +152,19 @@ investigate.
 \end{figure}
 
 The Gabriel platform~\cite{ha2014towards,chen2017empirical}, shown in
-Figure~\ref{fig:gabriel}, is the first implementation of WCA and provides an
-application framework to simplify development. The Gabriel front-end on a
-wearable device performs preprocessing of sensor data (e.g., compression and
-encoding), which it streams over a wireless network to a cloudlet.  The Gabriel
-back-end on the cloudlet has a modular structure. The {\em control module} is
-the focal point for all interactions with the wearable device.  A
-publish-subscribe (PubSub) mechanism decodes and distributes the incoming sensor
-streams to multiple {\em cognitive modules} (e.g., task-specific computer vision
-algorithms) for concurrent processing. Cognitive module outputs are integrated
-by a task-specific {\em user guidance module} that performs higher-level
-cognitive processing such as inferring task state, detecting errors, and
-generating guidance in one or more modalities (e.g., audio, video, text, etc.).
+Figure~\ref{fig:gabriel}, is an application framework for wearable cognitive
+assistance. It consists of a front-end running on wearable devices and a
+back-end running on cloudlets. The Gabriel front-end performs preprocessing of
+sensor data (e.g., compression and encoding), which it then streams over a
+wireless network to a cloudlet.  The Gabriel back-end on the cloudlet has a
+modular structure. The {\em control module} is the focal point for all
+interactions with the wearable device.  A publish-subscribe (PubSub) mechanism
+decodes and distributes the incoming sensor streams to multiple {\em cognitive
+modules} (e.g., task-specific computer vision algorithms) for concurrent
+processing. Cognitive module outputs are integrated by a task-specific {\em user
+guidance module} that performs higher-level cognitive processing such as
+inferring task state, detecting errors, and generating guidance in one or more
+modalities (e.g., audio, video, text, etc.).
 
 The original Gabriel platform was built with a single user in mind,
 and did not have mechanisms to share cloudlet resources in a
