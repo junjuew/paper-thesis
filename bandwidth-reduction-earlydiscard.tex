@@ -143,19 +143,26 @@ For T2 and T3, lower cutoff thresholds are needed to achieve perfect recalls.
     \centering
     \includegraphics[width=0.8\linewidth]{FIGS/fig-event-recall-frame-percentage-legend.pdf}
     \hspace*{-0.3in}
-    \begin{subfigure}[T1]{
-        \includegraphics[width=0.5\linewidth]{FIGS/fig-event-recall-frame-percentage-vs-threshold-okutama.pdf}}        
-    \end{subfigure}
-    \begin{subfigure}[T2]{
-      \includegraphics[width=0.5\linewidth]{FIGS/fig-event-recall-frame-percentage-vs-threshold-stanford.pdf}}
-    \end{subfigure}
-    \hspace*{-0.3in}    
-    \begin{subfigure}[T3]{
-      \includegraphics[width=0.5\linewidth]{FIGS/fig-event-recall-frame-percentage-vs-threshold-raft.pdf}}
-    \end{subfigure}
-    \begin{subfigure}[T4]{
-      \includegraphics[width=0.5\linewidth]{FIGS/fig-event-recall-frame-percentage-vs-threshold-elephant.pdf}}
-    \end{subfigure}
+    \includegraphics[width=.5\linewidth]{FIGS/fig-event-recall-frame-percentage-vs-threshold-okutama.pdf}
+    \includegraphics[width=0.5\linewidth]{FIGS/fig-event-recall-frame-percentage-vs-threshold-stanford.pdf}
+    \includegraphics[width=0.5\linewidth]{FIGS/fig-event-recall-frame-percentage-vs-threshold-raft.pdf}
+    \includegraphics[width=0.5\linewidth]{FIGS/fig-event-recall-frame-percentage-vs-threshold-elephant.pdf}
+    
+    % subfigure below is giving missing number error
+    % \begin{subfigure}[T1]{
+    % \includegraphics[width=.5\linewidth]{FIGS/fig-event-recall-frame-percentage-vs-threshold-okutama.pdf}
+    % }
+    % \end{subfigure}
+    % \begin{subfigure}[T2]{
+    %   \includegraphics[width=0.5\linewidth]{FIGS/fig-event-recall-frame-percentage-vs-threshold-stanford.pdf}}
+    % \end{subfigure}
+    % \hspace*{-0.3in}    
+    % \begin{subfigure}[T3]{
+    %   \includegraphics[width=0.5\linewidth]{FIGS/fig-event-recall-frame-percentage-vs-threshold-raft.pdf}}
+    % \end{subfigure}
+    % \begin{subfigure}[T4]{
+    %   \includegraphics[width=0.5\linewidth]{FIGS/fig-event-recall-frame-percentage-vs-threshold-elephant.pdf}}
+    % \end{subfigure}
 \caption{Where the Bandwidth Goes}
 \label{fig:earlydiscard-frame-percent-breakdown}
 \end{figure}
@@ -230,19 +237,26 @@ precision could be further improved, without hurting recall.
 \begin{figure}
     \centering
     \includegraphics[width=0.7\linewidth]{FIGS/fig-recall-frame-aggregated-legend.pdf}
-    \begin{subfigure}[T1]{
-        \includegraphics[trim={0.5cm 0.5cm 0 0},clip,width=0.47\linewidth]{FIGS/fig-random-select-and-filter-recall-frame-okutama-aggregated.pdf}}
-    \end{subfigure}
-    \begin{subfigure}[T2]{
-      \includegraphics[trim={0.5cm 0.5cm 0 0},clip,width=0.47\linewidth]{FIGS/fig-random-select-and-filter-recall-frame-stanford-aggregated.pdf}}
-    \end{subfigure}
-    \begin{subfigure}[T3]{
-      \includegraphics[trim={0.5cm 0.5cm 0 0},clip,width=0.47\linewidth]{FIGS/fig-random-select-and-filter-recall-frame-raft-aggregated.pdf}}
-    \end{subfigure}
-    \begin{subfigure}[T4]{
-      \includegraphics[trim={0.5cm 0.5cm 0 0},clip,width=0.47\linewidth]{FIGS/fig-random-select-and-filter-recall-frame-elephant-aggregated.pdf}}
-    \end{subfigure}
-    \vspace{-0.15in}
+
+    \includegraphics[trim={0.5cm 0.5cm 0 0},clip,width=0.47\linewidth]{FIGS/fig-random-select-and-filter-recall-frame-okutama-aggregated.pdf}
+    \includegraphics[trim={0.5cm 0.5cm 0
+      0},clip,width=0.47\linewidth]{FIGS/fig-random-select-and-filter-recall-frame-stanford-aggregated.pdf}
+    \includegraphics[trim={0.5cm 0.5cm 0 0},clip,width=0.47\linewidth]{FIGS/fig-random-select-and-filter-recall-frame-raft-aggregated.pdf}
+    \includegraphics[trim={0.5cm 0.5cm 0 0},clip,width=0.47\linewidth]{FIGS/fig-random-select-and-filter-recall-frame-elephant-aggregated.pdf}
+
+    % \begin{subfigure}[T1]{
+    %     \includegraphics[trim={0.5cm 0.5cm 0 0},clip,width=0.47\linewidth]{FIGS/fig-random-select-and-filter-recall-frame-okutama-aggregated.pdf}}
+    % \end{subfigure}
+    % \begin{subfigure}[T2]{
+    %   \includegraphics[trim={0.5cm 0.5cm 0 0},clip,width=0.47\linewidth]{FIGS/fig-random-select-and-filter-recall-frame-stanford-aggregated.pdf}}
+    % \end{subfigure}
+    % \begin{subfigure}[T3]{
+    %   \includegraphics[trim={0.5cm 0.5cm 0 0},clip,width=0.47\linewidth]{FIGS/fig-random-select-and-filter-recall-frame-raft-aggregated.pdf}}
+    % \end{subfigure}
+    % \begin{subfigure}[T4]{
+    %   \includegraphics[trim={0.5cm 0.5cm 0 0},clip,width=0.47\linewidth]{FIGS/fig-random-select-and-filter-recall-frame-elephant-aggregated.pdf}}
+    % \end{subfigure}
+
 \caption{Sample with Early Discard. Note the log scale on y-axis.}
     \vspace{-0.15in}
 \label{fig:sampling-discard}
