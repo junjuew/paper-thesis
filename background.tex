@@ -152,53 +152,113 @@ investigate.
 \end{figure}
 
 The Gabriel platform~\cite{ha2014towards,chen2017empirical}, shown in
-Figure~\ref{fig:gabriel}, is an application framework for wearable cognitive
-assistance. It consists of a front-end running on wearable devices and a
-back-end running on cloudlets. The Gabriel front-end performs preprocessing of
+Figure~\ref{fig:gabriel}, is the first application framework for wearable
+cognitive assistance. It consists of a front-end running on wearable devices and
+a back-end running on cloudlets. The Gabriel front-end performs preprocessing of
 sensor data (e.g., compression and encoding), which it then streams over a
 wireless network to a cloudlet.  The Gabriel back-end on the cloudlet has a
 modular structure. The {\em control module} is the focal point for all
-interactions with the wearable device.  A publish-subscribe (PubSub) mechanism
-decodes and distributes the incoming sensor streams to multiple {\em cognitive
-modules} (e.g., task-specific computer vision algorithms) for concurrent
-processing. Cognitive module outputs are integrated by a task-specific {\em user
-guidance module} that performs higher-level cognitive processing such as
-inferring task state, detecting errors, and generating guidance in one or more
-modalities (e.g., audio, video, text, etc.).
+interactions with the wearable device and can be thought as an agent for a
+particular client on the cloudlet. A publish-subscribe (PubSub) mechanism
+distributes the incoming sensor streams to multiple {\em cognitive modules}
+(e.g., task-specific computer vision algorithms) for concurrent processing.
+Cognitive module outputs are integrated by a task-specific {\em user guidance
+module} that performs higher-level cognitive processing such as inferring task
+state, detecting errors, and generating guidance in one or more modalities
+(e.g., audio, video, text, etc.). The Gabriel platform automatically discovers
+cognitive engines on the local network via a universal plug-and-play (UPnP)
+protocol. The platform is designed to run on a small cluster of machines with
+each modules capable of being separated or co-located with other modules via
+process, container, or virtual machine virtualization. 
 
-The original Gabriel platform was built with a single user in mind,
-and did not have mechanisms to share cloudlet resources in a
-controlled manner.  It did, however, have a token-based transmission
-mechanism.  This limited a client to only a small number of
-outstanding operations, thereby offering a simple form of rate
-adaptation to processing or network bottlenecks.  We have retained
-this token mechanism in our system, described in the rest of this paper.
-In addition, we have extended Gabriel with new mechanisms to handle
-multitenancy, perform resource allocation, and support
-application-aware adaptation.  We refer to the two versions of the
-platform as ``Original Gabriel'' and ``Scalable Gabriel.''
+The original Gabriel platform was built with a single user in mind, and did not
+have mechanisms to share cloudlet resources in a controlled manner.  It did,
+however, have a token-based transmission mechanism.  This limited a client to
+only a small number of outstanding operations, thereby offering a simple form of
+rate adaptation to processing or network bottlenecks.  We have retained this
+token mechanism in our system, described in the rest of this thesis. In
+addition, we have extended Gabriel with new mechanisms to handle multi-tenancy,
+perform resource allocation, and support application-aware adaptation.  We refer
+to the two versions of the platform as ``Original Gabriel'' and ``Scalable
+Gabriel.''
 
 \section{Example Gabriel Applications}
 
-Many applications have been built on top of the Gabriel platform.  Recent
-papers~\cite{chen2017empirical}~\cite{chen2018application} describe these applications,
-along with detailed analysis of their end-to-end latency. For example, the LEGO
-application guides a user to construct a Lego model, step by step, continuously
-monitoring the task with computer vision, and providing instructions when it has
-detected that the user has completed a step. POOL assists a user in aiming a
-pool cue stick. PING PONG suggests hitting a ball to the left or right to win a
-rally in table tennis. FACE recognizes a face that has appeared in a scene,
-searches the user's personal database, and whispers the person's name. IKEA
-helps a user to assemble an IKEA lamp step by step.
+\input{background-apps}
 
-These applications run on multiple wearable devices such as Google
-Glass, Microsoft HoloLens, Vuzix Glass, and ODG R7. At a high level, 
-the cloudlet workflows of these applications are similar, and consist of
-two major phases.  The first phase uses computer vision
-to extract a symbolic, idealized representation of the state of the
-task, accounting for real-world variations in lighting, viewpoint,
-etc.  The second phase operates on the symbolic representation,
-implements the logic of the task at hand, and occasionally generates
-guidance for the user.  In most WCA applications, the first phase is
-far more compute intensive than the second phase.
+Many applications have been built on top of the Gabriel platform.
+Figure~\ref{fig:bg-apps-table} provides a summary of applications built by Chen
+et al~\cite{chen2018application}. These applications run on multiple wearable
+devices such as Google Glass, Microsoft HoloLens, Vuzix Glass, and ODG R7. At a
+high level, the cloudlet workflows of these applications are similar, and
+consist of two major phases. The first phase uses computer vision to extract a
+symbolic, idealized representation of the state of the task, accounting for
+real-world variations in lighting, viewpoint, etc.  The second phase operates on
+the symbolic representation, implements the logic of the task at hand, and
+occasionally generates guidance for the user.  In most WCA applications, the
+first phase is far more compute intensive than the second phase.
 
+Building on top of previous experience, we built a few more complex applications
+focusing on assembly tasks. Below are brief descriptions of these applications
+with distinct challenges highlighted.
+
+\subsection{RibLoc Application}
+\subsection{DiskTray Application}
+\subsection{Model Car Assembly Application}
+
+% Recent papers~\cite{chen2017empirical}~\cite{chen2018application} describe these
+% applications, along with detailed analysis of their end-to-end latency. For
+% example, the LEGO application guides a user to construct a Lego model, step by
+% step, continuously monitoring the task with computer vision, and providing
+% instructions when it has detected that the user has completed a step. POOL
+% assists a user in aiming a pool cue stick. PING PONG suggests hitting a ball to
+% the left or right to win a rally in table tennis. FACE recognizes a face that
+% has appeared in a scene, searches the user's personal database, and whispers the
+% person's name. IKEA helps a user to assemble an IKEA lamp step by step.
+
+\section{Application Latency Bounds}
+
+\begin{figure}
+\centering
+\begin{tabular}{|l|c|c|c|c|c|c|c|}
+\hline
+                      & Pool & Work-out & Ping-pong & Face &
+                      \multicolumn{3}{c|}{Assembly Tasks (e.g. RibLoc)} \\
+\hline
+\Xhline{2\arrayrulewidth}
+\hline
+    Bound Range (tight-loose) & 95-105 & 300-500 & 150-230 & 370-1000 & \multicolumn{3}{c|}{600-2700} \\
+\hline
+\end{tabular}
+\caption{Application Latency Bounds (in milliseconds)}
+\begin{captiontext}
+{\rm (Adapted from Chen et al~\cite{chen2017empirical})}
+\end{captiontext}
+\label{fig:bg-bounds}
+\end{figure}
+
+Not only are the accuracy of the instructions important to WCAs, the speed at
+which these instructions are given is also important. With the human in the
+loop, the response times of WCAs are closely related to the human speed and the
+task speed. For example, for assembly tasks, an instruction delivered too late
+can cause user annoyance and frustration. For fast-paced games such as PINGPONG,
+an instruction delivered after the user has made a move becomes useless. To
+systematically quantify task-dependent application latency bounds, Chen et
+al.~\cite{chen2017empirical} employed three approaches: identify human speed
+through literature review (e.g. the time it takes for a human to recognize a
+face), physics-based calculation (e.g. the average speed of a PINGPONG ball
+while rallying), and user study (e.g. the maximum delay before a user is
+annoyed). Figure~\ref{fig:bg-bounds} presents the summary of their results. Each
+application is assigned both a tight and a loose bound from the application
+perspective. The tight bound represents an ideal target, below which the user is
+insensitive to improvements. Above the loose bound, the user becomes aware of
+slowness, and user experience and performance is significantly impacted. Latency
+improvements between the two limits may be useful in reducing user fatigue.
+
+These application latency bounds can also be considered as application quality
+of service (QoS) metrics. Similar to bitrate and start-up time in video
+streaming, these metrics are measurable proxies to user experience. In addition,
+they reflect how much a user would suffer when system response delay increases.
+In this thesis, we use these bounds to formulate application utility functions
+to quantify user experience when an application is forced to lower its fidelity
+under contention.
