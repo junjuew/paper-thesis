@@ -196,15 +196,45 @@ symbolic, idealized representation of the state of the task, accounting for
 real-world variations in lighting, viewpoint, etc.  The second phase operates on
 the symbolic representation, implements the logic of the task at hand, and
 occasionally generates guidance for the user.  In most WCA applications, the
-first phase is far more compute intensive than the second phase.
+first phase is far more compute intensive than the second phase. While visual
+data is the focus of the analysis, other types of sensor data, e.g. audio, are
+also used to help infer user state.
 
-Building on top of previous experience, we built a few more complex applications
-focusing on assembly tasks. Below are brief descriptions of these applications
-with distinct challenges highlighted.
+Leveraging lessons learned by Chen et al~\cite{chen2018application}, we created
+and implemented several real-life WCA applications whose tasks are more complex.
+They also pose more challenges to the computer vision processing as the parts
+are not designed for machine recognition. In particular, we focused on assembly
+tasks. Many assembly tasks, including manufacturing assembly and medical
+procedures, are tedious and error-prone. WCAs can help reduce errors, provide
+training, and assist human operators by continuously monitoring their actions and
+offering feedback. We describe two of these applications below in detail.
 
 \subsection{RibLoc Application}
+
+\begin{figure}
+\centering
+\includegraphics[width=0.5\linewidth]{FIGS/RibLoc.jpg}
+\caption{\small RibLoc Kit}
+\label{fig:ribloc}
+\end{figure}
+
+RibLoc Fracture Plating System~\cite{ribloc}, shown in Figure~\ref{fig:ribloc}
+is used by Surgeons to fixate broken ribs for fracture repair. They surgery
+consists of five major steps: measure ribs thickness, prepare the plate, drill
+bone for screw insertion, insert screws, and tighten screws. To train doctors
+how to use this kit, Acute Innovations, the manufacturer of RibLoc, currently
+send sales personnel to doctors' office, often for extended period of time. To
+reduce the cost of training, we develop a WCA for RibLoc that guides a surgeon
+to learn RibLoc step-by-step on fake bones. Figure~\ref{fig:ribloc-app} shows
+the overall workflow of the application. Most of user state recognition is
+achieved by verifying the existence and locations of key objects. One exception
+is rib thickness measurement. The application asks the user to read out some
+text from the gauge. Automatic speech recognition (ASR) is used to detect the
+user's read-out. ASR is used because the text on the gauge has a low contrast
+with the background that they are too hard to optical character recognition
+(OCR). A demo video of RibLoc WCA is at \url{https://youtu.be/YRTXUty2P1U}.
+
 \subsection{DiskTray Application}
-\subsection{Model Car Assembly Application}
 
 % Recent papers~\cite{chen2017empirical}~\cite{chen2018application} describe these
 % applications, along with detailed analysis of their end-to-end latency. For
