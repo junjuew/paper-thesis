@@ -184,8 +184,6 @@ Gabriel.''
 
 \section{Example Gabriel Applications}
 
-\input{background-apps}
-
 Many applications have been built on top of the Gabriel platform.
 Figure~\ref{fig:bg-apps-table} provides a summary of applications built by Chen
 et al~\cite{chen2018application}. These applications run on multiple wearable
@@ -209,8 +207,6 @@ procedures, are tedious and error-prone. WCAs can help reduce errors, provide
 training, and assist human operators by continuously monitoring their actions and
 offering feedback. We describe two of these applications below in detail.
 
-\subsection{RibLoc Application}
-
 \begin{figure}
 \centering
 \includegraphics[width=0.5\linewidth]{FIGS/RibLoc.jpg}
@@ -218,33 +214,57 @@ offering feedback. We describe two of these applications below in detail.
 \label{fig:ribloc}
 \end{figure}
 
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth]{FIGS/ribloc-fsm-crop.pdf}
+\caption{\small RibLoc Assistant Task State Machine}
+\label{fig:ribloc-app}
+\end{figure}
+
+\subsection{RibLoc Application}
+
 RibLoc Fracture Plating System~\cite{ribloc}, shown in Figure~\ref{fig:ribloc}
-is used by Surgeons to fixate broken ribs for fracture repair. They surgery
+is used by surgeons to fixate broken ribs for fracture repair. They surgery
 consists of five major steps: measure ribs thickness, prepare the plate, drill
 bone for screw insertion, insert screws, and tighten screws. To train doctors
 how to use this kit, Acute Innovations, the manufacturer of RibLoc, currently
 send sales personnel to doctors' office, often for extended period of time. To
 reduce the cost of training, we develop a WCA for RibLoc that guides a surgeon
 to learn RibLoc step-by-step on fake bones. Figure~\ref{fig:ribloc-app} shows
-the overall workflow of the application. Most of user state recognition is
-achieved by verifying the existence and locations of key objects. One exception
-is rib thickness measurement. The application asks the user to read out some
-text from the gauge. Automatic speech recognition (ASR) is used to detect the
-user's read-out. ASR is used because the text on the gauge has a low contrast
-with the background that they are too hard to optical character recognition
-(OCR). A demo video of RibLoc WCA is at \url{https://youtu.be/YRTXUty2P1U}.
+the task steps of the application as a finite state machine (FSM). Conditions of
+state transitions are shown above the transition arrows and instructions
+given to users are quoted shown in italics.
+Most of user
+state recognition is achieved by verifying the existence and locations of key
+objects. One exception is rib thickness measurement. The application asks the
+user to read out some text from the gauge. Automatic speech recognition (ASR) is
+used to detect the user's read-out. ASR is used because the text on the gauge
+has a low contrast with the background that they are too hard to optical
+character recognition (OCR). A demo video of RibLoc WCA is at
+\url{https://youtu.be/YRTXUty2P1U}.
 
 \subsection{DiskTray Application}
 
-% Recent papers~\cite{chen2017empirical}~\cite{chen2018application} describe these
-% applications, along with detailed analysis of their end-to-end latency. For
-% example, the LEGO application guides a user to construct a Lego model, step by
-% step, continuously monitoring the task with computer vision, and providing
-% instructions when it has detected that the user has completed a step. POOL
-% assists a user in aiming a pool cue stick. PING PONG suggests hitting a ball to
-% the left or right to win a rally in table tennis. FACE recognizes a face that
-% has appeared in a scene, searches the user's personal database, and whispers the
-% person's name. IKEA helps a user to assemble an IKEA lamp step by step.
+In collaboration with InWin~\cite{inwin}, a computer hardware manufacturer, we
+created a cognitive assistance to train operators how to assemble their disk
+tray product. Figure~\ref{fig:disktray} shows the assembled tray, which is used
+to host hard drives that go into a server chassis. As all the other WCAs, we do
+not modify the original parts. 
+
+We face two challenges when building this application. First, some parts are
+tiny. In one step, the application needs to check if a pin is placed correctly
+into a slot. Both the slot and the pin are tiny and hard to see. To solve the
+problem, we ask the user to bring the parts close to the camera in addition to
+zooming the camera and turning on the camera flashlight. Second, there is a
+plastic strip that is translucent. Transparent objects are extremely challenging
+to detect using 2D RGB cameras, because their appearance depends on the
+background and lighting~\cite{lysenkov2013recognition}. Instead of detecting the
+placement of the transparent strip by computer vision, we leverage the human
+operator to signal to the system when the operation is completed. InWin
+showcased this application at 2018 Computex Technology Show~\cite{computex}. A
+demo video of the Computex Demo can be viewed
+at~\url{https://www.youtube.com/watch?v=AwWZcL9XGI0}.
+
 
 \section{Application Latency Bounds}
 
@@ -292,3 +312,6 @@ they reflect how much a user would suffer when system response delay increases.
 In this thesis, we use these bounds to formulate application utility functions
 to quantify user experience when an application is forced to lower its fidelity
 under contention.
+
+
+\input{background-apps}
