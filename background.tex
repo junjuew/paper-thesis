@@ -14,6 +14,8 @@
 \begin{minipage}[c]{1in}
 \includegraphics[scale=0.45]{FIGS/fig-3tier-C.pdf}
 \end{minipage}
+\centering
+\captiontext{(Source: Satya et al~\cite{satya2019computing})}
 \caption{\small Tiered Model of Computing}
 \label{fig:3tier}
 \end{figure*}
@@ -90,6 +92,7 @@ the ever-increasing volume of ingress traffic.
 \begin{minipage}[c]{3in}
 \begin{center}
 \includegraphics[height=1.5in]{FIGS/ping_cdf.pdf}
+\captiontext{(Source: Hu et al~\cite{hu2016quantifying})}
 \caption{CDF of pinging RTTs}
 \label{fig:ping-CDF}
 \end{center}
@@ -99,6 +102,7 @@ the ever-increasing volume of ingress traffic.
     \hspace{0.2in}
     \includegraphics[width=0.8\textwidth,clip,trim=91pt 376pt 0 0]{FIGS/Legend-Wifi.pdf}
     \includegraphics[width=3in]{FIGS/Face-LTE.pdf}
+\captiontext{(Source: Hu et al~\cite{hu2016quantifying})}
 \caption{FACE Response Time over LTE}
 \label{fig:response-time-lte-face}
 \end{center}
@@ -245,6 +249,20 @@ character recognition (OCR). A demo video of RibLoc WCA is at
 
 \subsection{DiskTray Application}
 
+\begin{figure}
+\centering
+\includegraphics[width=0.3\linewidth]{FIGS/disktray.jpg}
+\caption{\small Assembled DiskTray}
+\label{fig:disktray}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=0.5\linewidth]{FIGS/disktray-challenge.jpg}
+\caption{\small Small Parts in DiskTray WCA}
+\label{fig:disktray-challenge}
+\end{figure}
+
 In collaboration with InWin~\cite{inwin}, a computer hardware manufacturer, we
 created a cognitive assistance to train operators how to assemble their disk
 tray product. Figure~\ref{fig:disktray} shows the assembled tray, which is used
@@ -253,8 +271,9 @@ not modify the original parts.
 
 We face two challenges when building this application. First, some parts are
 tiny. In one step, the application needs to check if a pin is placed correctly
-into a slot. Both the slot and the pin are tiny and hard to see. To solve the
-problem, we ask the user to bring the parts close to the camera in addition to
+into a slot. As shown in Figure~\ref{fig:disktray-challenge}, both the slot and
+the pin are tiny and hard to see. To facilitate the detection of these two
+parts, we ask the user to bring the parts close to the camera in addition to
 zooming the camera and turning on the camera flashlight. Second, there is a
 plastic strip that is translucent. Transparent objects are extremely challenging
 to detect using 2D RGB cameras, because their appearance depends on the
@@ -273,7 +292,8 @@ at~\url{https://www.youtube.com/watch?v=AwWZcL9XGI0}.
 \begin{tabular}{|l|c|c|c|c|c|c|c|}
 \hline
                       & Pool & Work-out & Ping-pong & Face &
-                      \multicolumn{3}{c|}{Assembly Tasks (e.g. RibLoc)} \\
+                      \multicolumn{3}{c|}{
+                          \begin{tabular}{@{}c@{}}Assembly Tasks\\ (e.g. RibLoc)\end{tabular}} \\
 \hline
 \Xhline{2\arrayrulewidth}
 \hline
@@ -287,31 +307,45 @@ at~\url{https://www.youtube.com/watch?v=AwWZcL9XGI0}.
 \label{fig:bg-bounds}
 \end{figure}
 
-Not only are the accuracy of the instructions important to WCAs, the speed at
-which these instructions are given is also important. With the human in the
-loop, the response times of WCAs are closely related to the human speed and the
-task speed. For example, for assembly tasks, an instruction delivered too late
-can cause user annoyance and frustration. For fast-paced games such as PINGPONG,
-an instruction delivered after the user has made a move becomes useless. To
-systematically quantify task-dependent application latency bounds, Chen et
-al.~\cite{chen2017empirical} employed three approaches: identify human speed
-through literature review (e.g. the time it takes for a human to recognize a
-face), physics-based calculation (e.g. the average speed of a PINGPONG ball
-while rallying), and user study (e.g. the maximum delay before a user is
-annoyed). Figure~\ref{fig:bg-bounds} presents the summary of their results. Each
-application is assigned both a tight and a loose bound from the application
-perspective. The tight bound represents an ideal target, below which the user is
-insensitive to improvements. Above the loose bound, the user becomes aware of
-slowness, and user experience and performance is significantly impacted. Latency
-improvements between the two limits may be useful in reducing user fatigue.
+Not only are the accuracy of the instructions important to WCAs, but the speed
+at which these instructions are delivered is also critical. With a human in the
+loop, the latency requirements of WCAs are closely related to the task-specific
+human speed. For example, for assembly tasks, an instruction delivered tens of
+seconds after a user has finished a step can cause user annoyance and
+frustration. For PINGPONG assistant, a task that is even more fast-paced, an
+instruction on where to hit the ball becomes useless if it is delivered after
+the user has made a hit. 
 
-These application latency bounds can also be considered as application quality
-of service (QoS) metrics. Similar to bitrate and start-up time in video
-streaming, these metrics are measurable proxies to user experience. In addition,
-they reflect how much a user would suffer when system response delay increases.
-In this thesis, we use these bounds to formulate application utility functions
-to quantify user experience when an application is forced to lower its fidelity
-under contention.
+Previous work~\cite{chen2017empirical} quantifies task-dependent application
+latency bounds by answering the question \textit{How fast does an instruction
+need to be delivered?} Three different approaches are used. For tasks that have
+published human speed, numbers from the literature are used as the upper bound
+of the end-to-end system response time. For example, it takes about 1000 ms for
+a human to recognize the identity of a face. Therefore, a face recognition
+assistant should deliver a person's name faster than 1000ms to exceed human
+speed. For tasks in which users interact with physical systems, the latency
+bounds can be derived directly from first principles of physics. For instance,
+the latency bounds for PINGPONG assistant are calculated by subtracting audio
+perception time, motion initiation time, and swinging time from the average time
+between opponents hitting the ball. In addition, an user study of LEGO assembly
+assistant is also conducted to deduct latency bounds for assembly tasks.
+
+Figure~\ref{fig:bg-bounds} shows a summary of latency bounds calculated from the
+previous work~\cite{chen2017empirical}. Each application is assigned both a
+tight and a loose bound from the application perspective. The tight bound
+represents an ideal target, below which the user is insensitive to improvements.
+Above the loose bound, the user becomes aware of slowness, and user experience
+and performance is significantly impacted. Latency improvements between the two
+limits may be useful in reducing user fatigue.
+
+These application latency bounds can be considered as application quality of
+service (QoS) metrics. Similar to bitrate and startup time in video streaming,
+these metrics serve as measurable proxies to user experience. When the system
+delay increases, we can compare the delay with these latency bounds to estimate
+how much a user is suffering. In this thesis, we use these bounds to formulate
+application utility functions, which quantify user experience when a system
+response is delayed due to contention. These application utility functions are
+the foundation for our adaptation-centered approach to scalability.
 
 
 \input{background-apps}
