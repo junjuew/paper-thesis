@@ -1,6 +1,92 @@
 \chapter{Application-Aware Techniques to Reduce Offered Load}
 \label{chapter: load}
 
+{\em Elasticity} is a key attribute of cloud computing.  When load
+rises, new servers can be rapidly spun up.  When load subsides, idle
+servers can be quiesced to save energy.  Elasticity is vital to
+scalability, because it ensures acceptable response times under a wide
+range of operating conditions.  To benefit, cloud services need to be
+architected to easily scale out to more servers.  Such a design is
+said to be ``cloud-native.''
+
+In contrast, edge computing has limited elasticity.  As its name
+implies, a cloudlet is designed for much smaller physical space and
+electrical power than a cloud data center.  Hence, the sudden arrival
+of an unexpected flash crowd can overwhelm a cloudlet and its wireless
+network.  Since low end-to-end latency is a prime reason for edge
+computing, shifting load elsewhere (e.g., the cloud) is not an
+attractive solution.  {\em How do we build multi-user edge computing
+  systems that preserve low latency even as load increases?}  That is
+our focus of this chapter.
+
+Our approach to scalability is driven by the following observation.
+Since compute resources and wireless capacity at the edge cannot be
+increased on demand, the only paths to scalability are (a) to reduce
+offered load, or (b) to reduce queueing delays through improved
+end-to-end scheduling.  Otherwise, the mismatch between resource
+availability and offered load will lead to increased queueing delays
+and hence increased end-to-end latency.  Both paths require the
+average burden placed by each user on the cloudlet and the wireless
+channel to fall as the number of users increases.  This, in turn,
+implies {\em adaptive application behavior} based on guidance received
+from the cloudlet or inferred by the user's mobile device.  In the
+context of Figure~\ref{fig:3tier}, scalability at the left is achieved
+very differently from scalability at the right.  The relationship
+between Tier-3 and Tier-2 is {\em non-workload-conserving}, while that
+between Tier-1 and other tiers is workload-conserving.
+
+With rare exceptions, reducing offered load is only possible with
+application assistance.  Scalability at the edge is thus only
+achievable for applications that have been designed with this goal in
+mind.  We refer to applications that are specifically written for edge
+computing as {\em edge-native applications.}  These applications are
+deeply dependent on services that are only available at the edge (such
+as low-latency offloading of compute, or real-time access to video
+streams from edge-located cameras), and are written to adapt to
+scalability-relevant guidance.  For example, an application at Tier-3
+may be written to offload object recognition in a video frame to
+Tier-2, but it may also be prepared for the return code to indicate
+that a less accurate (and hence less compute-intensive) algorithm than
+normal was used because Tier-2 is heavily loaded.  Alternatively,
+Tier-2 or Tier-3 may determine that the wireless channel is congested;
+based on this guidance, Tier-3 may reduce offered load by
+preprocessing a video frame and using the result to decide whether it
+is worthwhile to offload further processing of that frame to the
+cloudlet.  In earlier work~\cite{Hu2015}, we have shown that even
+modest computation at Tier-3 can make surprisingly good predictions
+about whether a specific use of Tier-2 is likely to be worthwhile.
+
+Edge-native applications may also use {\em cross-layer adaptation
+  strategies,} by which knowledge from Tier-3 or Tier-2 is used in the
+management of the wireless channel between them.  For example, an
+assistive augmented reality (AR) application that verbally guides a
+visually-impaired person may be competing for the wireless channel and
+cloudlet resources with a group of AR gamers.  In an overload
+situation, one may wish to favor the assistive application over the
+gamers.  This knowledge can be used by the cloudlet operating system
+to preferentially schedule the more important workload.  It can also
+be used for prioritizing network traffic by using {\em fine-grain
+  network slicing,} as envisioned in 5G~\cite{Contreras2018}.
+
+Since the techniques for reducing offered workload are application-specific, we
+focus on a specific class of edge-native applications to validate our ideas.
+Our choice is a class of applications called {\em Wearable Cognitive Assistance}
+(WCA) applications~\cite{ha2014towards}.  They are perceived to be ``killer apps'' for
+edge computing because (a) they transmit large volumes of video data to the
+cloudlet; (b) they have stringent end-to-end latency requirements; and (c) they
+make substantial compute demands of the cloudlet, often requiring high-end GPUs.
+
+% We leverage unique characteristics of WCA applications to reduce
+% offered load through graceful degradation and improved resource
+% allocation.  Our contributions are as follows:
+% \begin{smitemize}
+%   \item{An architectural framework for WCA that enables graceful degradation under heavy load.}
+%   \item{An adaptation taxonomy of WCA applications, and techniques for workload reduction.}
+%   \item{A cloudlet resource allocation scheme based on degradation heuristics and external policies.}
+%   \item{A prototype implementation of the above.}
+%   \item{Experimental results showing up to 40\% reduction in offered load and graceful degradation in oversubscribed edge systems.}
+% \end{smitemize}
+
 \input{workload-reduction-arch}
 \input{workload-reduction-adaptive-sampling}
 \input{workload-reduction-imu}
