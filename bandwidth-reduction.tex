@@ -1,11 +1,33 @@
 \chapter{Application-Agnostic Techniques to Reduce Network Transmission}
 
-\begin{enumerate}
-    \item talk about weak and accurate detectors
-    \item evaluate in drone context
-    \item evaluate in WCA contexts
-\end{enumerate}
+WCAs continuously stream sensor data to the cloudlet. The richer a sensing
+modality is, the more information can be extracted. Visual data, e.g. images and
+videos, from cameras is the main sensing modalities of wearable cognitive
+assistance. However, continuous video transmission from many wearable devices
+places severe stress on the wireless spectrum.  Hulu estimates that its video
+streams require 13 Mbps for 4K resolution and 6 Mbps for HD resolution using
+highly optimized offline encoding~\cite{Hulu2017}. Live streaming is less
+bandwidth-efficient, as confirmed by our measured bandwidth of 10 Mbps for HD
+feed at 25 FPS. Just 50 users transmitting HD video streams continuously can
+saturate the theoretical uplink capacity of 500 Mbps in a 4G LTE cell that
+covers a large rural area~\cite{LteWorld2009}.  This is clearly not scalable.
 
+In this section, we show how per-user bandwidth demand can be significantly
+reduced in an application-agnostic fashion, without compromising the timeliness
+or accuracy of results. We present techniques for an adaptive computer vision
+pipeline for WCAs that leverages edge computing to enable dynamic optimizations.
+In contrast to previous
+works~\cite{Wang2017networked}~\cite{Zhang2015design}~\cite{Wang2016skyeyes}, we
+leverage state-of-the-art deep neural networks (DNNs) to selectively transmit
+interesting data from a video stream and explore mission-specific optimizations.
+
+% \begin{enumerate}
+%     \item talk about weak and accurate detectors
+%     \item evaluate in drone context
+%     \item evaluate in WCA contexts
+% \end{enumerate}
+
+\input{bandwidth-challenges.tex}
 \input{bandwidth-reduction-earlydiscard}
 \input{bandwidth-reduction-jitl}
 \section{Evaluation}
