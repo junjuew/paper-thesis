@@ -1,52 +1,36 @@
 \section{V\lc{ideo} P\lc{rocessing} \lc{on} Mobile Devices}
 \label{bw:challenges}
 
-In the context of real-time video analytics, small drones represent a ``perfect
-storm'' of fundamental mobile computing challenges that were identified two
-decades ago~\cite{Satya1996}.  Two challenges have specific relevance here.
-First, mobile elements are resource-poor relative to static elements.  Second,
-mobile connectivity is highly variable in performance and reliability.  We
-discuss their implications below.
+In the context of real-time video analytics, WCAs represent fundamental mobile
+computing challenges that were identified two decades ago~\cite{Satya1996}.  Two
+challenges have specific relevance here. First, mobile elements are
+resource-poor relative to static elements.  Second, mobile connectivity is
+highly variable in performance and reliability.  We discuss their implications
+below.
 
 
-\subsection{\large Payload and Drone Size}
+\subsection{\large Computation Power on Wearable Devices}
 \label{bw:payload}
 
-A high-resolution video camera can be small and light, and be easily carried
-even by a very small drone.  Flash storage to preserve captured video at full
-fidelity can also fit easily into such a drone. For example, a 16 GB flash chip
-can store over five hours of HD video, using Netflix's estimate of 3~GB per
-hour~\cite{Netflix2016}. From our measurement, a drone-encoded HD video occupies
-4.7~GB storage space per hour, yielding over three hours of storage on that
-flash chip. Finally, in spite of the small size and the light weight of a
-smartphone, its sensing and processing capability are adequate for GPS-based
-autonomous navigation and flight control~\cite{Bregu2016}. The drone version of this
-hardware can be even smaller and lighter since interaction components such as
-the touch-screen display can be omitted.  For these reasons, ``small'' in the
-context of this paper means ``just powerful enough to carry a smartphone as
-payload.'' To anticipate future improvements in smartphone technology, our
-experiments also consider more powerful devices such as the Intel$^{\tiny\textregistered}$
-Joule~\cite{Hardawar2016} and the NVIDIA Jetson~\cite{NVIDIA2017} that are
-physically compact and light enough to be credible as small drone payloads in a
-few years.
-
-
 Unfortunately, the hardware needed for deep video stream processing in real time
-is larger and heavier than can fit on a small drone. State-of-art techniques in
-image processing use DNNs that are compute- and memory-intensive.
+is larger and heavier than can fit on a wearable device. State-of-art techniques
+in image processing use DNNs that are compute- and memory-intensive.
 Figure~\ref{fig:onboard-dnn-speed} presents experimental results on two
 fundamental computer vision tasks, image classification and object detection, on
 five different devices. In the figure, MobileNet V1 and ResNet101 V1 are image
 classification DNNs. Others are object detection DNNs. Both tasks used publicly
 available pretrained DNN models. We carefully choose hardware platforms to
-represent a range of computation capabilities a small drone can carry including
-the Intel$^{\tiny\textregistered}$ Aero Drone platform~\cite{Aero2018} shown in
-Fig.~\ref{fig:fig-aero-drone} and NVIDIA Jetson TX2~\cite{NvidiaJetsonTeal}. In
+represent a range of computation capabilities of wearable devices. To anticipate
+future improvements in smartphone technology, our experiments also consider more
+powerful devices such as the Intel$^{\tiny\textregistered}$
+Joule~\cite{Hardawar2016} and the NVIDIA Jetson~\cite{NVIDIA2017} that are
+physically compact and light enough to be credible as wearable device platforms
+in a few years.
+
 Fig.~\ref{fig:onboard-dnn-speed}, we present the best results we could obtain on
-each platform. This is not intended to directly compare frameworks
-and platforms (as others have been doing~\cite{Zhang2018pcamp}), but rather
-to illustrate the differences between drone-mountable platforms and fixed
-infrastructure servers. 
+each platform. This is not intended to directly compare frameworks and platforms
+(as others have been doing~\cite{Zhang2018pcamp}), but rather to illustrate the
+differences between wearable platforms and fixed infrastructure servers. 
 
 \begin{figure}
 \centering
@@ -73,7 +57,6 @@ F-R: Faster R-CNN ResNet101 V1
                   & {\parbox[t]{1.6cm}{\centering F-R\\(ms)}} \\ \hline
 Nexus~6    & 184                                                      & 4-core 2.7 GHZ Krait 450, 3GB Mem                           & Adreno 420                                                                              & 353 {\scriptsize \ (67)}                                                 & 983 {\footnotesize \ (141)}                                                   & 441 {\footnotesize \ (60)           }                               & 794 {\footnotesize \ (44)            }                                       & {\small ENOMEM}                                                                 & {\small ENOMEM}                                                               \\ \hline
 Intel$^{\tiny \textregistered}$ Joule 570x     & 25                                                       & 4-core 1.7 GHz Intel Atom$^{\tiny\textregistered}$ T5700, 4GB Mem                          & Intel$^{\tiny\textregistered}$ HD Graphics (gen 9)                                                               & 37 {\scriptsize \ (1)$\ddagger$ }                                       & 183 {\footnotesize \ (2)$\dagger$$\ddagger$ }                                        & 73  {\footnotesize \ (2)$\ddagger$ }                               & 442 {\footnotesize \ (29)            }                                       & 5125 {\footnotesize \ (750)}                                                             & 9810 {\footnotesize \ (1100)}                                                          \\ \hline
-Intel$^{\tiny\textregistered}$ Aero Drone &                                                          & 4-core 1.6 GHz Intel Atom$^{\tiny\textregistered}$ x7-Z8750, 4GB Mem                       & Intel$^{\tiny\textregistered}$ HD Graphics (gen 8)                                                                              & 42 {\scriptsize \ (1)$\ddagger$ }                                       & 223 {\footnotesize \ (1)$\dagger$$\ddagger$ }                                        & 89  {\footnotesize \ (1)$\ddagger$ }                               & 860 {\footnotesize \ (27)            }                                       & 7461 {\footnotesize \ (230)}                                                             & 13340 {\footnotesize \ (59) }                                                          \\ \hline
 NVIDIA Jetson TX2     & 85                                                       & 2-Core 2.0 GHz Denver2 + 4-Core 2.0 GHz Cortex-A57, 8GB Mem & 256 cuda core 1.3 GHz NVIDIA Pascal                                                          & 13 {\scriptsize \ (0)$\dagger$  }                                       & 92 {\footnotesize \ (2)$\dagger$ }                                          & 192 {\footnotesize \ (18)           }                               & 285 {\footnotesize \ (7)$\dagger$   }                                       & {\small ENOMEM}                                                                 & {\small ENOMEM}                                                               \\ \hline
 Rack-mounted Server     &                                                          & 2x 36-core 2.3 GHz Intel$^{\tiny\textregistered}$ Xeon$^{\tiny\textregistered}$ E5-2699v3 Processors, 128GB Mem     & 2880 cuda core 875MHz NVIDIA Tesla K40, 12GB GPU Mem                             & 4 {\scriptsize \ (0)$\ddagger$  }                                       & 33 {\footnotesize \ (0)$\dagger$  }                                          & 12  {\footnotesize \ (2)$\ddagger$ }                               & 70  {\footnotesize \ (6)             }                                       & 229 {\footnotesize \ (4)$\dagger$}                                                               & 438 {\footnotesize \ (5)$\dagger$}                                                               \\ \hline
 \end{tabular}

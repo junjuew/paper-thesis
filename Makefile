@@ -4,7 +4,7 @@ all: thesis.pdf
 
 SOURCES = $(wildcard *.tex) $(wildcard FIGS/*) citation-db.bib Makefile
 
-OBJECTS = thesis.aux thesis.bbl thesis.blg thesis.log thesis.out thesis.pdf thesis.toc thesis.brf thesis.lof thesis.lot thesis.fdb_latexmk thesis.fls
+OBJECTS = thesis.aux thesis.bib thesis.bbl thesis.blg thesis.log thesis.out thesis.pdf thesis.toc thesis.brf thesis.lof thesis.lot thesis.fdb_latexmk thesis.fls
 
 clean:
 	rm -f $(OBJECTS)
@@ -20,5 +20,5 @@ thesis.bbl: thesis.bib
 	bibtool -x thesis.aux -o thesis.bib
 	bibtool -s -sort.format='{%s($type) %s($key)}' -i thesis.bib -o thesis.bib
 
-thesis.bib: $(SOURCES)
+thesis.bib: citation-db.bib
 	bibtool -s -sort.format={$key} -i citation-db.bib -o thesis.bib
