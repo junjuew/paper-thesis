@@ -1,26 +1,26 @@
 \section{V\lc{ideo} P\lc{rocessing} \lc{on} Mobile Devices}
 \label{bw:challenges}
 
-In the context of real-time video analytics, WCAs represent fundamental mobile
-computing challenges that were identified two decades ago~\cite{Satya1996}.  Two
-challenges have specific relevance here. First, mobile elements are
-resource-poor relative to static elements.  Second, mobile connectivity is
-highly variable in performance and reliability.  We discuss their implications
-below.
+In the context of real-time video analytics, Tier-3 devices represent
+fundamental mobile computing challenges that were identified two decades
+ago~\cite{Satya1996}.  Two challenges have specific relevance here. First,
+mobile elements are resource-poor relative to static elements.  Second, mobile
+connectivity is highly variable in performance and reliability.  We discuss
+their implications below.
 
 
-\subsection{\large Computation Power on Wearable Devices}
+\subsection{\large Computation Power on Tier-3 Devices}
 \label{bw:payload}
 
 Unfortunately, the hardware needed for deep video stream processing in real time
-is larger and heavier than can fit on a wearable device. State-of-art techniques
-in image processing use DNNs that are compute- and memory-intensive.
+is larger and heavier than can fit on a typical Tier-3 device. State-of-art
+techniques in image processing use DNNs that are compute- and memory-intensive.
 Figure~\ref{fig:onboard-dnn-speed} presents experimental results on two
 fundamental computer vision tasks, image classification and object detection, on
-five different devices. In the figure, MobileNet V1 and ResNet101 V1 are image
+four different devices. In the figure, MobileNet V1 and ResNet101 V1 are image
 classification DNNs. Others are object detection DNNs. Both tasks used publicly
 available pretrained DNN models. We carefully choose hardware platforms to
-represent a range of computation capabilities of wearable devices. To anticipate
+represent a range of computation capabilities of Tier-3 devices. To anticipate
 future improvements in smartphone technology, our experiments also consider more
 powerful devices such as the Intel$^{\tiny\textregistered}$
 Joule~\cite{Hardawar2016} and the NVIDIA Jetson~\cite{NVIDIA2017} that are
@@ -43,7 +43,8 @@ F-R: Faster R-CNN ResNet101 V1
     table-format=3,
     table-number-alignment=left
 }
-\begin{tabular}{|p{1.1cm}|S[table-column-width=0.9cm]|p{3.0cm}|p{1.8cm}|S[table-column-width=0.9cm]|S[table-column-width=1.1cm]|S[table-column-width=1.0cm]|S[table-column-width=1.0cm]|S[table-format=4, table-number-alignment=left, table-column-width=1.3cm]|S[table-format=5, table-number-alignment=left, table-column-width=1.6cm]|}
+\hspace{-0.8in}
+\begin{tabular}{|p{1.3cm}|S[table-column-width=1.3cm]|p{3.0cm}|p{1.8cm}|S[table-column-width=1.2cm]|S[table-column-width=1.4cm]|S[table-column-width=1.3cm]|S[table-column-width=1.3cm]|S[table-format=4, table-number-alignment=left, table-column-width=1.5cm]|S[table-format=5, table-number-alignment=left, table-column-width=1.9cm]|}
 \hline
 {\multirow{2}{*}{}} & {\multirow{2}{*}{}} & {\multirow{2}{*}{}}                                        & {\multirow{2}{*}{}}                                                                        & \multicolumn{2}{c|}{\parbox[t]{1.8cm}{\centering Image\\Classification\\~}}                                & \multicolumn{4}{c|}{Object Detection} \\ \cline{5-10}
                   &  {\parbox[t]{0.9cm}{\centering Weight\\(g)}}
@@ -114,62 +115,46 @@ on  mobile platforms or fails to execute due to insufficient memory. In
 addition, the figure also confirms that sustaining open-ended real-time video
 analytics on smartphone form factor computing devices is well beyond the state
 of the art today and may remain so in the near future.  This constrains what is
-achievable with small drones.  
-
-These constraints do not apply to much larger drones that can carry
-more substantial computing hardware and energy sources.  However,
-there are compelling reasons to use the smallest drone that meets
-mission requirements such as flight duration.  First, in the context
-of drone flight regulation (a topic of intense discussion in many
-countries), small drones are likely to receive favorable consideration
-since they have less potential to cause severe damage in case of
-accidents.  Second, larger drones are less maneuverable and more prone
-to interference with other drone traffic in congested spaces.  Third,
-they are also more expensive to purchase, operate and maintain.
-Reduced size and weight have many benefits.
+achievable with Tier-3 devices.
 
 \subsection{\large Result Latency, Offloading \& Scalability}
 \label{bw:offloading}
 
 {\em Result latency} is the delay between first capture of a video frame in
 which a particular result (e.g., image of a survivor) is present, and report of
-its discovery to mission personnel after video processing.  Operating totally
-disconnected, a small drone can capture and store video, but defer its
-processing until the drone completes its mission and returns.  At that point,
-the data can be uploaded from the drone to the cloud and processed there.  This
-approach completely eliminates the need for real-time video processing,
-obviating the challenges of payload limits and drone size discussed in the
-previous section.  Unfortunately, this approach delays the discovery and use of
-knowledge in the captured data by a substantial amount (e.g., many tens of
-minutes to a few hours).  Such delay may be unacceptable in use cases such as
-search-and-rescue or military surveillance.  In this paper, we focus on
-approaches that aim for much smaller result latency: ideally, close to
+its discovery or feedback based on the discovery after video processing.
+Operating totally disconnected, a Tier-3 device can capture and store video, but
+defer its processing until the mission is complete.  At that point, the data can
+be uploaded from the device to the cloud and processed there.  This approach
+completely eliminates the need for real-time video processing, obviating the
+challenges of Tier-3 computation power mentioned previously. Unfortunately, this
+approach delays the discovery and use of knowledge in the captured data by a
+substantial amount (e.g., many tens of minutes to a few hours).  Such delay may
+be unacceptable in use cases such as search-and-rescue using drones, or
+step-by-step instruction feedback from wearable devices. In this chapter, we focus
+on approaches that aim for much smaller result latency: ideally, close to
 real-time.
 
+A different approach is to offload video processing during flight over a
+wireless link to an edge computing node (cloudlet). With this approach, even a
+weak Tier-3 device can leverage the substantial processing capability of a
+ground-located cloudlet, without concern for its weight, size, heat dissipation,
+or energy usage.  Much lower result latency is now possible.  However, even if
+cloudlet resources are viewed as ``free'' from the viewpoint of mobile
+computing, the Tier-3 device consumes wireless bandwidth in transmitting video.
 
-A different approach is to offload video processing during flight over
-a wireless link to an edge computing node called a {\em cloudlet.}
-With this approach, even a small drone can leverage the substantial
-processing capability of a ground-located cloudlet, without concern
-for its weight, size, heat dissipation, or energy usage.  Much lower
-result latency is now possible.  However, even if cloudlet resources
-are viewed as ``free'' from the viewpoint of mobile computing, the
-drone consumes wireless bandwidth in transmitting video.  
+Today, 4G LTE offers the most plausible wide-area connectivity from a Tier-3
+device to its associated cloudlet.  The much higher bandwidths of 5G are still
+many years away, especially at global scale.  More specialized wireless
+technologies, such as Lightbridge 2~\cite{LightBridge2} for drones, can also be
+used.  Regardless of specific wireless technology, the principles and techniques
+described in this chapter apply.
 
-Today, 4G LTE offers the most plausible wide-area connectivity from a
-drone in flight to its associated cloudlet.  The much higher
-bandwidths of 5G are still many years away, especially at global
-scale.  More specialized wireless technologies for drones, such as
-Lightbridge 2~\cite{LightBridge2}, can also be used.  Regardless of
-specific wireless technology, the principles and techniques described
-in this paper apply.
-
-{\em Scalability,} in terms of maximum number of concurrently
-operating drones within a 4G LTE cell becomes an important metric.  In
-this paper we explore how the limited processing capability on a drone
-can be used to greatly decrease the volume of data transmitted, thus
-improving scalability while minimally impacting result accuracy and
-result latency.
+{\em Scalability,} in terms of maximum number of concurrently operating Tier-3
+devices within a 4G LTE cell becomes an important metric.  In this chapter we
+explore how the limited processing capability on a Tier-3 device can be used to
+greatly decrease the volume of data transmitted, thus improving scalability
+while minimally impacting result accuracy and result latency.
 
 Note that the uplink capacity of 500 Mbps per 4G LTE cell assumes standard
 cellular infrastructure that is undamaged.  In natural disasters and military
@@ -177,17 +162,17 @@ combat, this infrastructure may be destroyed. Emergency substitute
 infrastructure, such as Google and AT\&T's partnership on balloon-based 4G LTE
 infrastructure for Puerto Rico after hurricane Maria~\cite{Morse2017}, can only
 sustain much lower uplink bandwidth per cell, e.g. 10Mbps for the balloon-based
-LTE~\cite{Sankaran2018}.  Conserving wireless bandwidth from drone video
+LTE~\cite{Sankaran2018}.  Conserving wireless bandwidth from Tier-3 video
 transmission then becomes even more important, and the techniques described here
 will be even more valuable.
 
-\emph{Result accuracy} influences a second dimension of scalability, namely
-the ability of one individual to supervise the result streams from
-many drones.  The output of each video processing pipeline should only
-demand occasional human attention.  The accuracy, sophistication, and
-speed of this pipeline determines the cognitive load on mission
-personnel for a given video stream.  For example, a pipeline that has
-virtually no false positives or false negatives in detecting survivors
-will consume less supervisory human attention than a mediocre
-pipeline.  That will allow one person to confidently supervise a large
-swarm that rapidly covers a large search area.
+% \emph{Result accuracy} influences a second dimension of scalability, namely
+% the ability of one individual to supervise the result streams from
+% many drones.  The output of each video processing pipeline should only
+% demand occasional human attention.  The accuracy, sophistication, and
+% speed of this pipeline determines the cognitive load on mission
+% personnel for a given video stream.  For example, a pipeline that has
+% virtually no false positives or false negatives in detecting survivors
+% will consume less supervisory human attention than a mediocre
+% pipeline.  That will allow one person to confidently supervise a large
+% swarm that rapidly covers a large search area.
