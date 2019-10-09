@@ -1,6 +1,33 @@
 \section{{\xc Just-in-time-Learning} S\lc{trategy} To Improve Early Discard}
 \label{sec:jitl}
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[trim={0 1.8cm 0 0},clip,width=0.7\linewidth]{FIGS/fig-jitl-legend.pdf}
+    \begin{subfigure}[b]{.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{FIGS/fig-jitl-okutama-eventrecall-step.pdf}
+    \caption{T1}
+    \end{subfigure}
+    \begin{subfigure}[b]{.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{FIGS/fig-jitl-stanford-eventrecall-step.pdf}
+    \caption{T2}
+    \end{subfigure}
+    \begin{subfigure}[b]{.48\linewidth}
+    \centering
+        \includegraphics[width=\linewidth]{FIGS/fig-jitl-raft-eventrecall-step.pdf}
+    \caption{T3}
+    \end{subfigure}
+    \begin{subfigure}[b]{.48\linewidth}
+    \centering
+        \includegraphics[width=\linewidth]{FIGS/fig-jitl-elephant-eventrecall-step.pdf}
+    \caption{T4}
+    \end{subfigure}
+\caption{JITL Fraction of Frames under Different Event Recall}
+\label{fig:jitl-eventrecall}
+\end{figure}
+
 \subsection{Description}
 
 Just-in-time-learning  (JITL) tunes the drone pipeline to the characteristics of
@@ -79,31 +106,6 @@ correct on this frame.
 
 \subsection{Results}
 
-%\noindent{\textbf{Frame transmission and DNN cutoff}}
-%In this experiment, we vary the cutoff probability of the DNN that runs before the JITL filter.
-%For each dataset,
-%we report the number of total transmitted frames and the number of transmitted true positive frames.
-%For comparison, we also report the DNN's number when JITL is not activated.
-%Figure \ref{fig:jitl-frame-cutoff} shows the results.
-%In most cases, JITL helps reducing the total transmitted frames without significantly reducing true positives.
-%T5 manifests the best example: JITL retains almost all true positives,
-%while reducing total transmission observably.
-
-%\begin{figure}
-%\centering
-%\includegraphics[width=0.6\linewidth]{FIGS/fig-jitl-okutama-frame.pdf}\\
-%(a) T1\\[0.1in]
-%\includegraphics[width=0.6\linewidth]{FIGS/fig-jitl-okutama-frame.pdf}\\
-%(b) T3\\[0.1in]
-%\includegraphics[width=0.6\linewidth]{FIGS/fig-jitl-raft-frame.pdf}\\
-%(c) T4\\[0.1in]
-%\includegraphics[width=0.6\linewidth]{FIGS/fig-jitl-elephant-frame.pdf}\\
-%(d) T5\\[0.1in]
-%\caption{Bandwidth vs. DNN Cutoff}
-%\label{fig:jitl-frame-cutoff}
-%\end{figure}
-
-
 From our experiments, JITL is able to filter out more than 15\% of remaining
 frames after EarlyDiscard without loss of event recall for three of four tasks.
 Figure~\ref{fig:jitl-eventrecall} details the fraction of frames saved by JITL.
@@ -121,26 +123,3 @@ could be difficult, especially when events are short or occurrences are few. To
 overcome this problem in practice, techniques such as synthetic data
 generation~\cite{Dwibedi2017} could be explored to synthesize true positives
 from the background of the current flight.
-
-\begin{figure}
-    \centering
-    \includegraphics[trim={0 1.8cm 0 0},clip,width=0.7\linewidth]{FIGS/fig-jitl-legend.pdf}
-    \hspace*{-0.3in}
-
-    % \begin{subfigure}[T1]{
-    %     \includegraphics[width=0.5\linewidth]{FIGS/fig-jitl-okutama-eventrecall-step.pdf}}
-    % \end{subfigure}
-    % \begin{subfigure}[T2]{
-    %     \includegraphics[width=0.5\linewidth]{FIGS/fig-jitl-stanford-eventrecall-step.pdf}}
-    % \end{subfigure}
-    % \hspace*{-0.3in}
-    % \begin{subfigure}[T3]{
-    %     \includegraphics[width=0.5\linewidth]{FIGS/fig-jitl-raft-eventrecall-step.pdf}}
-    % \end{subfigure}
-    % \begin{subfigure}[T4]{
-    %     \includegraphics[width=0.5\linewidth]{FIGS/fig-jitl-elephant-eventrecall-step.pdf}}
-    % \end{subfigure}
-
-\caption{JITL Fraction of Frames under Different Event Recall}
-\label{fig:jitl-eventrecall}
-\end{figure}

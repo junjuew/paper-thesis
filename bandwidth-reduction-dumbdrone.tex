@@ -1,0 +1,127 @@
+\section{Baseline: {\xc Dumb}  S\lc{trategy}}
+\label{sec:dumbdrone}
+
+\subsection{Description}
+
+We first establish and evaluate the baseline case of no image processing
+performed at the Tier-3 device.  Instead, all captured video is immediately
+transmitted to the cloudlet.  Result latency is very low, merely the sum of
+transmission delay and cloudlet processing delay. We use drones as the example
+of Tier-3 devices and drone video search as the scenario of video analytics
+first. We later demonstrate how to apply the techniques developed for drone
+search to WCAs.
+
+\begin{figure}
+\centering
+\begin{tabular}{|p{1cm}|p{2.5cm}|p{2.5cm}|p{2.5cm}|p{2.5cm}|p{2.5cm}|}
+\hline
+   & Detection & Data & Data & Training & Testing \\ 
+Task& Goal & Source & Attributes & Subset & Subset\\ 
+\hline
+T1 & {\small People in scenes of daily life}&{\small Okutama Action Dataset~\cite{Barekatain2017}}&\makecell[tl]{\small 33 videos \\\small 59842 fr\\\small 4K@30~fps}&\makecell[tl]{\small 9 videos\\\small 17763 fr}&\makecell[tl]{\small 6 videos\\\small 20751 fr}\\ 
+\hline
+T2 &{\small Moving cars}&{\small Stanford Drone Dataset~\cite{Robicquet2016}}&\makecell[tl]{\small 60 videos \\\small 522497 fr\\\small 1080p@30~fps}&\makecell[tl]{\small 16 videos\\\small 179992 fr} & \multirow{4}{*}{\parbox{1.5cm}{\centering\small 14 videos 92378 fr\\ Combination of test videos from each dataset.}} \\ \cline{1-5}
+  %% \makecell[tl]{\small 14 videos\\\small 92378 fr\\\small Combination of \\\small human, car, raft \\\small and elephant videos\\\small from each datasets}} \\ \cline{1-5}
+%% \makecell[tl]{\small 14 videos\\\small 92378 fr}\\ 
+%% \hline
+T3 &{\small Raft in flooding scene}&{\small YouTube collection~\cite{YouTube1}}&\makecell[tl]{\small 11 videos \\\small 54395 fr\\\small 720p@25~fps}&\makecell[tl]{\small 8 videos\\\small 43017 fr} & \\ \cline{1-5}
+%% \makecell[tl]{\small 14 videos\\\small 92378 fr}\\
+%% \hline
+T4 &{\small Elephants in natural habitat}&{\small YouTube collection~\cite{YouTube2}}&\makecell[tl]{\small 11 videos \\\small 54203 fr\\\small 720p@25~fps}&\makecell[tl]{\small 8 videos\\\small 39466 fr} & \\ \cline{1-5}
+%% \makecell[tl]{\small 14 videos\\\small 92378 fr}\\
+%% \hline
+T5 &{\small Pushing or pulling Suitcases}&\small Okutama Action Dataset &\small Same as T1 &\small Same as T1 & \\
+%% \small Same as T1\\
+\hline
+\end{tabular}
+\vspace{0.1in}
+\begin{captiontext}
+fr = ``frames''\\
+fps = ``frames per second''\\
+No overlap between training and testing subsets of data
+\end{captiontext}
+\vspace{-0.1in}
+\caption{Benchmark Suite of Video Traces}
+\label{fig:benchmarksuite}
+\end{figure}
+
+\begin{figure}
+\centering
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+     & Total & Avg & & \\ 
+     & Bytes & BW & & \\ 
+Task & (MB) & (Mbps) & Recall & Precision \\ 
+
+\hline
+T1 & \phantom{0}924 & 10.7 & 74\% & 92\%\\ 
+\hline
+T2 & 2704 & \phantom{0}7.0 & 66\% & 90\%\\ 
+\hline
+\end{tabular}
+\vspace{0.2in}
+\begin{captiontext}
+Peak bandwidth demand is same as average since video is transmitted
+continuously. Precision and recall are at the maximum F1 score.
+\end{captiontext}
+\caption{Baseline Object Detection KPIs}
+\label{fig:baseline}
+\end{figure}
+
+\subsection{Experimental Setup}
+\label{sec:dumbdrone-setup}
+
+To ensure experimental reproducibility, our evaluation is based on
+replay of a benchmark suite of pre-captured videos rather than on
+measurements from live drone flights.  In practice, live results may
+diverge slightly from trace replay because of non-reproducible
+phenomena.  These can arise, for example, from wireless propagation
+effects caused by varying weather conditions, or by seasonal changes
+in the environment such as the presence or absence of leaves on trees.
+In addition, variability can arise in a  drone's pre-programmed flight
+path due to collision avoidance with moving obstacles such as birds,
+other drones, or aircraft.
+
+All of the pre-captured videos in the benchmark suite are publicly accessible,
+and have been captured from aerial viewpoints. They characterize drone-relevant
+scenarios such as surveillance, search-and-rescue, and wildlife conservation.
+Figure~\ref{fig:benchmarksuite} presents this benchmark suite of videos,
+organized into five tasks. All the tasks involve detection of tiny objects on
+individual frames. Task T5 additionally involves action detection, which
+operates on short video segments rather than individual frames. Although T2 is
+also nominally about action detection (moving cars), it is implemented using
+object detection on individual frames and then comparing the pixel coordinates
+of vehicles in successive frames.
+
+
+\subsection{Results}
+\label{sec:dumbdrone-results}
+
+Figure~\ref{fig:baseline} presents the key performance indicators on the object
+detection tasks T1 and T2. We use the well-labeled dataset to train and
+evaluate Faster-RCNN with ResNet 101. We report the precision and recall at
+maximum F1 score.  Peak bandwidth is not shown since it is identical to average
+bandwidth demand for continuous video transmission.  As shown earlier in
+Figure~\ref{fig:onboard-dnn-speed}, the accuracy of this algorithm comes at
+the price of very high resource demand.  This can only be met today by
+server-class hardware that is available in a cloudlet.  Even on a cloudlet, the
+figure of 438 milliseconds of processing time per frame indicates that only a
+rate of two frames per second is achievable.  Sustaining a higher frame rate
+will require striping the frames across cloudlet resources, thereby increasing
+resource demand considerably.  Note that the results in
+Figure~\ref{fig:onboard-dnn-speed} were based on 1080p frames, while tasks T1
+and T5 use the higher resolution of 4K. This will further increase demand on
+cloudlet resources.
+
+Clearly, the strategy of blindly shipping all video to the cloudlet
+and processing every frame is resource-intensive to the point of being
+impractical today.  It may be acceptable as an offline processing
+approach in the cloud, but is unrealistic for real-time processing on
+cloudlets.  We therefore explore an approach in which a modest amount
+of computation on the drone is able, with high confidence, to avoid
+transmitting many video frames and thereby saving wireless bandwidth
+as well as cloudlet processing resources.  This leads us to the {\xc
+  EarlyDiscard} strategy of the next section.
+
+
+

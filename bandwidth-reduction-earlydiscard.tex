@@ -1,5 +1,20 @@
+\begin{figure}
+\includegraphics[trim={9cm 6.5cm 5cm 4.8cm},clip,width=\linewidth]{FIGS/fig-ondrone-early-discard.pdf}
+\caption{Drone-based Early Discard}
+\label{fig:ondrone}
+\vspace{-0.2in}
+\end{figure}
+
+
 \section{{\xc EarlyDiscard} S\lc{trategy}}
 \label{sec:earlydiscard}
+
+\begin{figure}
+\centering
+\includegraphics[width=0.8\linewidth]{FIGS/fig-training.pdf}
+\caption{Tiling and DNN Fine Tuning}
+\label{fig:tiling}
+\end{figure}
 
 \subsection{Description}
 EarlyDiscard is based on the idea of using on-board processing to filter and
@@ -61,11 +76,12 @@ example, tiling a frame into four sub-frames results in four times the
 classification workload.
 
 \begin{figure}
-  \hspace{-0.1in}
-\psfig{file=FIGS/fig-training.pdf, scale=0.35}\\
-\caption{Tiling and DNN Fine Tuning}
-\label{fig:tiling}
+\centering
+\includegraphics[width=.8\linewidth]{FIGS/fig-tile-resolution-speed-accuracy.pdf}
+\caption{Speed-Accuracy Trade-off of Tiling}
+\label{fig:earlydiscard-tile-accuracy-speed}
 \end{figure}
+
 
 \subsection{Experimental Setup}
 
@@ -74,6 +90,17 @@ strategy used the same benchmark suite described in
 Section~\ref{sec:dumbdrone-setup}. We used Jetson TX2 as the drone platform. We use
 both frame-based and event-based metrics to evaluate the MobileNet filters.
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=.9\linewidth]{FIGS/fig-event-recall-frame-percentage-legend.pdf}
+    \includegraphics[width=.48\linewidth]{FIGS/fig-event-recall-frame-percentage-vs-threshold-okutama.pdf}
+    \includegraphics[width=.48\linewidth]{FIGS/fig-event-recall-frame-percentage-vs-threshold-stanford.pdf}
+    \includegraphics[width=.48\linewidth]{FIGS/fig-event-recall-frame-percentage-vs-threshold-raft.pdf}
+    \includegraphics[width=.48\linewidth]{FIGS/fig-event-recall-frame-percentage-vs-threshold-elephant.pdf}
+\caption{Bandwidth Breakdown}
+\label{fig:earlydiscard-frame-percent-breakdown}
+\end{figure}
+
 \subsection{Results of Early Discard Filters}
 \label{sec:earlydiscard-result}
 
@@ -81,16 +108,6 @@ EarlyDiscard is able to significantly reduce the bandwidth consumed while
 maintaining high result accuracy and low average delay. For three out of four
 tasks, the average bandwidth is reduced by a factor of ten. Below we present
 our results in detail.
-
-\begin{figure}
-\centering
-\hspace*{-0.3in}
-\psfig{file=FIGS/fig-tile-resolution-speed-accuracy.pdf, scale=0.2}
-\caption{Speed-Accuracy Trade-off of Tiling}
-\label{fig:earlydiscard-tile-accuracy-speed}
-\vspace{-0.1in}
-\end{figure}
-
 
 \noindent{\textbf{Effects of Tiling}}: Tiling is used to improve the accuracy
 for high resolution aerial images. We used the Okutama Action Dataset, whose
@@ -124,14 +141,6 @@ better) requires setting a low cutoff threshold.  This leads to the possibility
 that many of the transmitted frames are actually uninteresting (i.e., false
 positives).
 
-%% \begin{figure}
-%% \includegraphics[width=0.6\linewidth]{FIGS/fig-event-recall-vs-threshold.pdf}
-%% \vspace{-0.1in}
-%% \caption{Drone Filter Recall vs. Cutoff Threshold}
-%% \label{fig:event-recall-vs-threshold}
-%% \end{figure}
-
-
 \noindent{\textbf{False negatives}}: As discussed earlier, false negatives are
 a source of concern with early discard.  Once the drone drops a frame
 containing an important event, improved cloudlet processing cannot help. The
@@ -139,42 +148,23 @@ results in the third column of Figure~\ref{fig:early-discard-results} confirm
 that there are no false negatives for T1 and T4 at a cutoff threshold of 0.5.
 For T2 and T3, lower cutoff thresholds are needed to achieve perfect recalls.
 
-\begin{figure}
-    \centering
-    \includegraphics[width=0.8\linewidth]{FIGS/fig-event-recall-frame-percentage-legend.pdf}
-    \hspace*{-0.3in}
-    \includegraphics[width=.5\linewidth]{FIGS/fig-event-recall-frame-percentage-vs-threshold-okutama.pdf}
-    \includegraphics[width=0.5\linewidth]{FIGS/fig-event-recall-frame-percentage-vs-threshold-stanford.pdf}
-    \includegraphics[width=0.5\linewidth]{FIGS/fig-event-recall-frame-percentage-vs-threshold-raft.pdf}
-    \includegraphics[width=0.5\linewidth]{FIGS/fig-event-recall-frame-percentage-vs-threshold-elephant.pdf}
-    
-    % subfigure below is giving missing number error
-    % \begin{subfigure}[T1]{
-    % \includegraphics[width=.5\linewidth]{FIGS/fig-event-recall-frame-percentage-vs-threshold-okutama.pdf}
-    % }
-    % \end{subfigure}
-    % \begin{subfigure}[T2]{
-    %   \includegraphics[width=0.5\linewidth]{FIGS/fig-event-recall-frame-percentage-vs-threshold-stanford.pdf}}
-    % \end{subfigure}
-    % \hspace*{-0.3in}    
-    % \begin{subfigure}[T3]{
-    %   \includegraphics[width=0.5\linewidth]{FIGS/fig-event-recall-frame-percentage-vs-threshold-raft.pdf}}
-    % \end{subfigure}
-    % \begin{subfigure}[T4]{
-    %   \includegraphics[width=0.5\linewidth]{FIGS/fig-event-recall-frame-percentage-vs-threshold-elephant.pdf}}
-    % \end{subfigure}
-\caption{Where the Bandwidth Goes}
-\label{fig:earlydiscard-frame-percent-breakdown}
-\end{figure}
+\noindent{\textbf{Result latency}}:
+The contribution of early discard processing to total result latency
+is calculated as the average time difference between the first frame
+in which an object occurs (i.e., first occurrence in ground truth) and
+the first frame containing the object that is transmitted to the
+backend (i.e., first detection).  The results in the fourth column of
+Figure~\ref{fig:early-discard-results} confirm that early discard
+contributes little to result latency.  The amounts range from 0.1~s
+for T1 to 12.7~s for T3.  At the timescale of human actions
+such as dispatching of a rescue team, these are negligible delays.
 
 \begin{figure}
-\hspace{-0.15in}
-%\centering
+\centering
 \begin{tabular}{|c|c|c|c|c|c|c|}
 \hline
-   &Task   &Dete-       &Avg&Total&Avg&Peak\\
-   &Total&cted&Delay&Data&B/W&B/W\\
-   &Events&Events&(s)&(MB)&(Mbps)&(Mbps)\\ 
+   &Task Total Events   &Detected Events       &Avg Delay & Total Data &Avg B/W &Peak B/W\\
+   & & &(s)&(MB)&(Mbps)&(Mbps)\\ 
 
 \hline
 T1 & \phantom{0}62  & 100~\%       &  \phantom{0}0.1&\phantom{0}441  &  5.10     &   10.7  \\
@@ -190,16 +180,6 @@ T4 & \phantom{0}25  & 100~\%       & \phantom{0}0.3 & \phantom{0}167  &  0.43 & 
 \label{fig:early-discard-results}
 \end{figure}
 
-\noindent{\textbf{Result latency}}:
-The contribution of early discard processing to total result latency
-is calculated as the average time difference between the first frame
-in which an object occurs (i.e., first occurrence in ground truth) and
-the first frame containing the object that is transmitted to the
-backend (i.e., first detection).  The results in the fourth column of
-Figure~\ref{fig:early-discard-results} confirm that early discard
-contributes little to result latency.  The amounts range from 0.1~s
-for T1 to 12.7~s for T3.  At the timescale of human actions
-such as dispatching of a rescue team, these are negligible delays.
 
 \noindent{\textbf{Bandwidth}}: Columns 5--7 of
 Figure~\ref{fig:early-discard-results} pertain to wireless bandwidth demand for
@@ -222,19 +202,17 @@ low precision.  The other tasks exhibit far fewer false positives.  This
 suggests that the opportunity exists for significant bandwidth savings if
 precision could be further improved, without hurting recall.
 
-
 \subsection{Use of Sampling}
 
-\begin{figure}
+\begin{figure}[h]
     \centering
-    \includegraphics[width=\linewidth]{FIGS/fig-random-select-interval-recall-hatch.pdf}
+    \includegraphics[width=.9\linewidth]{FIGS/fig-random-select-interval-recall-hatch.pdf}
 \caption{Event Recall at Different Sampling Intervals}
 \label{fig:sampling-only}
 \end{figure}
 
 
-  
-\begin{figure}
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.7\linewidth]{FIGS/fig-recall-frame-aggregated-legend.pdf}
 
@@ -243,23 +221,27 @@ precision could be further improved, without hurting recall.
       0},clip,width=0.47\linewidth]{FIGS/fig-random-select-and-filter-recall-frame-stanford-aggregated.pdf}
     \includegraphics[trim={0.5cm 0.5cm 0 0},clip,width=0.47\linewidth]{FIGS/fig-random-select-and-filter-recall-frame-raft-aggregated.pdf}
     \includegraphics[trim={0.5cm 0.5cm 0 0},clip,width=0.47\linewidth]{FIGS/fig-random-select-and-filter-recall-frame-elephant-aggregated.pdf}
-
-    % \begin{subfigure}[T1]{
-    %     \includegraphics[trim={0.5cm 0.5cm 0 0},clip,width=0.47\linewidth]{FIGS/fig-random-select-and-filter-recall-frame-okutama-aggregated.pdf}}
-    % \end{subfigure}
-    % \begin{subfigure}[T2]{
-    %   \includegraphics[trim={0.5cm 0.5cm 0 0},clip,width=0.47\linewidth]{FIGS/fig-random-select-and-filter-recall-frame-stanford-aggregated.pdf}}
-    % \end{subfigure}
-    % \begin{subfigure}[T3]{
-    %   \includegraphics[trim={0.5cm 0.5cm 0 0},clip,width=0.47\linewidth]{FIGS/fig-random-select-and-filter-recall-frame-raft-aggregated.pdf}}
-    % \end{subfigure}
-    % \begin{subfigure}[T4]{
-    %   \includegraphics[trim={0.5cm 0.5cm 0 0},clip,width=0.47\linewidth]{FIGS/fig-random-select-and-filter-recall-frame-elephant-aggregated.pdf}}
-    % \end{subfigure}
-
 \caption{Sample with Early Discard. Note the log scale on y-axis.}
-    \vspace{-0.15in}
 \label{fig:sampling-discard}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+JPEG Frame Sequence  & H264 High Quality  & H264 Medium Quality & H264 Low Quality \\
+(MB) & (MB) & (MB) & (MB)\\
+\hline
+5823 & 3549  & 1833 & 147\\
+\hline
+\end{tabular}\\
+\vspace{0.1in}
+\begin{captiontext}
+H264 high quality uses Constant Rate Factor (CRF) 23. Medium
+uses CRF 28 and low uses 40~\cite{Merritt2007}.
+\end{captiontext}
+\caption{Test Dataset Size With Different Encoding Settings}
+\label{fig:video-vs-images}
 \end{figure}
 
 Given the relatively low precision of the weak detectors, a significant number 
@@ -307,26 +289,7 @@ transmitted on a match.
 
 \subsection{Effects of Video Encoding}
 
-\begin{figure}
-\centering
-\begin{tabular}{|p{1.5cm}|p{1.3cm}|p{1.3cm}|p{1.3cm}|}
-\hline
-JPEG Frame Sequence (MB)  & H264 High Quality (MB)       & H264 Medium Quality (MB) & H264 Low Quality (MB)\\
-\hline
-5823 & 3549  & 1833 & 147\\
-\hline
-\end{tabular}\\
-\vspace{0.1in}
-\begin{captiontext}
-H264 high quality uses Constant Rate Factor (CRF) 23. Medium
-uses CRF 28 and low uses 40~\cite{Merritt2007}.
-\end{captiontext}
-\caption{Test Dataset Size With Different Encoding Settings}
-\label{fig:video-vs-images}
-\end{figure}
-
-
-One advantage of the {\xc DumbDrone} strategy is that since all
+One advantage of the {\xc Dumb} strategy is that since all
 frames are transmitted, one can use a modern video encoding to
 reduce transmission bandwidth.  With early discard, only a subset
 of disparate frames are sent.  These will likely need to be
