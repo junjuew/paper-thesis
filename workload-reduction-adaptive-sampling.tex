@@ -26,6 +26,13 @@ processing at high frequencies. On the other hand, applications can
 run at low frequency during passive phases when an instruction is
 unlikely to occur.
 
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth,trim=0em 3em 20em 15em, clip]{FIGS/fig-lego-sampling-model.pdf}
+\caption{\small Dynamic Sampling Rate for LEGO}
+\label{fig:lego-sampling-model}
+\end{figure}
+
 We use the LEGO application to show the effectiveness of adaptive
 sampling. By default, the LEGO application runs at active phase. The
 application enters passive phases immediately following the delivery
@@ -41,11 +48,21 @@ We model the time it takes to finish each step as a Gaussian distribution. We
 use maximum likelihood estimation to calculate the parameters of the Guassian
 model.
 
-\begin{figure}[]
-\centering
-\includegraphics[width=0.95\linewidth,trim=2em 3em 28em 20em, clip]{FIGS/fig-lego-sampling-model.pdf}
-\caption{\small Dynamic Sampling Rate for LEGO}
-\label{fig:lego-sampling-model}
+ 
+\begin{figure}
+\small\centering
+\begin{subfigure}{.45\linewidth}
+  \centering
+  \includegraphics[width=\linewidth, trim=0em 0em 0em 0em, clip]{FIGS/fig-lego-adaptive-sr.pdf}
+  {\small (a) Passive Sampling Rate}
+\end{subfigure}
+\begin{subfigure}{.45\linewidth}
+    \centering
+    \includegraphics[width=0.92\linewidth, trim=0em 0em 0em 0em, clip]{FIGS/fig-lego-example-sr.pdf}
+   {\small (b) Trace Sampling Rate}
+\end{subfigure}
+\caption{\small Adaptive Sampling Rate}
+\label{fig:adaptive-sampling-example}
 \end{figure}
 
 \textbf{Lowest Sampling Rate in Passive Phase: }
@@ -75,22 +92,6 @@ The sampling rate is calculated as $$sr = \\
 $sr$ is the sampling rate. $t$ is the time after an instruction has been given. $\alpha$ is
 a recovery factor which determines how quickly the sampling rate
 rebounds to active phase rate. 
- 
-\begin{figure}
-\small\centering
-\begin{subfigure}{.45\linewidth}
-  \centering
-  \includegraphics[width=\linewidth, trim=0em 0em 0em 0em, clip]{FIGS/fig-lego-adaptive-sr.pdf}
-  {\small (a) Passive Sampling Rate}
-\end{subfigure}
-\begin{subfigure}{.45\linewidth}
-    \centering
-    \includegraphics[width=0.92\linewidth, trim=0em 0em 0em 0em, clip]{FIGS/fig-lego-example-sr.pdf}
-   {\small (b) Trace Sampling Rate}
-\end{subfigure}
-\caption{\small Adaptive Sampling Rate}
-\label{fig:adaptive-sampling-example}
-\end{figure}
 
 
 Figure~\ref{fig:adaptive-sampling-example}(b) shows the sampling rate
@@ -127,50 +128,4 @@ Trace  & \begin{tabular}[c]{@{}c@{}}Sample\\ Half Freq\end{tabular} & \begin{tab
 \caption{\small Frames Sampled and Guidance Latency}
 \label{tab:adaptive-sample-eval}
 \vspace{-0.2in}
-\end{table}
-
-
-\begin{figure}
-\begin{center}
-\includegraphics[width=1.0\linewidth]{FIGS/fig-imu-trace-lego.pdf}\\
-{\small (a) LEGO}
-\includegraphics[width=1.0\linewidth]{FIGS/fig-imu-trace-pingpong.pdf}\\
-{\small (b) PING PONG}
-\end{center}
-\vspace{-0.1in}
-\caption{\small Accuracy of IMU-based Frame Suppression}
-\label{fig:imu-trace-example}
-\vspace{-0.1in}
-\end{figure}
-
-
-\begin{table}
-\small\centering
-\begin{tabular}{| l | c | c |}
-   \hline
-        & Suppressed  &  Max Delay of \\ 
-        & Passive Frames (\%)   & State Change Detection \\ \hline
-    Trace 1 & 17.9\%    & 0 \\
-    Trace 2 & 49.9\%    & 0 \\
-    Trace 3 & 27.1\%    & 0 \\
-    Trace 4 & 37.0\%    & 0 \\
-    Trace 5 & 34.1\%    & 0 \\
-    \hline
-\end{tabular}\\[0.1in]
-{\small (a) LEGO}\\[0.1in]
-
-\begin{tabular}{| l | c | c |}
-    \hline
-        & Suppressed        & Loss of  \\
-        & Passive Frames (\%)    & Active Frames (\%) \\ \hline
-    Trace 1 & 21.5\%    &   0.8\%   \\
-    Trace 2 & 30.0\%    &   1.5\%   \\
-    Trace 3 & 26.2\%    &   1.9\%   \\
-    Trace 4 & 29.8\%    &   1.0\%   \\
-    Trace 5 & 38.4\%    &   0.2\%   \\
-    \hline
-\end{tabular}\\[0.1in]
-{\small (b) PING PONG}\\[0.1in]
-\caption{\small Effectiveness of IMU-based Frame Suppression}
-\label{tab:imu-result}
 \end{table}

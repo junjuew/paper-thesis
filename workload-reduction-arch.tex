@@ -1,27 +1,26 @@
 \section{Adaptation Architecture and Strategy}
 
-\begin{figure}
+\begin{figure}[h]
 \centering
-\includegraphics[width=0.55\textwidth,trim=0 3em 11cm 0, clip]{FIGS/arch-vertical.pdf}
+\includegraphics[width=\textwidth,trim=0 3em 11cm 0, clip]{FIGS/arch-vertical.pdf}
 \vspace{-0.3in}
 \caption{\small System Architecture}
 \label{fig:arch}
 \end{figure}
 
-The original Gabriel platform has been validated in meeting the
-latency bounds of WCA applications in single-user
-settings~\cite{chen2017empirical}.  Scalable Gabriel aims to meet these latency
-bounds in multi-user settings, and to ensure performant multitenancy
-even in the face of overload.  We take two complementary approaches to
-scalability.  The first is for applications to reduce their offered
-load to the wireless network and the cloudlet through adaptation.  The
-second uses end-to-end scheduling of cloudlet resources to minimize
-queueing and impacts of overload.  We embrace both approaches, and
-combine them using the system architecture shown in
-Figure~\ref{fig:arch}.  We assume benevolent and collaborative clients
-in this paper, and leave the handling of malicious users to future work.
+The original Gabriel platform has been validated in meeting the latency bounds
+of WCA applications in single-user settings~\cite{chen2017empirical}.  Scalable
+Gabriel aims to meet these latency bounds in multi-user settings, and to ensure
+performant multitenancy even in the face of overload.  We take two complementary
+approaches to scalability.  The first is for applications to reduce their
+offered load to the wireless network and the cloudlet through adaptation.  The
+second uses end-to-end scheduling of cloudlet resources to minimize queueing and
+impacts of overload (See Chapter~\ref{chapter: cloudlet} for more details).  We
+both approaches, and combine them using the system architecture shown in
+Figure~\ref{fig:arch}.  We assume benevolent and collaborative clients in the
+system.
 
-\subsection{System Architecture}
+\section{System Architecture}
 
 We consider scenarios in which multiple Tier-3 devices concurrently
 offload their vision processing to a single cloudlet over a shared
@@ -38,18 +37,16 @@ Tier-2: these include processing cores, memory, and GPU.  Wireless
 bandwidth and latency are measured independently at Tier-3 and Tier-2,
 and aggregated to achieve better estimates of network conditions.
 
-This information is combined with additional high-level predictive
-knowledge and factored into scheduling and adaptation decisions.  The
-predictive knowledge could arise at the cloudlet (e.g., arrival of a
-new device, or imminent change in resource allocations), or at the
-Tier-3 device (e.g., application-specific, short-term prediction of
-resource demand).  All of this information is fed to a {\em policy
-  module} running on the cloudlet.  This module (described in detail
-in Section~\ref{sec: resource-allocation}) is guided by an external
-policy specification and determines how cloudlet resources should be
-allocated across competing Tier-3 applications.  Such policies can
-factor in latency needs and fairness, or simple priorities (e.g., a
-blind person navigation assistant may get priority over an AR game).
+This information is combined with additional high-level predictive knowledge and
+factored into scheduling and adaptation decisions.  The predictive knowledge
+could arise at the cloudlet (e.g., arrival of a new device, or imminent change
+in resource allocations), or at the Tier-3 device (e.g., application-specific,
+short-term prediction of resource demand).  All of this information is fed to a
+{\em policy module} running on the cloudlet.  This module is guided by an
+external policy specification and determines how cloudlet resources should be
+allocated across competing Tier-3 applications.  Such policies can factor in
+latency needs and fairness, or simple priorities (e.g., a blind person
+navigation assistant may get priority over an AR game).
 
 A {\em planner module} on the Tier-3 device uses current resource
 utilization and predicted short-term processing demand to determine
@@ -59,8 +56,8 @@ best performance for the particular application given the resource
 allocations.
 
 \begin{table*}[]
-    \small
-    \begin{tabular}{|r|p{35ex}|p{43ex}|p{32ex}|}
+    \centering
+    \begin{tabular}{|r|p{22ex}|p{30ex}|p{25ex}|}
     \hline&&&\\[0.1in]
     &{\normalsize\bf Question}  & {\normalsize\bf Example} & {\normalsize\bf Load-reduction Technique} \\
     & & & \\ 
@@ -108,20 +105,19 @@ whispering the person's name.
 
 \subsection{Adaptation Goals}
  
-For the applications of interest in this paper, the dominant class of offloaded
-computations are computer vision operations, e.g., object detection with deep
-neural networks (DNNs), or activity recognition on video segments. The
-interactive nature of these applications precludes the use of deep pipelining
-that is commonly used to improve the efficiency of streaming analytics.  Here,
-end-to-end latency of an individual operation is more important than
-throughput. Further, it is not just the mean or median of latency, but also the
-tail of the distribution that matters.  There is also significant evidence that
-user experience is negatively affected by unpredictable variability in response
-times. Hence, a small mean with short tail is the desired ideal. Finally,
-different applications have varying degrees of benefit or utility at different
-levels of latency.  Thus, our adaptation strategy incorporates
-application-specific utility as a function of latency as well as policies
-maximizing the total utility of the system.
+For WCAs, the dominant class of offloaded computations are computer vision
+operations, e.g., object detection with deep neural networks (DNNs), or activity
+recognition on video segments. The interactive nature of these applications
+precludes the use of deep pipelining that is commonly used to improve the
+efficiency of streaming analytics.  Here, end-to-end latency of an individual
+operation is more important than throughput. Further, it is not just the mean or
+median of latency, but also the tail of the distribution that matters.  There is
+also significant evidence that user experience is negatively affected by
+unpredictable variability in response times. Hence, a small mean with short tail
+is the desired ideal. Finally, different applications have varying degrees of
+benefit or utility at different levels of latency.  Thus, our adaptation
+strategy incorporates application-specific utility as a function of latency as
+well as policies maximizing the total utility of the system.
 
 
 \subsection{Leveraging Application Characteristics}
@@ -132,31 +128,27 @@ other video analytics applications studied in the past.  Adaptation
 based on these attributes provides a unique opportunity to improve
 scalability.
 
-\textbf{Human-Centric Timing:} The frequency and speed with which
-guidance must be provided in a WCA application often depends on the
-speed at which the human performs a task step.  Generally, additional
-guidance is not needed until the instructed action has been completed.
-For example, in the RibLoc assistant (a medical training application),
-drilling a hole in bone can take several minutes to complete.  During
-the drilling, no further guidance is provided after the initial
-instruction to drill.  Inherently, these applications contain {\em
-  active phases,} during which an application needs to sample and
-process video frames as fast as possible to provide timely guidance,
-and {\em passive phases,} during which the human user is busy
-performing the instructed step.  During a passive phase, the
-application can be limited to sampling video frames at a low rate to
-determine when the user has completed or nearly completed the step,
-and may need guidance soon.  Although durations of human operations
-need to be considered random variables, many have empirical lower
-bounds.  Adapting sampling and processing rates to match these active
-and passive phases can greatly reduce offered load.  Further, the
-offered load across users is likely to be uncorrelated because they
-are working on different tasks or different steps of the same task.
-If inadvertent synchronization occurs, it can be broken by introducing
-small randomized delays in the task guidance to different users.
-These observations suggest that proper end-to-end scheduling can
-enable effective use of cloudlet resources even with multiple
-concurrent applications.
+\textbf{Human-Centric Timing:} The frequency and speed with which guidance must
+be provided in a WCA application often depends on the speed at which the human
+performs a task step.  Generally, additional guidance is not needed until the
+instructed action has been completed. For example, in the RibLoc assistant
+(Chapter~\ref{chapter: background}), drilling a hole in bone can take several
+minutes to complete.  During the drilling, no further guidance is provided after
+the initial instruction to drill.  Inherently, these applications contain {\em
+active phases,} during which an application needs to sample and process video
+frames as fast as possible to provide timely guidance, and {\em passive phases,}
+during which the human user is busy performing the instructed step.  During a
+passive phase, the application can be limited to sampling video frames at a low
+rate to determine when the user has completed or nearly completed the step, and
+may need guidance soon.  Although durations of human operations need to be
+considered random variables, many have empirical lower bounds.  Adapting
+sampling and processing rates to match these active and passive phases can
+greatly reduce offered load.  Further, the offered load across users is likely
+to be uncorrelated because they are working on different tasks or different
+steps of the same task. If inadvertent synchronization occurs, it can be broken
+by introducing small randomized delays in the task guidance to different users.
+These observations suggest that proper end-to-end scheduling can enable
+effective use of cloudlet resources even with multiple concurrent applications.
 
 \textbf{Event-Centric Redundancy}: In many WCA applications, guidance
 is given when a user event causes visible state change. For example,
@@ -212,7 +204,7 @@ expanded.
 
 \begin{figure}[]
     \centering
-    \includegraphics[width=1.1\linewidth, trim=14em 5em 6em 2em, clip]{FIGS/fig-design-space.pdf}
+    \includegraphics[width=\linewidth, trim=10em 2em 6em 2em, clip]{FIGS/fig-design-space.pdf}
     \caption{\small Design Space of WCA Applications}
     \label{figs:design-space}
 \end{figure}

@@ -1,4 +1,19 @@
-\section{IMU-based Approaches: Passive Phase Suppression + Evaluation of Image Quality}
+\section{IMU-based Approaches: Passive Phase Suppression}
+
+% comment: add image quality evaluation?
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=.9\linewidth]{FIGS/fig-imu-trace-lego.pdf}\\
+{\small (a) LEGO}
+\includegraphics[width=.9\linewidth]{FIGS/fig-imu-trace-pingpong.pdf}\\
+{\small (b) PING PONG}
+\end{center}
+\vspace{-0.1in}
+\caption{\small Accuracy of IMU-based Frame Suppression}
+\label{fig:imu-trace-example}
+\vspace{-0.1in}
+\end{figure}
 
 In many applications, passive phases can often be associated with the
 user's head movement. We illustrate with two applications here. In
@@ -45,4 +60,33 @@ PING PONG on the client, while having minimal impact on application
 quality --- incurring no delay in state change detection in LEGO, and
 less than 2\% loss of active frames in PING PONG.
 
+\begin{table}[h]
+\small\centering
+\begin{tabular}{| l | c | c |}
+   \hline
+        & Suppressed  &  Max Delay of \\ 
+        & Passive Frames (\%)   & State Change Detection \\ \hline
+    Trace 1 & 17.9\%    & 0 \\
+    Trace 2 & 49.9\%    & 0 \\
+    Trace 3 & 27.1\%    & 0 \\
+    Trace 4 & 37.0\%    & 0 \\
+    Trace 5 & 34.1\%    & 0 \\
+    \hline
+\end{tabular}\\[0.1in]
+{\small (a) LEGO}\\[0.1in]
 
+\begin{tabular}{| l | c | c |}
+    \hline
+        & Suppressed        & Loss of  \\
+        & Passive Frames (\%)    & Active Frames (\%) \\ \hline
+    Trace 1 & 21.5\%    &   0.8\%   \\
+    Trace 2 & 30.0\%    &   1.5\%   \\
+    Trace 3 & 26.2\%    &   1.9\%   \\
+    Trace 4 & 29.8\%    &   1.0\%   \\
+    Trace 5 & 38.4\%    &   0.2\%   \\
+    \hline
+\end{tabular}\\[0.1in]
+{\small (b) PING PONG}\\[0.1in]
+\caption{\small Effectiveness of IMU-based Frame Suppression}
+\label{tab:imu-result}
+\end{table}
