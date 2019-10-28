@@ -85,14 +85,18 @@ over a wireless network to a cloudlet.
 % modalities (e.g., audio, video, text, etc.).
 
 The original Gabriel platform was built with a single user in mind, and did not
-have mechanisms to share cloudlet resources in a controlled manner.  It did,
-however, have a token-based transmission mechanism.  This limited a client to
-only a small number of outstanding operations, thereby offering a simple form of
-rate adaptation to processing or network bottlenecks.  We have retained this
-token mechanism in our system. In addition, we have extended Gabriel with new
+have mechanisms to share cloudlet resources in a controlled manner.  
+We have extended Gabriel with new
 mechanisms to handle multitenancy, perform resource allocation, and support
 application-aware adaptation.  We refer to the two versions of the platform as
 ``Original Gabriel'' and ``Scalable Gabriel.''
+
+% It did,
+% however, have a token-based transmission mechanism.  This limited a client to
+% only a small number of outstanding operations, thereby offering a simple form of
+% rate adaptation to processing or network bottlenecks.  We have retained this
+% token mechanism in our system. In addition, 
+
 
 % Since the techniques for reducing offered workload are application-specific, we
 % focus on a specific class of edge-native applications to validate our ideas.
