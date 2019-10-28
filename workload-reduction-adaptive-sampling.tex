@@ -33,15 +33,14 @@ unlikely to occur.
 \label{fig:lego-sampling-model}
 \end{figure}
 
-We use the LEGO application to show the effectiveness of adaptive
-sampling. By default, the LEGO application runs at active phase. The
-application enters passive phases immediately following the delivery
-of an instruction, since the user is going to take a few seconds
-searching and assembling LEGO blocks. The length and sampling rate of
-a passive phase is provided by the application to the framework. We
-provide the following system model as an example of what can be
-provided. We collect five LEGO traces with 13739 frames as our
-evaluation dataset.
+We use the LEGO application from Section~\ref{sec:example-apps} to show the
+effectiveness of adaptive sampling. By default, the LEGO application runs at
+active phase. The application enters passive phases immediately following the
+delivery of an instruction, since the user is going to take a few seconds
+searching and assembling LEGO blocks. The length and sampling rate of a passive
+phase is provided by the application to the framework. We provide the following
+system model as an example of what can be provided. We collect five LEGO traces
+with 13739 frames as our evaluation dataset.
 
 \textbf{Length of a Passive Phase: }
 We model the time it takes to finish each step as a Gaussian distribution. We

@@ -15,23 +15,21 @@
 \vspace{-0.1in}
 \end{figure}
 
-In many applications, passive phases can often be associated with the
-user's head movement. We illustrate with two applications here. In
-LEGO, during the passive phase, which begins after the user receives
-the next instruction, a user typically turns away from the LEGO board
-and starts searching for the next brick to use in a parts box. During
-this period, the computer vision algorithm would detect no meaningful
-task states if the frames are transmitted.  In PING PONG, an active
-phase lasts throughout a rally.  Passive phases are in between actual
-game play, when the user takes a drink, switches sides, or, most
-commonly, tracks down and picks up a wayward ball from the floor.
-These are associated with much large range of head movements than
-during a rally when the player generally looks toward the opposing
-player.  Again, the frames can be suppressed on the client to reduce
-wireless transmission and load on the cloudlet.  In both scenarios,
-significant body movement can be detected through Inertial Measurement
-Unit (IMU) readings on the wearable device, and used to predict those
-passive phases.
+In many applications, passive phases can often be associated with the user's
+head movement. We illustrate with two applications here. In LEGO, during the
+passive phase, which begins after the user receives the next instruction, a user
+typically turns away from the LEGO board and starts searching for the next brick
+to use in a parts box. During this period, the computer vision algorithm would
+detect no meaningful task states if the frames are transmitted.  In PING PONG
+application (Section~\ref{sec:example-apps}), an active phase lasts
+throughout a rally.  Passive phases are in between actual game play, when the
+user takes a drink, switches sides, or, most commonly, tracks down and picks up
+a wayward ball from the floor. These are associated with much large range of
+head movements than during a rally when the player generally looks toward the
+opposing player.  Again, the frames can be suppressed on the client to reduce
+wireless transmission and load on the cloudlet.  In both scenarios, significant
+body movement can be detected through Inertial Measurement Unit (IMU) readings
+on the wearable device, and used to predict those passive phases.
 
 For each frame, we get a six-dimensional reading from the IMU:
 rotation in three axes, and acceleration in three axes.  We train an
