@@ -29,7 +29,7 @@ unlikely to occur.
 \begin{figure}
 \centering
 \includegraphics[width=\textwidth,trim=0em 3em 20em 15em, clip]{FIGS/fig-lego-sampling-model.pdf}
-\caption{\small Dynamic Sampling Rate for LEGO}
+\caption{Dynamic Sampling Rate for LEGO}
 \label{fig:lego-sampling-model}
 \end{figure}
 
@@ -49,18 +49,18 @@ model.
 
  
 \begin{figure}
-\small\centering
+\centering
 \begin{subfigure}{.45\linewidth}
   \centering
   \includegraphics[width=\linewidth, trim=0em 0em 0em 0em, clip]{FIGS/fig-lego-adaptive-sr.pdf}
-  {\small (a) Passive Sampling Rate}
+  {(a) Passive Sampling Rate}
 \end{subfigure}
 \begin{subfigure}{.45\linewidth}
     \centering
     \includegraphics[width=0.92\linewidth, trim=0em 0em 0em 0em, clip]{FIGS/fig-lego-example-sr.pdf}
-   {\small (b) Trace Sampling Rate}
+   {(b) Trace Sampling Rate}
 \end{subfigure}
-\caption{\small Adaptive Sampling Rate}
+\caption{Adaptive Sampling Rate}
 \label{fig:adaptive-sampling-example}
 \end{figure}
 
@@ -103,7 +103,7 @@ sampling at half frequency. Our adaptive sampling scheme requires
 processing fewer frames while achieving a lower guidance latency.
 
 \begin{table}[]
-\small\centering
+\centering
 \begin{tabular}{|c|c|c|}
 \hline
 Trace  & \begin{tabular}[c]{@{}c@{}}Sample\\ Half Freq\end{tabular} & \begin{tabular}[c]{@{}c@{}}Adaptive\\ Sampling\end{tabular} \\ \hline
@@ -113,7 +113,7 @@ Trace  & \begin{tabular}[c]{@{}c@{}}Sample\\ Half Freq\end{tabular} & \begin{tab
 4 & 50\%          & 30\%              \\ \hline
 5 & 50\%          & 43\%              \\ \hline
 \end{tabular}\\[0.1in]
-{\small (a) Percentage of Frames Sampled}\\[0.2in]
+{(a) Percentage of Frames Sampled}\\[0.2in]
 
 \begin{tabular}{|c|c|}
 \hline
@@ -123,8 +123,7 @@ Trace  & \begin{tabular}[c]{@{}c@{}}Sample\\ Half Freq\end{tabular} & \begin{tab
 \begin{tabular}[c]{@{}c@{}}Adaptive Sampling\end{tabular} &  5.9 $\pm$ 8.2                                                                  \\ \hline
 % \begin{tabular}[c]{@{}c@{}}Theoretical Minimum\end{tabular} &  ?? $$                                                                  \\ \hline
 \end{tabular}\\[0.1in]
-{\small (b) Guidance Latency}\\[0.1in]
-\caption{\small Frames Sampled and Guidance Latency}
+{(b) Guidance Latency}\\[0.1in]
+\caption{Frames Sampled and Guidance Latency}
 \label{tab:adaptive-sample-eval}
-\vspace{-0.2in}
 \end{table}

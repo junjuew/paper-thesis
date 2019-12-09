@@ -1,6 +1,32 @@
 \chapter{Cloudlet Resource Management for Graceful Degradation of Service}
 \label{chapter: cloudlet}
 
+In addition to workload reduction at the client as discussed in
+Chapter~\ref{chapter: load}, another key aspect of adaptation lies in the
+resource management of cloudlet resources. We argue that naive resource
+management schemes using statistical multiplexing cannot satisfy the needs of
+edge-native applications in oversubscribed edge scenarios. Needed are
+intelligent mechanisms that takes account of application degradation behaviors.
+In this Chapter, we introduce and evaluate such an adaptation-centric cloudlet
+resource management mechanism.
+
+In Original Gabriel which relies on operating system level statistical
+multiplexing for resource sharing, an increasing number of clients means less
+resources for each client. This results in all clients and all applications
+suffering from long response time. For wearable cognitive assistance, long
+response time translates into feedbacks too late, which have significantly
+decreased value, sometimes even becomes distraction to users. In a traditional
+data-center environment, a cloud-native application, would quickly scale-up or
+scale-out by acquiring additional resources (e.g. virtual machines). However, at
+the edge, since the total amount of hardware resources is limited, acquiring
+more resources in face of a flash crowd is not possible. Instead, we make the
+observation that applications behave differently when the amount of resources
+allocated to them reduces. We can leverage such adaptation behavior to create a
+more judicious resource allocation mechanism that prioritizes some applications
+based on external policies and maintains their quality of service so that not
+all clients suffer.
+
+
 
 \input{cloudlet-resource-management-profile}
 \input{cloudlet-resource-management-allocation}

@@ -1,16 +1,14 @@
 \section{IMU-based Approaches: Passive Phase Suppression}
 
-% comment: add image quality evaluation?
-
 \begin{figure}[h]
 \begin{center}
 \includegraphics[width=.9\linewidth]{FIGS/fig-imu-trace-lego.pdf}\\
-{\small (a) LEGO}
+{(a) LEGO}
 \includegraphics[width=.9\linewidth]{FIGS/fig-imu-trace-pingpong.pdf}\\
-{\small (b) PING PONG}
+{(b) PING PONG}
 \end{center}
 \vspace{-0.1in}
-\caption{\small Accuracy of IMU-based Frame Suppression}
+\caption{Accuracy of IMU-based Frame Suppression}
 \label{fig:imu-trace-example}
 \vspace{-0.1in}
 \end{figure}
@@ -59,7 +57,7 @@ quality --- incurring no delay in state change detection in LEGO, and
 less than 2\% loss of active frames in PING PONG.
 
 \begin{table}[h]
-\small\centering
+\centering
 \begin{tabular}{| l | c | c |}
    \hline
         & Suppressed  &  Max Delay of \\ 
@@ -71,7 +69,7 @@ less than 2\% loss of active frames in PING PONG.
     Trace 5 & 34.1\%    & 0 \\
     \hline
 \end{tabular}\\[0.1in]
-{\small (a) LEGO}\\[0.1in]
+{(a) LEGO}\\[0.1in]
 
 \begin{tabular}{| l | c | c |}
     \hline
@@ -84,7 +82,7 @@ less than 2\% loss of active frames in PING PONG.
     Trace 5 & 38.4\%    &   0.2\%   \\
     \hline
 \end{tabular}\\[0.1in]
-{\small (b) PING PONG}\\[0.1in]
-\caption{\small Effectiveness of IMU-based Frame Suppression}
+{(b) PING PONG}\\[0.1in]
+\caption{Effectiveness of IMU-based Frame Suppression}
 \label{tab:imu-result}
 \end{table}

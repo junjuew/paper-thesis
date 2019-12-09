@@ -34,22 +34,23 @@ tiers is workload-conserving.
 
 While we demonstrated application-agnostic techniques to reduce network
 transmission between Tier-3 and Tier-2 in Chapter~\ref{chapter: bandwidth},
-offered load can be further reduced with application assistance. Scalability at
-the edge can thus be better achieved for applications that have been designed
-with this goal in mind.  We refer to applications that are specifically written
-for edge computing as {\em edge-native applications.}  These applications are
-deeply dependent on services that are only available at the edge (such as
-low-latency offloading of compute, or real-time access to video streams from
-edge-located cameras), and are written to adapt to scalability-relevant
-guidance.  For example, an application at Tier-3 may be written to offload
-object recognition in a video frame to Tier-2, but it may also be prepared for
-the return code to indicate that a less accurate (and hence less
-compute-intensive) algorithm than normal was used because Tier-2 is heavily
+offered load can be further reduced with application assistance. We claim that
+scalability at the edge can be better achieved for applications that have been
+designed with this goal in mind.  We refer to applications that are specifically
+written to leverage edge infrastructure as {\em edge-native applications.} These
+applications are deeply dependent on the services that are only available at the
+edge (such as low-latency offloading of compute, or real-time access to video
+streams from edge-located cameras), and are written to adapt to
+scalability-relevant guidance.  For example, an application at Tier-3 may be
+written to offload object recognition in a video frame to Tier-2, but it may
+also be prepared for the return code to indicate that a less accurate (and hence
+less compute-intensive) algorithm than normal was used because Tier-2 is heavily
 loaded.  Alternatively, Tier-2 or Tier-3 may determine that the wireless channel
 is congested; based on this guidance, Tier-3 may reduce offered load by
 preprocessing a video frame and using the result to decide whether it is
-worthwhile to offload further processing of that frame to the cloudlet.  In
-earlier work~\cite{Hu2015}, we have shown that even modest computation at Tier-3
+worthwhile to offload further processing of that frame to the cloudlet.  Several
+earlier work~\cite{Hu2015}~\cite{christensen2019towards} have shown that even
+modest computation, such as color filtering and shallow DNN processing, at Tier-3
 can make surprisingly good predictions about whether a specific use of Tier-2 is
 likely to be worthwhile.
 
@@ -72,7 +73,10 @@ of WCAs to adapt application behavior and reduce offered load. Our work is built
 on the Gabriel platform~\cite{ha2014towards,chen2017empirical}, shown in
 Figure~\ref{fig:gabriel}. The Gabriel front-end on a wearable device performs
 preprocessing of sensor data (e.g., compression and encoding), which it streams
-over a wireless network to a cloudlet.  
+over a wireless network to a cloudlet. We refer to the Gabriel platform with new
+mechanisms that handle multitenancy, perform resource allocation, and support
+application-aware adaptation as ``Scalable Gabriel'' and the single-user
+baseline platform as ``Original Gabriel''.
 
 % The Gabriel back-end on the cloudlet has
 % a modular structure. The {\em control module} is the focal point for all
@@ -83,13 +87,6 @@ over a wireless network to a cloudlet.
 % guidance module} that performs higher-level cognitive processing such as
 % inferring task state, detecting errors, and generating guidance in one or more
 % modalities (e.g., audio, video, text, etc.).
-
-The original Gabriel platform was built with a single user in mind, and did not
-have mechanisms to share cloudlet resources in a controlled manner.  
-We have extended Gabriel with new
-mechanisms to handle multitenancy, perform resource allocation, and support
-application-aware adaptation.  We refer to the two versions of the platform as
-``Original Gabriel'' and ``Scalable Gabriel.''
 
 % It did,
 % however, have a token-based transmission mechanism.  This limited a client to
