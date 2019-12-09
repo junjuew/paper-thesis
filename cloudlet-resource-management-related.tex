@@ -1,40 +1,35 @@
 \section{R\lc{elated} W\lc{ork}}
-\label{sec:related}
+\label{sec: resource-management-related}
 
 Although edge computing is new, the techniques for scalability
 examined in this paper bear some resemblance to work that was done in
 the early days of mobile computing, and more recent cloud management
 work.
 
-Odyssey~\cite{Noble1997} and extensions~\cite{Flinn1999} proposed
-upcall-based collaboration between a mobile's operating system and its
-applications to adapt to variable wireless connectivity and limited
-battery. 
-% Such adaption was purely reactive by the mobile device; in
-% our context, adaptation for a collection of devices can be centrally
-% managed by their cloudlet, with failover to reactive methods as
-% needed. 
-Exploration of tradeoffs between application fidelity and
+Odyssey~\cite{Noble1997} and extensions~\cite{Flinn1999} proposed upcall-based
+collaboration between a mobile's operating system and its applications to adapt
+to variable wireless connectivity and limited battery. Such adaption was purely
+reactive by the mobile device; in our context, adaptation for a collection of
+devices can be centrally managed by their cloudlet, with failover to reactive
+methods as needed. Exploration of tradeoffs between application fidelity and
 resource demand led to the concept of {\em multi-fidelity
-  applications}~\cite{Satya1999}; such concepts are relevant to our
-work, but the critical computing resources in our setting are those of
-the cloudlet rather than the mobile device.
+applications}~\cite{Satya1999}; such concepts are relevant to our work, but the
+critical computing resources in our setting are those of the cloudlet rather
+than the mobile device.
 
-Several different approaches to adapting application fidelity have
-been studied.  Dynamic sampling rate with various heuristics for
-adaptation have been tried primarily in the contexts of individual
-mobile devices for energy efficiency~\cite{lorincz2009mercury,
-  lorincz2008resource, vallina2012energy, lane2010survey}. Semantic
-deduplication to reduce redundant processing of frames have been
-suggested by ~\cite{Hu2015, kang2017noscope, hsieh2018focus,
-  zhang2015design}. Similarly, previous works have looked at
-suppression based on motion either from video
-content~\cite{naderiparizi2017glimpse, lebeckcollaborative} or
-IMUs~\cite{jain2015overlay}. Others have investigated exploiting
-multiple deep models with accuracy and resource
-tradeoff~\cite{han2016mcdnn,jiang2018chameleon}. While most of these
-efforts were in mobile-only, cloud-only, or mobile-cloud context, we
-explore similar techniques in an edge-native context.
+Several different approaches to adapting application fidelity have been studied.
+Dynamic sampling rate with various heuristics for adaptation have been tried
+primarily in the contexts of individual mobile devices for energy
+efficiency~\cite{lorincz2009mercury, lorincz2008resource, vallina2012energy,
+lane2010survey}. Semantic deduplication to reduce redundant processing of frames
+have been suggested by ~\cite{Hu2015, kang2017noscope, hsieh2018focus,
+zhang2015design}. Similarly, previous works have looked at suppression based on
+motion either from video content~\cite{naderiparizi2017glimpse,
+lebeckcollaborative} or IMUs~\cite{jain2015overlay}. Others have investigated
+exploiting multiple deep models with accuracy and resource
+tradeoff~\cite{han2016mcdnn,jiang2018chameleon}. While most of these efforts
+were in mobile-only, cloud-only, or mobile-cloud context, we explore similar
+techniques in an edge-native context.
 
 
 Partitioning workloads between mobile devices and the cloud have been
@@ -45,12 +40,11 @@ from programming model perspective~\cite{balan2003tactics}. We believe
 that these approaches will become important techniques to scale
 applications on heavily loaded cloudlets.
 
-Dynamic resource allocation schemes on the cloud for video processing
-have been well explored~\cite{sembiring2013dynamic, fu2015drs,
-  kaseb2015cloud}.  More recently, profile-based adaptation of video
-analytics~\cite{zhang2017live, hung2018videoedge, jiang2018chameleon}
-focused on throughput-oriented analytics application on large clusters
-or cloud. In contrast, our goals focus on interactive performance on
-relatively small edge deployments.
+Dynamic resource allocation schemes on the cloud for video processing have been
+well explored~\cite{sembiring2013dynamic, fu2015drs, kaseb2015cloud}.  More
+recently, profile-based adaptation of video analytics~\cite{zhang2017live,
+hung2018videoedge, jiang2018chameleon} focused on throughput-oriented analytics
+application on large clusters or cloud. In contrast, our goals focus on
+interactive performance on relatively small edge deployments.
 
 

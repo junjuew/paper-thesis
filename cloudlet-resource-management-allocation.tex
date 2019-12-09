@@ -1,11 +1,11 @@
 \section{Profiling-based Resource Allocation}
+\label{sec: resource-allocation}
 
-Given a workload of concurrent applications running on a cloudlet, and
-the number of clients requesting service from each application, our
-resource allocator determines how many instances to launch and how
-much resource (CPU cores, memory, etc.) to allocate for each
-application instance.  We assume queueing delays are limited by the
-token mechanism described in the Gabriel framework~\cite{ha2014towards},
+Given a workload of concurrent applications running on a cloudlet, and the
+number of clients requesting service from each application, our resource
+allocator determines how many instances to launch and how much resource (CPU
+cores, memory, etc.) to allocate for each application instance.  We assume
+queueing delays are limited by the token mechanism used in Original Gabriel,
 which limits the number of outstanding requests on a per-client basis.
 
 
@@ -47,17 +47,38 @@ will be processed within satisfactory latency bounds for a given
 client.
 
 Solving the above optimization problem is computationally difficult. We thus use an
-iterative greedy allocation algorithm as follows:
-For each application profile $u_a(\mathbf{r})$, we find the resource point that gives
-the highest $\frac{u_a(\mathbf{r})}{|\mathbf{r}|}$, i.e., \emph{utility-to-resource} ratio. 
-Denote this point as $\mathbf{r}^*_a$. We start with the application with the largest 
-$\frac{u_a(\mathbf{r}^*_a)}{|\mathbf{r}^*_a|}$. We allocate $k_a$ application instances,
-each with resource $\mathbf{r}^*_a$, such that $k_a$ is the largest integer with
-$k_a \cdot u_a(\mathbf{r}^*_a) \le \gamma \cdot c_a$. 
-If there is leftover resource, we move to the application with the next highest 
-utility-to-resource ratio and repeat the process.
+iterative greedy allocation algorithm as follows.
 
-In our implementation,
-we exploit the \texttt{cpu-shares} and \texttt{memory-reservation} control options 
-of Linux Docker containers. It puts a soft limit on containers' resource utilization only when 
-they are in contention, but allows them to use as much left-over resource as needed.
+\begin{algorithm}[H]
+\SetAlgoLined
+% \KwResult{Write here the result }
+ Profile applications under varying resources\;
+ $u_a(\mathbf{r})$: resource $\mathbf{r}$ to utility mapping for application
+ $a$\;
+\For{each application}{
+  find the highest \emph{utility-to-resource} ratio $\frac{u_a(\mathbf{r})}{|\mathbf{r}|}$\;
+}
+ \While{leftover system resource}{
+ Find the application with the largest \emph{utility-to-resource}
+ $\frac{u_a(\mathbf{r}^*_a)}{|\mathbf{r}^*_a|}$, which has not been allocated
+ resources\;
+Allocate $k_a$ application instances,
+each with resource $\mathbf{r}^*_a$, such that $k_a$ is the largest integer with
+$k_a \cdot u_a(\mathbf{r}^*_a) \le \gamma \cdot c_a$\;
+ }
+ \caption{Iterative Allocation Algorithm to Maximize Overall System Utility}
+\end{algorithm}
+
+% For each application profile $u_a(\mathbf{r})$, we find the resource point that gives
+% the highest $\frac{u_a(\mathbf{r})}{|\mathbf{r}|}$, i.e., \emph{utility-to-resource} ratio. 
+% Denote this point as $\mathbf{r}^*_a$. We start with the application with the largest 
+% $\frac{u_a(\mathbf{r}^*_a)}{|\mathbf{r}^*_a|}$. We allocate $k_a$ application instances,
+% each with resource $\mathbf{r}^*_a$, such that $k_a$ is the largest integer with
+% $k_a \cdot u_a(\mathbf{r}^*_a) \le \gamma \cdot c_a$. 
+% If there is leftover resource, we move to the application with the next highest 
+% utility-to-resource ratio and repeat the process.
+
+In our implementation, we exploit the \texttt{cpu-shares} and
+\texttt{memory-reservation} control options of Linux Docker containers. It puts
+a soft limit on containers' resource utilization only when they are in
+contention, but allows them to use as much left-over resource as needed.

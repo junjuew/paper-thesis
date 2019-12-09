@@ -1,39 +1,53 @@
 \section{E\lc{valuation}}
 
-\revision{We use five WCA applications, including FACE, PING PONG, LEGO, POOL,
-and IKEA for evaluation~\cite{chen2017empirical}~\cite{chen2018application}. These applications are
-selected based on their distinct requirements and characteristics to represent
-the variety of WCA apps. IKEA and LEGO assist users step by step to assemble an
-IKEA lamp or a LEGO model. While their 2.7-second loose latency bound is less
-stringent than other apps, the significance of their instructions is high, as a
-user could not proceed without the instruction. On the other hand, users could
-still continue their tasks without the instructions from FACE, POOL, and
-PING PONG assistants. For POOL and PING PONG, the speed of an instruction is
-paramount to its usefulness. For example, any instruction that comes 105ms after
-a user action for POOL is no longer of value.}
+We use five WCA applications, including FACE, PING PONG, LEGO, POOL, and IKEA
+for evaluation~\cite{chen2017empirical}~\cite{chen2018application}. These
+applications are selected based on their distinct requirements and
+characteristics to represent the variety of WCA apps. IKEA and LEGO assist users
+step by step to assemble an IKEA lamp or a LEGO model. While their 2.7-second
+loose latency bound is less stringent than other apps, the significance of their
+instructions is high, as a user could not proceed without the instruction. On
+the other hand, users could still continue their tasks without the instructions
+from FACE, POOL, and PING PONG assistants. For POOL and PING PONG, the speed of
+an instruction is paramount to its usefulness. For example, any instruction that
+comes 105ms after a user action for POOL is no longer of value.
 
 \begin{figure}
 \centering
 \includegraphics[width=\linewidth, trim=0em 3em 0em 3em, clip]{FIGS/fig-sec6-reduction-legend.pdf}
 \begin{minipage}[b]{0.38\linewidth}
 \centering
-\includegraphics[height=1.3in, trim=0em 1em 0em 0em, clip]{FIGS/fig-sec6-reduction-Pingpong.pdf}\\
-{\small (a) PING PONG}
+\includegraphics[height=2.5in, trim=0em 1em 0em 0em, clip]{FIGS/fig-sec6-reduction-Pingpong.pdf}\\
+{(a) PING PONG}
 \end{minipage}
 \begin{minipage}[b]{0.3\linewidth}
-\includegraphics[height=1.3 in, trim=0em 1em 0em 0em, clip]{FIGS/fig-sec6-reduction-Lego.pdf}\\
-{\small (b) LEGO}
+\includegraphics[height=2.5in, trim=0em 1em 0em 0em, clip]{FIGS/fig-sec6-reduction-Lego.pdf}\\
+{(b) LEGO}
 \end{minipage}
 \begin{minipage}[b]{0.3\linewidth}
-\includegraphics[height=1.3in, trim=0em 1em 0em 0em, clip]{FIGS/fig-sec6-reduction-Pool.pdf}\\
-{\small (c) POOL}
+\includegraphics[height=2.5in, trim=0em 1em 0em 0em, clip]{FIGS/fig-sec6-reduction-Pool.pdf}\\
+{(c) POOL}
 \end{minipage}
 \caption{\small Effects of Workload Reduction}
 \label{figs:workload-reduction}
 \end{figure}
 
 
-\begin{table}
+\subsection{Effectiveness of Workload Reduction}
+
+We first evaluate the effectiveness of all of the workload reduction techniques
+explored in Chapter~\ref{chapter: load}. For this set of experiments, we do not
+use multiple concurrent applications or resource allocation. We use four Nexus 6
+mobile phones as clients, connecting to a cloudlet over a Wi-Fi link. We run
+PING PONG, LEGO, and POOL applications one at a time with 2, 4, 6, and 8 cores
+available on the server. Figure~\ref{figs:workload-reduction} shows the total
+number of frames processed with and without workload reduction. Note that
+although the offered work is greatly reduced, the processed frames for active
+phases of the application have not been affected. Thus, we confirm that we can
+significantly reduce cloudlet load without affecting the critical processing
+needed by these applications.
+
+\begin{table}[]
 \centering
 \begin{tabular}{|c|c||c|c|c|c|c|}
   \hline
@@ -51,65 +65,19 @@ a user action for POOL is no longer of value.}
   8  & 40  & 8 & 8 & 8 & 8 & 8 \\ \hline
 \end{tabular}
 \vspace{0.1in}
-\caption{\small Resource Allocation Experiments} 
+\caption{Resource Allocation Experiments} 
 \label{tab:alloc-exps}
-\vspace{-0.2in}
 \end{table}
 
-\begin{figure}
+\begin{figure}[]
   \centering
-  \includegraphics[scale=1.]{FIGS/fig-alloc-max-util.pdf}
-  \caption{\small Total Utility with Increasing Contention}
+  \includegraphics[width=\linewidth]{FIGS/fig-alloc-max-util.pdf}
+  \caption{Total Utility with Increasing Contention}
   \label{fig:alloc-max-util}
 \end{figure}
 
-\subsection{Effectiveness of Workload Reduction}
-We first evaluate the effectiveness of all of the workload reduction
-techniques explored in Section~\ref{sec: workload-reduction}. For this
-set of experiments, we do not use multiple concurrent applications or
-resource allocation. We use four Nexus 6 mobile phones as clients,
-connecting to a cloudlet over a Wi-Fi link. We run PING PONG, LEGO,
-and POOL applications one at a time with 2, 4, 6, and 8 cores
-available on the server. Figure~\ref{figs:workload-reduction} shows
-the total number of frames processed with and without workload
-reduction. Note that although the offered work is greatly reduced, the
-processed frames for active phases of the application have not been
-affected. Thus, we confirm that we can significantly reduce cloudlet
-load without affecting the critical processing needed by these
-applications.
-
 
 \subsection{Effectiveness of Resource Allocation}
-
-\begin{figure}[t]
-  \begin{center}
-    \includegraphics[width=\linewidth]{FIGS/fig-alloc-latency-legend.pdf}
-    \includegraphics[width=\linewidth]{FIGS/fig-alloc-latency-baseline.pdf}
-    {\small (a) Original Gabriel}
-    \includegraphics[width=\linewidth]{FIGS/fig-alloc-latency-cpushares.pdf}
-    {\small (b) Scalable Gabriel}
-  \end{center}
-\begin{captiontext}
-The normalization is  by per-application tight and loose bounds~\cite{chen2017empirical}
-\end{captiontext}
-\vspace{-0.1in}
-  \caption{\small Normalized 90\%-tile Response Latency}
-  \label{fig:alloc-latency}
-\end{figure}
-
-\begin{figure}[t]
-  \begin{center}
-    \includegraphics[width=\linewidth]{FIGS/fig-alloc-latency-legend.pdf}
-    \includegraphics[width=\linewidth]{FIGS/fig-alloc-fps-baseline.pdf}
-    {\small (a) Original Gabriel}
-    \includegraphics[width=\linewidth]{FIGS/fig-alloc-fps-cpushares.pdf}
-    {\small (b) Scalable Gabriel}
-  \end{center}
-\vspace{-0.1in}
-  \caption{\small Average Processed Frames Per Second Per Client}
-  \label{fig:alloc-fps}
-\vspace{-0.1in}
-\end{figure}
 
 We next evaluate resource allocation on a server machine with 2
 Intel{\textregistered} Xeon{\textregistered} E5-2699 v3 processors, totaling 36
@@ -130,7 +98,6 @@ applications. In contrast, scalable Gabriel maintains a high level of
 system-wide utility by differentially allocating resources to different
 applications based on their sensitivity captured in the utility profiles.
 
-
 Figure~\ref{fig:alloc-latency} and Figure~\ref{fig:alloc-fps} provide insights
 into how scalable Gabriel strikes the balance. Latencies are better controlled
 as resources are dedicated to applications with high utility, and more clients
@@ -140,55 +107,37 @@ applications in an undifferentiated fashion. Scalable Gabriel, in contrast,
 tries to maintain higher throughput for some applications at the expense of the
 others, e.g. LEGO up to 25 clients.
 
+\begin{figure}[]
+  \begin{center}
+    \includegraphics[width=\linewidth]{FIGS/fig-alloc-latency-legend.pdf}
+    \includegraphics[width=\linewidth]{FIGS/fig-alloc-latency-baseline.pdf}
+    {(a) Original Gabriel}
+    \includegraphics[width=\linewidth]{FIGS/fig-alloc-latency-cpushares.pdf}
+    {(b) Scalable Gabriel}
+  \end{center}
+\begin{captiontext}
+  \centering
+The normalization is  by per-application tight and loose bounds~\cite{chen2017empirical}
+\end{captiontext}
+  \caption{Normalized 90\%-tile Response Latency}
+  \label{fig:alloc-latency}
+\end{figure}
+
+\begin{figure}[]
+  \begin{center}
+    \includegraphics[width=.9\linewidth]{FIGS/fig-alloc-latency-legend.pdf}
+    \includegraphics[width=\linewidth]{FIGS/fig-alloc-fps-baseline.pdf}
+    {(a) Original Gabriel}
+    \includegraphics[width=\linewidth]{FIGS/fig-alloc-fps-cpushares.pdf}
+    {(b) Scalable Gabriel}
+  \end{center}
+  \caption{Average Processed Frames Per Second Per Client}
+  \label{fig:alloc-fps}
+\end{figure}
+
 
 \subsection{Effects on Guidance Latency}
 
-\begin{figure}
-	\begin{center}
-		\includegraphics[width=\linewidth]{FIGS/fig-alloc-latency-legend.pdf}
-								
-		\begin{tabular}{c@{}c}
-			\includegraphics[width=.5\linewidth]{FIGS/fig-eval-latency-baseline.pdf}
-			            & \includegraphics[width=.5\linewidth]{FIGS/fig-eval-latency-cpushares.pdf} \\
-			{\small (a) Original  Gabriel} & {\small (b) Scalable Gabriel}                                                    
-		\end{tabular}
-	\end{center}
-
-\begin{captiontext}
-The normalization is by per-application tight and loose bounds~\cite{chen2017empirical}
-\end{captiontext}
-\vspace{-0.1in}
-	\caption{\small Normalized 90\%-tile Response Latency}
-	\label{fig:frame-latency}
-\end{figure}
-
-\begin{figure}
-	\begin{center}
-		\includegraphics[width=\linewidth]{FIGS/fig-alloc-latency-legend.pdf}
-		\begin{tabular}{c@{}c}
-			\includegraphics[width=.5\linewidth]{FIGS/fig-eval-fps-baseline.pdf}
-			            & \includegraphics[width=.5\linewidth]{FIGS/fig-eval-fps-cpushares.pdf} \\
-			{\small (a) Original Gabriel} & {\small (b) Scalable Gabriel}                                                
-		\end{tabular}
-	\end{center}
-	\caption{\small Processed Frames Per Second Per Application}
-	\label{fig:frame-fps}
-\end{figure}
-
-\begin{figure}
-\centering
-\includegraphics[width=0.7\linewidth, trim=0em 0em 0em 0em, clip]{FIGS/fig-sec6-latency-legend.pdf} \\
-\centering
-\begin{turn}{90}{\hspace{0.6in}\small (a) FACE}\end{turn}\hspace{0.2in}\includegraphics[width=2.1in, trim=0em 0em 0em 0em, clip]{FIGS/fig-sec6-latency-face.pdf}\\[0.08in]
-\begin{turn}{90}{\hspace{0.6in}\small (b) LEGO}\end{turn}\hspace{0.2in}\includegraphics[width=2.1in, trim=0em 0em 0em 0em, clip]{FIGS/fig-sec6-latency-lego.pdf}\\[0.08in]
-\begin{turn}{90}{\hspace{0.6in}\small (c) PING PONG}\end{turn}\hspace{0.2in}\includegraphics[width=2.1in, trim=0em 0em 0em 0em, clip]{FIGS/fig-sec6-latency-pingpong.pdf}\\[0.08in]
-\begin{turn}{90}{\hspace{0.6in}\small (d) POOL}\end{turn}\hspace{0.2in}\includegraphics[width=2.1in, trim=0em 0em 0em 0em, clip]{FIGS/fig-sec6-latency-pool.pdf}\\[0.08in]
-\begin{turn}{90}{\hspace{0.6in}\small (e) IKEA}\end{turn}\hspace{0.2in}\includegraphics[width=2.1in, trim=0em 0em 0em 0em, clip]{FIGS/fig-sec6-latency-ikea.pdf}
-  \vspace{-0.1in}
-\caption{\small Guidance Latency}
-\label{figs:inst-delay}
-\end{figure}
-		
 We next evaluate the combined effects of workload reduction and
 resource allocation in our system. We emulate many users running
 multiple applications simultaneously. All users share the same
@@ -202,16 +151,68 @@ both sets of techniques does not cause conflicts. In fact, they appear
 to be complementary and latencies remain in better control than using
 resource allocation alone.
 
-\begin{figure}
+\begin{figure}[]
 	\begin{center}
 		\includegraphics[width=\linewidth]{FIGS/fig-alloc-latency-legend.pdf}
-		\includegraphics[width=\linewidth]{FIGS/fig-sec6-latency-allocation.pdf}
+								
+		\begin{tabular}{c@{}c}
+			\includegraphics[width=.5\linewidth]{FIGS/fig-eval-latency-baseline.pdf}
+			            & \includegraphics[width=.5\linewidth]{FIGS/fig-eval-latency-cpushares.pdf} \\
+			{(a) Original  Gabriel} & {(b) Scalable Gabriel}                                                    
+		\end{tabular}
 	\end{center}
+
+\begin{captiontext}
+\centering
+The normalization is by per-application tight and loose bounds~\cite{chen2017empirical}
+\end{captiontext}
 \vspace{-0.1in}
-	\caption{\small Fraction of Cloudlet Processing Allocated}
-	\label{figs:resource-allocated}
+	\caption{\small Normalized 90\%-tile Response Latency}
+	\label{fig:frame-latency}
 \end{figure}
 
+\begin{figure}[]
+	\begin{center}
+		% \includegraphics[width=\linewidth]{FIGS/fig-alloc-latency-legend.pdf}
+		\begin{tabular}{c@{}c}
+			\includegraphics[width=.5\linewidth]{FIGS/fig-eval-fps-baseline.pdf}
+			            & \includegraphics[width=.5\linewidth]{FIGS/fig-eval-fps-cpushares.pdf} \\
+			{(a) Original Gabriel} & {(b) Scalable Gabriel}                                                
+		\end{tabular}
+	\end{center}
+	\caption{Processed Frames Per Second Per Application}
+	\label{fig:frame-fps}
+\end{figure}
+
+\begin{figure}[]
+	\begin{center}
+		\includegraphics[width=.7\linewidth]{FIGS/fig-alloc-latency-legend.pdf}
+		\includegraphics[width=.7\linewidth]{FIGS/fig-sec6-latency-allocation.pdf}
+	\end{center}
+\vspace{-0.1in}
+	\caption{Fraction of Cloudlet Processing Allocated}
+  \label{figs:resource-allocated}
+\end{figure}
+
+\begin{figure}[]
+\centering
+\includegraphics[width=0.5\linewidth, trim=0em 0em 0em 0em, clip]{FIGS/fig-sec6-latency-legend.pdf} \\
+\centering
+\begin{turn}{90}{\hspace{0.6in}\small (a) FACE}\end{turn}\hspace{0.2in}\includegraphics[width=2.5in, trim=0em 0em 0em 0em, clip]{FIGS/fig-sec6-latency-face.pdf}
+\begin{turn}{90}{\hspace{0.6in}\small (b)
+LEGO}\end{turn}\hspace{0.2in}\includegraphics[width=2.5in, trim=0em 0em 0em 0em,
+clip]{FIGS/fig-sec6-latency-lego.pdf}\\[0.08in]
+  \vspace{0in}
+\begin{turn}{90}{\hspace{0.6in}\small (c) PING PONG}\end{turn}\hspace{0.2in}\includegraphics[width=2.5in, trim=0em 0em 0em 0em, clip]{FIGS/fig-sec6-latency-pingpong.pdf}
+\begin{turn}{90}{\hspace{0.6in}\small (d)
+POOL}\end{turn}\hspace{0.2in}\includegraphics[width=2.5in, trim=0em 0em 0em 0em,
+clip]{FIGS/fig-sec6-latency-pool.pdf}\\[0.08in]
+  \vspace{0in}
+\begin{turn}{90}{\hspace{0.6in}\small (e) IKEA}\end{turn}\hspace{0.2in}\includegraphics[width=2.5in, trim=0em 0em 0em 0em, clip]{FIGS/fig-sec6-latency-ikea.pdf}
+\caption{Guidance Latency}
+\label{figs:inst-delay}
+\end{figure}
+		
 The previous plots consider per request latencies. The ultimate goal
 of our work is to maintain user experience as much as possible and
 degrade it gracefully when overloaded. For WCA applications, the key
@@ -231,11 +232,4 @@ the other two. This differentiated allocation is reflected in
 Figure~\ref{figs:resource-allocated}. In contrast, with original Gabriel,
 none of the applications are able to regularly meet deadlines.
 
-
-
-
-
-
-
-
-
+\clearpage

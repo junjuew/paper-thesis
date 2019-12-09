@@ -24,6 +24,13 @@ workload, even on a single stream. For example, as shown in
 Figure~\ref{fig:lego-dag}, the processing pipeline for LEGO has many
 exits, resulting in highly variable execution times.
 
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth, trim=0em 30em 20em 0em,clip]{FIGS/fig-lego-dag.pdf}
+\caption{\small LEGO Processing DAG}
+\label{fig:lego-dag}
+\end{figure}
+
 To adequately provision resources for an application, one approach is
 to leave the burden to developers, asking them to specify and reserve
 a static amount of cores and memories needed for the service. However,
@@ -76,13 +83,18 @@ application latency bounds, such as through literature review or
 physics-based calculation as done in~\cite{chen2017empirical}.
 
 The system-wide performance is a function of the following independent
-variables: (a) the number of applications and the number of clients of
-each application; (b) the number of instances of each application;
-and, (c) the resource allocation for each instance.  Although (a) is
-not under our control, Gabriel is free to adapt (b) and (c).
-Furthermore, to optimize system performance, it may sacrifice the
-performance of certain applications in favor of others.
-Alternatively, it may choose not to run certain applications.
+variables. 
+\begin{enumerate}[label=(\alph*)]
+    \item the number of applications and the number of clients of
+each application;
+    \item the number of instances of each application;
+    \item the resource allocation for each instance;
+\end{enumerate}
+
+Although (a) is not under our control, Gabriel is free to adapt (b) and (c).
+Furthermore, to optimize system performance, it may sacrifice the performance of
+certain applications in favor of others. Alternatively, it may choose not to run
+certain applications.
 
 
 \begin{figure}
@@ -90,14 +102,14 @@ Alternatively, it may choose not to run certain applications.
 \begin{minipage}[b]{.35\linewidth}
 \centering
 \includegraphics[width=\linewidth,trim=0em 0em 0em 0em, clip]{FIGS/fig-lat-util-face.pdf}
-{\small (a) Utility For FACE}
+{(a) Utility For FACE}
 \end{minipage}
 \begin{minipage}[b]{.6\linewidth}
 \centering
 \includegraphics[width=\linewidth, trim=0em 0em 0em 0em, clip]{FIGS/fig-app-profile-face.pdf}
-{\small (b) Profile for FACE}
+{(b) Profile for FACE}
 \end{minipage}
-\caption{\small FACE Application Utility and Profile}
+\caption{FACE Application Utility and Profile}
 \label{fig:face-utility-and-profile}
 \end{figure}
 
@@ -106,14 +118,14 @@ Alternatively, it may choose not to run certain applications.
 \begin{minipage}[b]{.35\linewidth}
 \centering
 \includegraphics[width=\linewidth,trim=0em 0em 0em 0em, clip]{FIGS/fig-lat-util-pool.pdf}
-{\small (a) Utility For POOL}
+{(a) Utility For POOL}
 \end{minipage}
 \begin{minipage}[b]{.6\linewidth}
 \centering
 \includegraphics[width=\linewidth, trim=0em 0em 0em 0em, clip]{FIGS/fig-app-profile-pool.pdf}
-{\small (b) Profile for POOL}
+{(b) Profile for POOL}
 \end{minipage}
-\caption{\small POOL Application Utility and Profile}
+\caption{POOL Application Utility and Profile}
 \label{fig:pool-utility-and-profile}
 \end{figure}
 
@@ -135,21 +147,18 @@ we effectively generate a multidimensional resource to utility profile
 for each application.
 
 We make a few simplifying assumptions to ensure profile generation and
-allocation of resources by utility are tractable.  First, we assume
-utility values across different applications are comparable.
-Furthermore, we assume utility is received on a per-frame basis, with
-values that are normalized between 0 and 1.  Each frame that is sent,
-accurately processed, and replied within its latency bound receives 1,
-so a client running at 30 FPS under ideal conditions can receive a
-maximum utility of 30 per second.  This clearly ignores variable
-utility of processing particular frames (e.g., differences between
-active and passive phases), but simplifies construction of profiles
-and modeling for resource allocation; we leave the complexities of
-variable utility to future work.
-Figure~\ref{fig:face-utility-and-profile}(b) and
-Figure~\ref{fig:pool-utility-and-profile}(b) show the generated
-application profiles for FACE and POOL. We see that POOL is more efficient
-than FACE in using per unit resource to produce utility. If an
-application needs to deliver higher utility than a single instance
-can, our framework will automatically launch more instances of it on
-the cloudlet.
+allocation of resources by utility are tractable.  First, we assume utility
+values across different applications are comparable. Furthermore, we assume
+utility is received on a per-frame basis, with values that are normalized
+between 0 and 1.  Each frame that is sent, accurately processed, and replied
+within its latency bound receives 1, so a client running at 30 FPS under ideal
+conditions can receive a maximum utility of 30 per second.  This clearly ignores
+variable utility of processing particular frames (e.g., differences between
+active and passive phases), but simplifies construction of profiles and modeling
+for resource allocation; we leave the complexities of variable utility to future
+work. Figure~\ref{fig:face-utility-and-profile}(b) and
+Figure~\ref{fig:pool-utility-and-profile}(b) show the generated application
+profiles for FACE and POOL. We see that POOL is more efficient than FACE in
+using per unit resource to produce utility. If an application needs to deliver
+higher utility than a single instance can, our framework will automatically
+launch more instances of it on the cloudlet.
