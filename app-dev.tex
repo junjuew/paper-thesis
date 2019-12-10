@@ -1,6 +1,5 @@
 \chapter{Wearable Cognitive Assistance Development Tools}
-
-\label{chapter: dev}
+\label{chapter: app-dev}
 
 While previous chapters addresses the system challenges of scaling wearable
 cognitive assistance at the edge, another key problem to the widespread adoption
@@ -31,6 +30,7 @@ development team has knowledge of the task specifics and general programming
 skills, but not necessarily experiences with wearables and machine learning.
 
 \section{Ad Hoc WCA Development Process}
+\label{sec: app-dev-adhoc}
 
 \begin{figure*}
   \centering
@@ -41,61 +41,61 @@ skills, but not necessarily experiences with wearables and machine learning.
     \label{fig:workflow}
 \end{figure*}
 
-The overall development workflow of wearable cognitive assistance is shown in
-figure~\ref{fig:workflow}. After a use case is identified, developers would need
-to identify meaningful visual states that can be detected using computer vision.
-In the meantime, a task is divided into steps based on the use case and
-detectable visual states. Task procedures could be changed to reduce the
-difficulties of CV checks. In fact, since there is a human in the loop, relying
-on humans to do what they are good at is the main reason that wearable cognitive
-assistance can be implemented without solving perception and planning problems
-intrinsic to robotics. Task procedures together with error states form a task
-model. Developers implement the application according to the task model. After
- initial implementation, test runs and measurements are conducted to evaluate
-the robustness of computer vision checks and end-to-end application latency.
-This process is iterated until developers are satisfied.
+Existing ad hoc development process of wearable cognitive assistance is shown in
+figure~\ref{fig:workflow}. Developers first work with task expert to identify a
+specific use case that WCA can help. After the use case is identified,
+developers need to identify meaningful visual states that can be recognized
+using computer vision. In the meantime, a task is divided into steps based on
+the use case and detectable visual states. Task workflow can be changed to
+reduce the difficulties of computer vision recognition. In fact, since there is
+a human in the loop, relying on humans to do what they are good at is the main
+reason that wearable cognitive assistance can be implemented without solving
+perception and planning problems intrinsic to robotics. Task workflow together
+with error states form a task model. Developers implement the application
+according to the task model. After initial implementation, test runs and
+measurements are conducted to evaluate the robustness of computer vision checks
+and end-to-end application latency. This process is iterated until satisfaction.
 
-Among all the development procedures, creating the computer vision checks to
-detect user states consumes the most of development time and requires computer
-vision expertise and experience. With the adoption of DNNs, developers no longer
-need to spend days to select and tweak handcrafted features. Instead, the entire
-model is trained end-to-end using labeled data. However, DNNs, with millions of
-parameters to train, requires a significant amount of training data. Collecting
-and labeling data are time-consuming and painstaking. Besides, to craft and
-implement a DNN by hand is not trivial. Significant machine learning background
-is needed to tweak network architectures and parameters. Therefore, developer
-tools are needed to both help label the data and create deep neural networks.
+The most critical step in building wearable cognitive assistance is to identify
+task steps and the visual states of task steps. For example, for the LEGO
+wearable cognitive assistance ~\cite{chen2017empirical}, the task steps are the
+sequence of shapes needed to achieve the final assembled lego shape. The visual
+states to recognize are the current shapes on the lego board. Identifying visual
+states and task steps takes significant time and expertise due to several
+reasons. First, a developer needs to be familiar with the state-of-art of
+computer vision algorithms to determine what visual states can be recognized
+reliably. Second, identifying task steps requires domain knowledge. Third, when
+visual states become too hard for CV, developers need to adjust the task steps
+to use other methods for confirmation. Often a redesign of task steps is
+required to compensate computer vision. For instance, when designing the RibLoc
+application, a redesign of the task steps involves asking the user to read out a
+word on the gauge instead of performing optical character recognition on the
+lightly-colored characters.
 
-In summary, implementing the workflow of cognitive assistance takes time and
-efforts. Ad-hoc implementation requires a team of domain experts, developers and
-computer vision experts. Such development model cannot scale to thousands of
-applications. Therefore, Gabriel needs to be extended with tools to reduce the
-effort of creating wearable cognitive assistants.
+% Among all the development procedures, creating the computer vision checks to
+% detect user states consumes the most of development time and requires computer
+% vision expertise and experience. With the adoption of DNNs, developers no longer
+% need to spend days to select and tweak handcrafted features. Instead, the entire
+% model is trained end-to-end using labeled data. However, DNNs, with millions of
+% parameters to train, requires a significant amount of training data. Collecting
+% and labeling data are time-consuming and painstaking. Besides, to craft and
+% implement a DNN by hand is not trivial. Significant machine learning background
+% is needed to tweak network architectures and parameters. Therefore, developer
+% tools are needed to both help label the data and create deep neural networks.
+
+% In summary, implementing the workflow of cognitive assistance takes time and
+% efforts. Ad-hoc implementation requires a team of domain experts, developers and
+% computer vision experts. Such development model cannot scale to thousands of
+% applications. Therefore, Gabriel needs to be extended with tools to reduce the
+% effort of creating wearable cognitive assistants.
 
 Existing ad-hoc approach to develop wearable cognitive assistance not only takes
-a long time, but also requires computer vision expertise. A developer new to
-wearable cognitive assistance would need to spend months learning computer
-vision basics and acquire intuitions to determine what is achievable before
-developing an application. For instance, a researcher mentions the first
-application developed to help a user assemble LEGO pieces took him more than
-four months.
+a long time, but also requires significant amount of computer vision expertise.
+Developers new to wearable cognitive assistance would need to spend months
+learning computer vision basics and acquire intuitions to determine what is
+achievable before developing an application. 
 
-Figure~\ref{fig:workflow} shows the ad-hoc development process. The most
-critical step in building wearable cognitive assistance is to identify task
-steps and the visual states of task steps. For example, for the Lego wearable
-cognitive assistance ~\cite{chen2017empirical}, the task steps are the sequence
-of shapes needed to achieve the final assembled lego shape. The visual states to
-recognize are the current shapes on the lego board. Identifying visual states
-and task steps takes significant time and expertise due to several reasons.
-First, a developer needs to be familiar with the state-of-art of computer vision
-algorithms to determine what visual states can be recognized reliably. Second,
-identifying task steps requires domain knowledge. Third, when visual states
-become too hard for CV, developers need to adjust the task steps to use other
-methods for confirmation. Often a redesign of task steps is required to
-compensate computer vision. For instance, when designing the RibLoc application,
-a redesign of the task steps involves asking the user to read out a word on the
-gauge instead of performing optical character recognition on the lightly-colored
-characters.
+% Figure~\ref{fig:workflow} shows the ad-hoc development process. 
 
 \section{Object-Detection Centered Development Process}
 
@@ -105,8 +105,7 @@ opponent need to be recognized and localized. In Ikea Lamp assistance, the lamp
 base, the shade, and the bulb need to be detected. Being able to create reliable
 object detectors quickly can substantially facilitate application development.
 
-Recent advances in
-DNNs~\cite{girshick2014rich},~\cite{ren2015faster},~\cite{he2016deep} have not
+Recent advances in DNNs~\cite{he2017mask},~\cite{Ren2015},~\cite{He2016} have not
 only drastically improved the accuracy of object detection, but also provide an
 opportunity to automate the creation of them. Unlike traditional CV algorithms,
 DNNs adopt a end-to-end learning approach, in which features are no longer
