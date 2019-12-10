@@ -1,0 +1,102 @@
+\section{Tools For Painless Object Detection (TPOD)}
+\label{sec: app-dev-tpod}
+
+TPOD (Tool for Painless Object Detection) is a web-based tool I developed to
+help quickly create DNN-based object detectors. It provides a tracking-assisted
+labeling interface for speedy labeling and transfer learning-based DNN training
+and evaluation backends that abstract the nuances of DNNs. Using TPOD to create
+object detectors is straight-forward. A user would first upload short videos of
+the object collected from varying lighting conditions and perspectives. Then,
+the user would label these objects using TPOD's labeling interface. TPOD assists
+labeling by tracking the labeled object across frames. Augmenting training data
+with synthetically generated data is also supported. A user then can start training
+from the web interface. TPOD backend uses transfer learning to finetune an
+object detector DNN from publicly available networks that have been trained with
+millions of images. When the training is done, a user can download the object
+detector as a container image to run the trained models for inference. TPOD also
+provides interfaces for evaluating and testing trained DNNs.
+
+For a wide range of real-world objects, deep convolutional neural networks
+have been shown to be effective at accurate detection and identification of
+different objects in natural photographs.  They have been demonstrated to
+differentiate between very subtly different classes, such as breeds of
+dogs, and have been shown to approach human-level accuracies in such tasks.
+Therefore, we believe a DNN-based approach should suffice to clearly
+identify the goal states of each step in the task workflow.
+
+Training a DNN for such image detection tasks is not a trivial process.  In
+particular, it involves constructing a correctly-labeled training data set
+with millions of positive and negative examples.  The training process
+itself may take days to complete, and involves a set of arcane procedures
+to ensure both convergence and efficacy of the model.  Fortunately, one
+does not typically need to train a DNN from scratch.  Rather, one can start
+with a pretrained model based on a public image data set such as ImageNet,
+and then adapt it to detect custom classes for a new application, though a
+process called \emph{transfer learning}.  The key idea is that much of the
+training teaches the model to discover low-level features, such as edges,
+textures, shapes, and patterns that are useful in distinguishing objects,
+and such features can largely be reused in other detection tasks on similar
+images.  Thus, adapting a pretrained model for new object classes requires
+only thousands of examples and hours of training time.
+
+However, even with transfer learning, collecting a labeled training set of a
+thousand examples per object class can be a daunting and painful task. TPOD
+helps to greatly reduce the labeling effort in construction of the dataset, and
+automates and takes some of the guesswork out of training a DNN model.
+
+With TPOD, the developer first captures videos of the desired object from
+all different viewing angles, and against multiple backgrounds.  These can
+simply be taken using a cellphone camera.  A few minutes of video will
+contain several thousand frames containing the object of interest.
+
+Next, the videos are imported into the web-based TPOD tool.  TPOD allows the
+user to quickly switch between videos and label objects.  As illustrated in
+Figure~\ref{fig:tpod_gui} A, for a given video, the user labels the first
+occurrence of the object by drawing a bounding box around it. The key advantage
+of TPOD is that the user does not need to perform this labeling action in every
+frame.  Rather, TPOD leverages the fact that the frames are part of a continuous
+video shot, and automatically places the bounding box in subsequent frames using
+a correlation tracking algorithm~\cite{danelljan2014accurate}. Thus, the user
+does not need to do anything for these frames, and can skip through them
+quickly.  Of course, tracking is not perfect, and the bounding box may drift off
+the object over time. In this case, the user can scroll forward or back in the
+video, and adjust the bounding box to better match the object.  This
+reinitializes the tracking for subsequent frames. Overall, this approach of
+labeling followed by tracking can reduce the number of frames that the user
+needs to manually label by a factor of 10--20x.
+
+
+TPOD then performs a data cleaning and augmentation pass.  Because of interframe
+correlations, many of the object examples may be close to identical.  TPOD will
+eliminate the near duplicate examples, as these will not help in the training
+process.  Optionally, data augmentation can be employed.  This adds synthetic
+images, created by pasting the object samples on varying backgrounds, at
+different scales and rotations.  Such augmentation has been shown to help
+produce more robust object detectors.
+
+Finally, TPOD can automate the transfer learning of a DNN model using the
+collected dataset with the GUI shown in Figure~\ref{fig:tpod_gui} B.  By
+default, TPOD uses a state-of-the-art FasterRCNN-VGG network pre-trained on the
+Pascal VOC dataset~\cite{Everingham15}, though other network architectures can
+be used as well. Negative examples are mined  from the video background; these
+are parts of the frames not included in the object bounding boxes.  The training
+is started as a batch process that uses a standard, scripted learning schedule,
+and generates both the final Tensorflow model, as well as a Docker container
+with the executable detector.  The TPOD web interface provides notification and
+download links for the generated model files and containers once training is
+complete.
+
+Overall, TPOD can greatly reduce both the labeling effort and in-depth machine
+learning knowledge needed to effectively train and deploy a DNN-based detector.
+We note that TPOD is largely a stand-alone tool, and can be used separately from
+the rest of the system outlined in this paper.  As described here, TPOD is used
+after workflow extraction to train detectors to find the ends of the steps.
+Alternatively, if the developer already has a good sense of the needed object
+detectors, TPOD can be used first, and the resulting detectors used in the
+automatic extraction stage to produce more accurate task workflows.
+
+
+The initial prototype of TPOD has been used by researchers and students to build
+wearable cognitive assistance. For example, a group of master students in CMU
+mobile and pervasive computing class successfully used TPOD to build an
+assistant for using AED machines.
