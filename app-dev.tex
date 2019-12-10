@@ -34,7 +34,7 @@ skills, but not necessarily experiences with wearables and machine learning.
 
 \begin{figure*}
   \centering
-  \includegraphics[trim={0 10cm 0 0},width=\linewidth]{FIGS/ad-hoc-workflow}
+  \includegraphics[trim={0 6cm 0 0},width=\linewidth]{FIGS/ad-hoc-workflow}
 	\caption{Ad Hoc Development Workflow}
     \label{fig:workflow}
 \end{figure*}
@@ -74,24 +74,34 @@ robustness of computer vision checks and end-to-end application latency. The
 implementation process is typically iterative to allow trials-and-errors in
 choosing computer vision algorithms.
 
-This ad hoc development process pose several challenges to WCA creators. First,
-they needs to be familiar with various computer vision algorithms to determine
+The ad hoc development process has unnecessary high requirements and burden for
+WCA creators.
+\begin{enumerate}
+  \item They needs to be familiar with various computer vision algorithms to determine
 what visual states can be recognized reliably. The knowledge of selecting
 algorithms for specific scenarios often requires year of experience in
-developing computer vision applications. Second, it takes a significant amount
-of time to implement computer vision algorithms for the trial-and-error
-workflow. A newcomer can easily spend months of time coding an algorithm that
-turns out to be a bad fit. Third, the tight coupling of task model design and
-visual state recognition calls for deep understanding in both task domain and
-computer vision. When visual states in the task model end up being too difficult
-for even the state-of-art algorithms, the development team need to adjust the
-task model to either use alternative methods or employing user's assistance for
-recognizing the state. For instance, in the RibLoc application, a task step is
-changed to asking the user to read out a word on the gauge instead of performing
-optical character recognition on the lightly-colored characters. Even worse,
-sometimes changes the task workflow are needed. Therefore, close collaborations
-among task experts and developers are needed due to this tight intertwinement
-between task model design and computer vision algorithm exploration. 
+developing computer vision applications. This high bar of entry hinders more
+WCA to be developed.
+  \item It takes a significant amount of time to implement computer vision
+algorithms for the trial-and-error workflow. Several months of coding time can
+turn into a fruitless outcome when the algorithm is a bad fit. For WCAs with
+tens or hundreds of visual states to be recognized, such manual implementation
+is not scalable. Needed are automated methods to create visual state recognizers.
+  \item The tight coupling of task model design and visual state recognition
+calls for deep understanding in both task domain and computer vision. When
+visual states in the task model end up being too difficult for the state-of-art
+algorithms, the development team need to adjust the task model to either use
+alternative methods or employing user assistance to identify the state. For
+instance, in the RibLoc application, a task step is changed to asking the user
+to read out a word on the gauge instead of performing optical character
+recognition on the lightly-colored characters. Even worse, sometimes changes the
+task workflow are needed. Therefore, close collaborations among task experts and
+developers are needed due to this tight intertwinement between task model design
+and computer vision algorithm exploration. Methodologies and tools that provides
+quick turn-around when the task model changes can significantly reduce the
+overall development time.
+\end{enumerate}
+
 
 % Among all the development procedures, creating the computer vision checks to
 % detect user states consumes the most of development time and requires computer
@@ -118,24 +128,51 @@ between task model design and computer vision algorithm exploration.
 
 % Figure~\ref{fig:workflow} shows the ad-hoc development process. 
 
-\section{DNN Object Detection Centered Development Process}
+\section{A Quick Prototype Methodology}
 
-Object detection is at the core of computer vision tasks used by Gabriel
-application. In Ping-Pong assistance, the Ping-Pong table, the ball, and the
-opponent need to be recognized and localized. In Ikea Lamp assistance, the lamp
-base, the shade, and the bulb need to be detected. Being able to create reliable
-object detectors quickly can substantially facilitate application development.
+To reduce the expertise and time in development, we propose a new prototype
+methodology, centered around object detection for visual state detection and
+finite state machine for application representation. We first introduce the
+overview of this methodology in this section and then describe tools we have
+built to empower this methodology in detail in subsequent sections.
 
-Recent advances in DNNs~\cite{he2017mask},~\cite{Ren2015},~\cite{He2016} have not
-only drastically improved the accuracy of object detection, but also provide an
-opportunity to automate the creation of them. Unlike traditional CV algorithms,
-DNNs adopt a end-to-end learning approach, in which features are no longer
-hand-crafted but learned. The replacement of custom CV code with machine-learned
-models gives automation opportunities. Nevertheless, creating a DNN-based object
-detector is still both time-consuming and painstaking due to other reasons. DNNs
-have a lot of parameters and requires millions of labeled examples to train from
-scratch. Collecting and labeling these large amount of training data becomes a
+To replace manual selection of computer vision algorithms through trial and
+error, we propose to use DNN-based object detection as the fundamental building
+blocks to detect user states. Each visual state should be decomposed and
+described as individual objects within the scene along with the relationship
+among these objects. We argue that using objects as fundamental building blocks
+provide expressive and flexible constructions that are capable of describing a wide range of
+user states. For example, it is trivial to detect the presence of figure 1.
+(examples of expression). Moreover, for complicated (object close to each other
+case). In addition, the relationship among objects can be not only spatial but
+also temporal. For example, (use spatial as redundant information)
+
+Existing applications can be easily fit into this object-centered methodology of
+recognizing visual states. In Ping-Pong assistance, the Ping-Pong table, the
+ball, and the opponent need to be recognized and localized. In Ikea Lamp
+assistance, the lamp base, the shade, and the bulb need to be detected. (LEGO
+case, shape and color can be detected as well)
+
+The benefit of focusing on object detection as the central building block is an
+automated method to develop visual detectors.  Object detection recently is
+mature enough. (some words about the state of art in object detection). 
+In
+particular, recent advances in
+DNNs~\cite{he2017mask},~\cite{Ren2015},~\cite{He2016} have not only drastically
+improved the accuracy of object detection, but also provide an opportunity to
+automate the creation of them. Unlike traditional CV algorithms, DNNs adopt a
+end-to-end learning approach, in which features are no longer hand-crafted but
+learned. The replacement of custom CV code with machine-learned models gives
+automation opportunities. Nevertheless, creating a DNN-based object detector is
+still both time-consuming and painstaking due to other reasons. DNNs have a lot
+of parameters and requires millions of labeled examples to train from scratch.
+Collecting and labeling these large amount of training data becomes a
 bottleneck.
+
+To reduce custom logic. Another is to use (state amchine representation to unify
+the presentation of applications). These unified methodology provides methods
+for automation. Examples applications represented in state machine format is
+shown as below. We provide a state machine tool to help with this.
 
 \input{app-dev-tpod.tex}
 \input{app-dev-fsm.tex}
