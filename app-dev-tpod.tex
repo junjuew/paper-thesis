@@ -169,32 +169,38 @@ applications~\cite{krasner1988description}. Figure~\ref{figs:tpod-arch} shows
 TPOD architecture. TPOD frontend handles UI logic and is built using React, a
 declarative, efficient, and flexible JavaScript library for creating user
 interface~\cite{staff2016react}. React enable TPOD frontend code to be modular
-and reusable. TPOD integrate the labeling tool CVAT~\cite{cvat2019} into its
-frontend through embedding via an iframe. TPOD frontend communicates with the
-backend using a set of RESTful apis~\cite{richardson2008restful}, centered
-around \textit{Video} and \textit{Detector} resources. TPOD backend is developed
-using the Django web framework~\cite{holovaty2009definitive} and served with
-Nginx web server~\cite{nedelcu2010nginx} and Gunicorn application
-server~\cite{gunicorn2017http}. It implements the RESTful apis to create, read,
-update, and delete resources, such as videos and detectors. It also interface
-with the labeling tool CVAT's backend to read and write annotations. Long
-running background jobs, such as DNN model training and video extraction is
-processed asynchronuous with the help of a task queue and long running worker
-processes. Metadata about videos and DNN models are stored in a relational
-database while large binary files, such as video files and trained DNN model
-weights are stored in the file system. An in-memory caching layer on top of the
-file system and database is created using key-value store Redis. The entire
-application is containerized and can be deployed easily onto bare-metal or
-virtualized environment.
+and reusable. The frontend has three major components: video management,
+detector management, and an external labeling tool. TPOD integrate the labeling
+tool CVAT~\cite{cvat2019} into its frontend through embedding via an iframe. The
+embedding of an labeling tool directly into the GUI unifies the workflow to
+eliminate users' need to set up and use another piece of software. TPOD frontend
+communicates with the backend using a set of RESTful
+apis~\cite{richardson2008restful}, centered around \textit{Video} and
+\textit{Detector} resources. 
+
+TPOD backend is developed using the Django web
+framework~\cite{holovaty2009definitive} and served with Nginx web
+server~\cite{nedelcu2010nginx} and Gunicorn application
+server~\cite{gunicorn2017http}. The backend implements the RESTful apis to
+create, read, update, and delete \textit{Video} and \textit{Detector} resources.
+It also interface with the external labeling tool CVAT's backend to read and
+write annotations. Long running background jobs, such as DNN model training and
+video extraction is processed asynchronously using a task queue and
+long running worker processes. Metadata about videos and DNN models are stored
+in a relational database while large binary files, such as video files and
+trained DNN model weights are stored in the file system. An in-memory caching
+layer on top of the file system and database is created using key-value store
+Redis. The entire application is containerized and can be deployed easily onto
+bare-metal or virtualized environment.
 
 One key design choice of TPOD is to be extensible for new DNN architectures.
-TPOD provide a standard interface, shown in Figure~\ref{figs:tpod-provider-api}
-to add new DNNs implementation finetuning. TPOD refers to these DNN
-implementations as DNN \textit{Providers}. Providers do no need to know anything
-else about TPOD and only need to implement the Provider interface to be
-integrated and used. The built-in \textit{Provider} is Tensorflow's object
-detection API, which supports transfer learning for a wide set of object
-detectors~\cite{tfod2019}. 
+TPOD provide a standard interface, shown in
+Figure~\ref{figs:tpod-provider-interface} to add new DNNs implementation for
+transfer learning. TPOD refers to these DNN implementations as DNN
+\textit{Providers}. Providers do no need to know anything else about TPOD and
+only need to implement the Provider interface to be integrated and used. The
+built-in \textit{Provider} is Tensorflow's object detection API, which supports
+transfer learning for a wide set of object detectors~\cite{tfod2019}. 
 
 
 \begin{algorithm} 
