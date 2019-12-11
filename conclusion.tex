@@ -1,0 +1,127 @@
+\chapter{Conclusion and Future Work}
+
+This dissertation addresses the problem of \textit{scaling wearable cognitive
+assistance} for widespread deployment. We propose system optimizations that
+reduce network consumption, leverage application characteristics to adapt client
+behaviors, and provides an adaptation-centric cloudlet resource management
+mechanism to better serve many clients in an over-subscribed cloudlet. In
+addition, we design and develop a suite of development tools that lower the
+barrier of entry and improve developer productivity. In this chapter, we
+conclude the dissertation with a summary of contributions, and discuss future
+research directions and challenges in this area.
+
+\section{Contributions}
+
+This dissertation claims the following thesis.
+
+\noindent\fbox{%
+    \parbox{\textwidth}{%
+\textbf{Two critical challenges to the widespread adoption of wearable cognitive
+  assistance are 1) the need to operate cloudlets and wireless network at low
+  utilization to achieve acceptable end-to-end latency 2) the level of specialized
+  skills and the long development time needed to create new applications. These
+  challenges can be effectively addressed through system optimizations,
+  functional extensions, and the addition of new software development tools to
+  the Gabriel platform.}
+    }%
+}
+
+To validate this thesis, we first provide example wearable cognitive assistance
+and present measurement studies on how they would saturate existing wireless
+network bandwidth. We propose two application agnostic techniques to reduce
+network transmission. Then, leveraging WCA application characteristics, we
+proposed an adaptation taxonomy and demonstrated techniques to reduce offered
+load on the client device. With these adaptation mechanism, we design and
+evaluate a cloudlet resource allocation mechanism that take advantages of
+application degradation profiles. In the end, we propose a new application
+development methodology and provide a suite of tools to reduce development
+difficulty and speed up application development process.
+
+\subsection{Application Agnostic Methods to Reduce Network Transmission}
+
+Wearable cognitive assistance, as a latency-sensitive analytics applications
+poses several difficult mobile computing challenges that arise in performing
+real-time video analytics on small wearable devices. These challenges lie at the
+intersection of wireless bandwidth, result accuracy, and timeliness of results.
+
+To address these challenges, we have developed an adaptive computer vision
+pipeline for reducing network transmission without application assistance.  We
+explore an early discard strategy to selectively send the most interesting
+frames and reduce precious bandwidth between the drone and a ground-based
+cloudlet. We propose just-in-time learning to further improve bandwidth
+efficiency. Our experimental results show that this judicious combination of
+client-side processing and edge-based processing can save substantial wireless
+bandwidth and thus improve scalability, without compromising result accuracy or
+result latency. 
+
+\subsection{Application-Aware Techniques to Reduce Offered 
+Load and Adaptation Centric Cloudlet Resource Management}
+
+More than a decade ago, the emergence of cloud computing led to the
+realization that applications had to be written in a certain way to
+take full advantage of elasticity of the cloud.  This led to the
+concept of ``cloud-native applications'' whose scale-out capabilities
+are well matched to the cloud, as well as tools and techniques to
+easily create such applications.
+
+The emergence of edge computing leads to another inflection point in
+application design.  In particular, it leads to ``edge-native
+applications'' that are deeply dependent on attributes such as low
+latency or bandwidth scalability that can only be obtained at the edge.
+However, as this paper has shown, edge-native applications have to be 
+written in a way that is very different from cloud-native applications
+if they are to be scalable.
+
+This is the first work to show that cloud-native implementation
+strategies that focus primarily on dynamic scale-out are unlikely to
+be effective for scalability in edge computing.  Instead, edge-native
+applications need to adapt their network and cloudlet resource demand
+to system load.  As the total number of Tier-3 devices associated with
+a cloudlet increases, the per-device network and cloudlet load has to
+decrease.  This is a fundamental difference between cloud-native and
+edge-native approaches to scalability. 
+
+We explore client workload reduction and server resource allocation to manage
+application quality of service in the face of contention for cloudlet resources.
+We demonstrate that our system is able to ensure that in overloaded situations,
+a subset of users are still served with good quality of service rather than
+equally sharing resources and missing latency requirements for all.
+
+% \subsection{Cloudlet Resource Management for Graceful Degradation of Service}
+\subsection{Wearable Cognitive Assistance Development Tools}
+
+Wearable cognitive assistance used to be difficult to develop. We propose a
+unifying development methodology to streamline the development process. Together
+with the methodology, we have built and provided a suite of development tools
+that lower the barrier of application development and speed up the
+implementation process. With these tools, we have shown the productivity
+improvement can be 10x-20x for application developers.
+
+\section{Future Work}
+
+\subsection{More Sophisticated Computer Vision For Cognitive Assistance}
+Recent development in computer vision has shown potential to use more
+sophisticated computer vision algorithms for cognitive assistance, such as
+activity recognition. Leveraging these algorithms can be useful for creating
+cognitive assistants that are more sophisticated.
+
+\subsection{Fine-grained Resource Management}
+This work serves as an initial step towards practical resource management for
+edge-native applications. There are many potential directions to explore further
+in this space. We have alluded to some of these earlier in the paper. One
+example we briefly mentioned is dynamic partitioning of work between Tier-3 and
+Tier-2 to further reduce offered load on cloudlets.  In addition, other resource
+allocation policies, especially fairness-centered policies, such as max-min
+fairness and static priority can be explored when optimizing overall system
+performance. These fairness-focused policies could also be used to address
+aggressive users, which are not considered in this paper.  While we have shown
+offline profiling is effective for predicting demand and utility for WCA
+applications, for a broader range of edge-native applications, with ever more
+aggressive and variable offload management, online estimation may prove to be
+necessary. Another area worth exploring is the particular set of control and
+coordination mechanisms to allow cloudlets to manage client-offered load
+directly. Finally, the implementation to date only controls allocation of
+resources but allows the cloudlet operating system to arbitrarily schedule
+application processes.  Whether fine-grained control of application scheduling
+on cloudlets can help scale services remains an open question.
+
