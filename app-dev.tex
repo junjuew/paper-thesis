@@ -32,15 +32,15 @@ skills, but not necessarily experiences with wearables and machine learning.
 \section{Ad Hoc WCA Development Process}
 \label{sec: app-dev-adhoc}
 
-\begin{figure*}
+\begin{figure}
   \centering
   \includegraphics[trim={0 6cm 0 0},width=\linewidth]{FIGS/ad-hoc-workflow}
 	\caption{Ad Hoc Development Workflow}
-    \label{fig:workflow}
-\end{figure*}
+    \label{figs:workflow}
+\end{figure}
 
 Existing ad hoc development process of wearable cognitive assistance can be
-described as figure~\ref{fig:workflow}. Developers first work with task expert
+described as figure~\ref{figs:workflow}. Developers first work with task expert
 to identify and pinpoint a specific use case. With the use case in mind, the
 development team need to identify essential visual states that can be reliably
 recognized with machine vision. In the meantime, the use case is broken down
@@ -130,49 +130,189 @@ overall development time.
 
 \section{A Quick Prototype Methodology}
 
-To reduce the expertise and time in development, we propose a new prototype
-methodology, centered around object detection for visual state detection and
-finite state machine for application representation. We first introduce the
-overview of this methodology in this section and then describe tools we have
-built to empower this methodology in detail in subsequent sections.
+To streamline the development process and lower the barrier of entry, we propose
+a new prototype methodology centering around:
+\begin{enumerate}
+  \item  Use deep neural network (DNN) based object detection as the universal
+  building block for visual state recognition.
+  \item Use finite state machine to represent application task model.
+\end{enumerate}
+We first introduce the concept of this methodology and describe its benefits in
+this section and then introduce tools we have built to automate this methodology
+in detail in subsequent sections.
+
+\subsection{Object as the Universal Unit to Recognize Visual State}
 
 To replace manual selection of computer vision algorithms through trial and
 error, we propose to use DNN-based object detection as the fundamental building
-blocks to detect user states. Each visual state should be decomposed and
-described as individual objects within the scene along with the relationship
-among these objects. We argue that using objects as fundamental building blocks
-provide expressive and flexible constructions that are capable of describing a wide range of
-user states. For example, it is trivial to detect the presence of figure 1.
-(examples of expression). Moreover, for complicated (object close to each other
-case). In addition, the relationship among objects can be not only spatial but
-also temporal. For example, (use spatial as redundant information)
+blocks to detect user states. Using object detection as the universal building
+block means that each visual state should be decomposed and described as a
+collection of individual objects along with their attributes and relationship.
+We argue that objects as fundamental building blocks provide expressive and
+flexible constructions that are capable of describing a wide range of visual
+user states important to WCAs. Intuitively, the addition and removal of objects
+from the scene is straightforward to express. Spatial relationships among
+objects (e.g. close to, on the left of, overlap significantly) captures
+important visual features that can be used to infer deep user states. For
+example, the detection of two Ikea furniture pieces close to each other can
+indicate they have been assembled together. Moreover, temporal relationships add
+confidence to the inference made from spatial relationship. The detection of two
+pieces of furniture close to each other in the last 30 frames implies strongly
+that they have been assembled together.
 
-Existing applications can be easily fit into this object-centered methodology of
-recognizing visual states. In Ping-Pong assistance, the Ping-Pong table, the
-ball, and the opponent need to be recognized and localized. In Ikea Lamp
-assistance, the lamp base, the shade, and the bulb need to be detected. (LEGO
-case, shape and color can be detected as well)
+\begin{figure}
+  \centering
+  \includegraphics[trim={0 0 0 0},width=\linewidth]{FIGS/pingpong.jpeg}
+	\caption{A Frame Seen by the PING PONG Assistance}
+    \label{figs:pingpong-frame}
+\end{figure}
 
-The benefit of focusing on object detection as the central building block is an
-automated method to develop visual detectors.  Object detection recently is
-mature enough. (some words about the state of art in object detection). 
-In
-particular, recent advances in
-DNNs~\cite{he2017mask},~\cite{Ren2015},~\cite{He2016} have not only drastically
-improved the accuracy of object detection, but also provide an opportunity to
-automate the creation of them. Unlike traditional CV algorithms, DNNs adopt a
-end-to-end learning approach, in which features are no longer hand-crafted but
-learned. The replacement of custom CV code with machine-learned models gives
-automation opportunities. Nevertheless, creating a DNN-based object detector is
-still both time-consuming and painstaking due to other reasons. DNNs have a lot
-of parameters and requires millions of labeled examples to train from scratch.
-Collecting and labeling these large amount of training data becomes a
-bottleneck.
+To illustrate the effectiveness of this object centered approach, we showcase
+how existing applications built without this methodology in mind can be easily
+expressed with objects. Figure~\ref{figs:pingpong-frame} shows an image that will
+trigger the PING PONG assistance to provide an instruction to hit the ball to
+the left. We can express this visual state with a collection of objects, namely
+the Ping-Pong table, the ball, and the opponent. These objects needs to satisfy
+the following spatial relationship for the instruction ``hit to the LEFT'' to be
+generated. To improve the accuracy of our instruction, we can require the
+spatial relationship of these objects to be hold true for at least two
+consecutive frames before an instruction is generated.
 
-To reduce custom logic. Another is to use (state amchine representation to unify
-the presentation of applications). These unified methodology provides methods
-for automation. Examples applications represented in state machine format is
-shown as below. We provide a state machine tool to help with this.
+\begin{itemize}
+  \item The Ping-Pong ball is above the Ping-Pong table for an active rally.
+  \item The opponent is on the right side of the Ping-Pong table.
+  \item The ball is also on the right side of the Ping-Pong table.
+\end{itemize}
+
+\begin{figure}
+  \centering
+  \includegraphics[trim={0 0 0 0},width=\linewidth]{FIGS/lego}
+	\caption{A Frame Seen by the LEGO Assistance}
+    \label{fig:lego-image}
+\end{figure}
+
+Similarly, we can express the visual states using objects for another
+application LEGO. Figure~\ref{fig:lego-image} shows a visual state for the
+assembled pieces. Here the collection of objects needs to be present are two
+blue Lego blocks, one black block, one white block, and one yellow block. The
+spatial relationships among these block include:
+
+\begin{itemize}
+  \item The yellow block should be at the bottom and longer than all other blocks.
+  \item The white block should be in the middle of a blue block and the yellow
+  block. It should have the same width as the blue block.
+  \item The black block should be on the left of a blue block and the white
+  block. It should also be on the bottom of a blue block.
+  \item One blue bock should be at the top of all other pieces.
+\end{itemize}
+
+One challenge with object detection is to obtain the absolute scale. In this
+example, it would be difficult to get the exact width of the lego block (e.g.
+whether it is a 1x4 or 1x3 lego piece) with object detection alone. However,
+once the location of object is detected, additional processing can be leveraged
+to identify objects' attributes. In this particular case, we can leverage the
+dots on the lego board to calculate the absolute size of lego pieces.
+
+The key benefit of using object detection as the universal unit to recognize
+visual states is the possibility of automation. In recent years, deep neural
+networks have dramatically increased the accuracy of object
+detection~\cite{zou2019object}. In 2008, the best object detector, based on
+deformable part model~\cite{felzenszwalb2008discriminatively}, achieved a mean
+average precision (mAP) of 21~\% on the Pascal Visual Object Classes
+dataset~\cite{everingham2010pascal}. In less than ten years, deep neural
+networks~\cite{he2017mask},~\cite{Ren2015},~\cite{He2016},~\cite{lin2017focal}
+have quadrupled the accuracy to be 84~\% on the same dataset. Many commerical
+products now offer object detection features using DNNs. For example, Google
+Photos and Pinterest Visual Search provide users the capability to search for
+images containing object of interest.
+
+In addition to significant improvement in accuracy, DNNs also provide a unified
+method to create object detectors. Modern DNN-based object detectors employ
+end-to-end learning, in which one or multiple deep neural network are trained to
+predict the object classes and locations directly from RGB images. Gone are the
+need of hand-crafted feature engineering. Instead, DNNs find distinguishable
+features on their own as they are presented with between labeled examples of
+different objects. The replacement of custom CV code with machine-learned models
+makes automation possible. A typical DNN training process consisted of the
+following steps.
+
+\begin{enumerate}
+  \item Collect training examples of object of interests from diverse
+  background, perspective, and lighting.
+  \item Annotate training examples with bounding boxes and class names to create
+  a dataset of training data, evaluation data, and test data.
+  \item Implement a DNN-based object detection network, typically using machine learning frameworks,
+  such as Tensorflow~\cite{abadi2016tensorflow} or
+  PyTorch~\cite{paszke2019pytorch}.
+  \item Continuously train and evaluate the DNN using the labeled dataset.
+  \item Test the DNN accuracy on the test data.
+\end{enumerate}
+
+While a unified training method eliminates manual feature engineering, creating
+a DNN-based object detector is still both time-consuming and painstaking for the
+following reasons. First, DNNs often have millions of model parameters and
+therefore requires millions of labeled examples to train from scratch.
+Collecting and labeling such large amount of training data takes significant
+manual labor. Second, implementing a DNN correctly for object detector is not
+trivial and still require significant amount of knowledge of neural networks.
+For example, state-of-art object detectors uses custom layers other than
+convolutional layer for better performance. Data augmentation, batch
+normalization, and drop out are needed at training time for better results in
+the optimization process, but should be disabled during inference time. To
+streamline the process of creating DNN-based object detectors, we provide a web
+app TPOD~\ref{sec: app-dev-tpod} that hide the implementation details from the
+developers and allow them to train a DNN object detector from their browser
+without writing a single line of code.
+
+\subsection{Finite State Machine (FSM) as Application Representation}
+
+While the Gabriel platform handles data capture and transmission from mobile
+wearable devices to cloudlet, application developers still need to write custom
+business logic for each use case. Since the task model can change frequently
+during development time, a fast turn-around time to implement changes is needed
+to reduce the overall development time. Therefore, we propose a finite state
+machine representation of application logic and a GUI tool in order to reduce
+the development time and efforts for application logic. 
+
+Our choice of finite state machine representation is based on the observation
+that WCAs, in their nature, are finite state machines. A FSM ``State''
+corresponds to a user state at a particular time. When the application is in a
+particular state, it needs to run some computer vision processing to analyze the
+current scene. We refer to the computer vision algorithms as ``Processors'' for
+the state. The outputs of ``Processors'' are symbolic states of current scene.
+For example, it can be a vector of object classes and locations. ``Transitions''
+to other state happens when the symbolic states meet some criteria, for example,
+the presence of a new object. We refer to these criteria as ``Predicates'' for
+transitions. A ``State'' can have multiple transitions into several adjacent
+``States''. Each ``Transition'' has its own ``Predicate''. ``Transitions'' also
+have the concept of precedence. The first ``Transition'' whose ``Predicate'' is
+satisfied will be triggered for a state change. ``Tranistions'' also have
+guidance instructions associated with them. When a ``Transition'' is taken, the
+corresponding guidance instruction is delivered to the user.
+
+
+\begin{figure}
+  \centering
+  \includegraphics[trim={0 0 0 0},width=\linewidth]{FIGS/fsm-example}
+	\caption{Example FSM}
+    \label{figs:fsm-example}
+\end{figure}
+
+Figure~\ref{figs:fsm-example} shows an example of a simple WCA represented as a
+finite state machine. This example WCA checks whether a piece of bread is
+present. If so, it congratulates the user. If on the other hand it detects a
+piece of ham is present. It corrects the user to replace the ham with a bread.
+There are four states in total. The application starts from the ``Start'' state
+and immediately transition to ``Check Bread'' state as the transition predicate
+is ``Always''. At ``Check Bread'' state, for each frame, it runs its processor,
+a DNN to detect bread and ham, to extract the symbolic state of the current
+frame. It also iterates through its transitions to check if any of them are
+satisfied. If a ``Bread'' is detected, the transition predicate to ``Finish'' is
+satisfied and hence the transition taken. The corresponding instruction ``Good
+Job'' is delivered to the user. Then the current state of the applcation becomes
+``Finish''. Similarly, when in ``Check Bread'' state, if a ``Ham'' is detected,
+the transition to ``Error: Ham'' state is satisfied and taken. The instruction
+``Replace Ham with Bread'' will be delivered as corrective guidance to the user.
 
 \input{app-dev-tpod.tex}
 \input{app-dev-fsm.tex}
