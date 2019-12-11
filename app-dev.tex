@@ -312,7 +312,13 @@ satisfied and hence the transition taken. The corresponding instruction ``Good
 Job'' is delivered to the user. Then the current state of the applcation becomes
 ``Finish''. Similarly, when in ``Check Bread'' state, if a ``Ham'' is detected,
 the transition to ``Error: Ham'' state is satisfied and taken. The instruction
-``Replace Ham with Bread'' will be delivered as corrective guidance to the user.
+``Replace Ham with Bread'' will be delivered as the corrective guidance to the
+user.
+
+With FSM representing application logic, we impose structure on the component
+and the logic of the application. We provide a python API and a web GUI,
+introduced in Section~\ref{sec: app-dev-statemachine} to enable developers to
+quickly create a cognitive assistant without writing custom code. 
 
 \input{app-dev-tpod.tex}
 \input{app-dev-fsm.tex}
