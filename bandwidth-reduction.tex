@@ -3,14 +3,17 @@
 
 WCAs continuously stream sensor data to the cloudlet. The richer a sensing
 modality is, the more information can be extracted. The core sensing modality of
-WCAs is visual data, e.g. first-person view images and videos from wearable
-cameras. Compared to other sensors, e.g. microphones and inertial measurement
-units (IMUs), cameras capture deep semantic information. With the fast
-decreasing costs of camera hardware, they become increasingly pervasive in
-recent years. In the meantime, significant advancement in computer driven by
-deep neural networks (DNNs) has made many previously difficult perception
-problems tractable. The richness and open-endness of visual data makes camera
-the core sensor of WCAs.
+WCAs is visual data, e.g. egocentric images and videos from wearable cameras.
+Compared to other sensors, e.g. microphones and inertial measurement units
+(IMUs), cameras capture visual information with rich semantics. As commercial
+camera hardware becomes more affordable, they become increasingly pervasive in
+recent years. For example, in 2013, it is estimated that there are 5.9 million
+security cameras in the UK~\cite{Barrett2013}. In the meantime, deep neural
+networks (DNNs) have driven significant advancement in computer vision in recent
+years and have achieved human-level accuracy in many previously untractable
+perception problems (e.g. face recognition, image
+classification)~\cite{learned2016labeled, schroff2015facenet}. The richness and
+the open-endness of visual data makes camera the ideal sensor for WCAs.
 
 However, continuous video transmission from many Tier-3 devices places severe
 stress on the wireless spectrum.  Hulu estimates that its video streams require
@@ -21,19 +24,25 @@ users transmitting HD video streams continuously can saturate the theoretical
 uplink capacity of 500 Mbps in a 4G LTE cell that covers a large rural
 area~\cite{LteWorld2009}.  This is clearly not scalable.
 
-In this chapter, we show how per-user bandwidth demand in live video analytics
-can be significantly reduced using an application-agnostic approach. We aim to
-reduce bandwidth demand without compromising the timeliness or accuracy of
-results. We present techniques for an adaptive computer vision pipeline for
-Tier-3 devices that leverages edge computing to enable dynamic optimizations. In
-contrast to previous
+In this chapter, we show how per-user bandwidth demand in WCA-like live video
+analytics can be significantly reduced using an application-agnostic approach.
+We aim to reduce bandwidth demand without compromising the timeliness or
+accuracy of results. We present techniques for an adaptive computer vision
+pipeline for Tier-3 devices that leverages edge computing to enable dynamic
+optimizations. In contrast to previous
 works~\cite{Wang2017networked}~\cite{zhang2015design}~\cite{Wang2016skyeyes}, we
 leverage state-of-the-art deep neural networks (DNNs) to selectively transmit
-interesting data from a video stream and explore mission-specific optimizations.
-We present results first in the context of live video analytics for drones. As
-exemplars of Tier-3 devices, drones and wearable devices face similar challenges
-in live video analysis. Then, we showcase how these techniques can be applied to
-WCAs.
+interesting data from a video stream and explore environment-specific
+optimizations. 
+
+This chapter is organized as follows. We first discuss the challenges of running
+DNNs for visual perception solely on Tier-3 devices in
+Section~\ref{bw:challenges}. Next, we propose and compare two
+application-agnostic techniques to reduce network transmission in edge computing
+context. We present our results first in the context of live video analytics for
+small autonomous drones. Both as emerging Tier-3 devices, drones and wearable
+devices face similar challenges in live video analysis. Finally, we showcase how
+these techniques can be applied to WCAs in Section~\ref{bw:wca}.
 
 \input{bandwidth-reduction-challenges}
 \input{bandwidth-reduction-dumbdrone}

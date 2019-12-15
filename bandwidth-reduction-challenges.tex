@@ -13,24 +13,28 @@ their implications below.
 \label{bw:payload}
 
 Unfortunately, the hardware needed for deep video stream processing in real time
-is larger and heavier than can fit on a typical Tier-3 device. State-of-art
+is larger and heavier than what can fit on a typical Tier-3 device. State-of-art
 techniques in image processing use DNNs that are compute- and memory-intensive.
 Figure~\ref{fig:onboard-dnn-speed} presents experimental results on two
 fundamental computer vision tasks, image classification and object detection, on
 four different devices. In the figure, MobileNet V1 and ResNet101 V1 are image
-classification DNNs. Others are object detection DNNs. Both tasks used publicly
-available pretrained DNN models. We carefully choose hardware platforms to
-represent a range of computation capabilities of Tier-3 devices. To anticipate
-future improvements in smartphone technology, our experiments also consider more
-powerful devices such as the Intel$^{\tiny\textregistered}$
-Joule~\cite{Hardawar2016} and the NVIDIA Jetson~\cite{NVIDIA2017} that are
-physically compact and light enough to be credible as wearable device platforms
-in a few years.
+classification DNNs. Others are object detection DNNs. We use publicly available
+pretrained DNN models for measurements~\cite{tfod2019}. We carefully choose
+hardware platforms to represent a range of computation capabilities of Tier-3
+devices. To anticipate future improvements in smartphone technology, our
+experiments also consider more powerful devices such as the
+Intel$^{\tiny\textregistered}$ Joule~\cite{Hardawar2016} and the NVIDIA
+Jetson~\cite{NVIDIA2017} that are physically compact and light enough to be
+credible as wearable device platforms in the future.
 
-Fig.~\ref{fig:onboard-dnn-speed}, we present the best results we could obtain on
-each platform. This is not intended to directly compare frameworks and platforms
-(as others have been doing~\cite{Zhang2018pcamp}), but rather to illustrate the
-differences between wearable platforms and fixed infrastructure servers. 
+Note that the absolute speed of DNN inference depends on a wide range of
+factors, including the optimizations used in DNN model implementation, the
+choice of linear algebra libraries, the presence of vectorized instructions and
+hardware accelerators. In Fig.~\ref{fig:onboard-dnn-speed}, we present the best
+results we could obtain on each platform. This is not intended to directly
+compare frameworks and platforms (as others have been
+doing~\cite{Zhang2018pcamp}), but rather to illustrate the differences between
+wearable platforms and fixed infrastructure servers. 
 
 \begin{figure}
 \centering
@@ -77,45 +81,47 @@ Intel$^{\tiny\textregistered}$ Computer Vision SDK beta 3 is used.
 \label{fig:onboard-dnn-speed}
 \end{figure}
 
-Image classification maps an image into categories, with each category
-indicating whether one or many particular objects (e.g., a human survivor, a
-specific animal, or a car) exist in the image.  The prediction speed using two
-different DNNs are shown. MobileNet V1~\cite{Howard2017} is a DNN
-designed for mobile devices from the ground-up by reducing the number of
-parameters and simplifying the computation using
-depth-wise separable convolution. ResNet101 V1~\cite{He2016} is a more accurate
-but also more resource-hungry DNN that won the ImageNet
-classification challenge in 2015~\cite{Russakovsky15}. 
+Image classification is a computer vision task that maps an image into
+categories, with each category indicating whether one or many particular objects
+(e.g., a human survivor, a specific animal, or a car) exist in the image. Two
+widely used multiclass classificaiton DNNs are tested. Their prediction speed
+are shown in column ``Image Classification''. One of the DNNs, MobileNet
+V1~\cite{Howard2017}, is designed for mobile devices from the ground-up by
+reducing the number of parameters and simplifying the layer computation using
+depth-wise separable convolution. On the other hadn, ResNet101 V1~\cite{He2016}
+is a more accurate but also more resource-hungry DNN that won the highly
+recognized ImageNet classification challenge in 2015~\cite{Russakovsky15}. 
 
-Object detection is a harder task than image classification, because it requires
-bounding boxes to be predicted around the specific areas of an image that
-contains a particular class of object. Object detection DNNs are built on top of
-image classification DNNs by using image classification DNNs as low-level
-feature extractors. Since feature extractors in object detection DNNs can be
-changed, the DNN structures excluding feature detectors are referred as object
-detection meta-architectures. We benchmarked two object detection DNN
+Also shown is another harder computer vision task, object detection. Object
+detection is a more difficult perception problem, because it not only requires
+categorization, but also prediction of bounding boxes around the specific areas
+of an image that contains a particular class of object. Object detection DNNs
+are built on top of image classification DNNs by using image classification DNNs
+as low-level feature extractors. Since feature extractors in object detection
+DNNs can be changed, the DNN structures excluding feature detectors are referred
+as object detection meta-architectures. We benchmarked two object detection DNN
 meta-architectures: Single Shot Multibox Detector (SSD)~\cite{Liu2016} and
 Faster R-CNN~\cite{Ren2015}. We used multiple feature extractors for each
 meta-architecture. The meta-architecture SSD uses simpler methods to identify
 potential regions for objects and therefore requires less computation and runs
 faster. On the other hand, Faster R-CNN~\cite{Ren2015} uses a separate region
 proposal neural network to predict regions of interest and has been shown to
-achieve higher accuracy~\cite{Huang2017}. Figure~\ref{fig:onboard-dnn-speed}
-presents results in four columns: SSD combined with MobileNet V1 or Inception
-V2, and Faster R-CNN combined with Inception V2 or ResNet101 V1~\cite{He2016}.
-The combination of Faster R-CNN and ResNet101 V1 is one of the most accurate
-object detectors available today~\cite{Russakovsky15}. The entries marked ``{\sc
-ENOMEM}'' correspond to experiments that were aborted because of insufficient
-memory.
+achieve higher accuracy~\cite{Huang2017} for difficult tasks.
+Figure~\ref{fig:onboard-dnn-speed} presents results in four columns: SSD
+combined with MobileNet V1 or Inception V2, and Faster R-CNN combined with
+Inception V2 or ResNet101 V1~\cite{He2016}. The combination of Faster R-CNN and
+ResNet101 V1 is one of the most accurate object detectors available
+today~\cite{Russakovsky15}. The entries marked ``{\sc ENOMEM}'' correspond to
+experiments that were aborted because of insufficient memory.
 
 These results demonstrates the computation gap between mobile and static
-elements. While the most accurate object detection model Faster R-CNN Resnet101 V1
-can achieve more than two FPS on a server GPU, it either takes several seconds
-on  mobile platforms or fails to execute due to insufficient memory. In
+elements. While the most accurate object detection model Faster R-CNN Resnet101
+V1 can achieve more than two FPS on a server GPU, it either takes several
+seconds on Tier-3 devices or fails to execute due to insufficient memory. In
 addition, the figure also confirms that sustaining open-ended real-time video
 analytics on smartphone form factor computing devices is well beyond the state
 of the art today and may remain so in the near future.  This constrains what is
-achievable with Tier-3 devices.
+achievable with Tier-3 devices alone.
 
 \subsection{Result Latency, Offloading \& Scalability}
 \label{bw:offloading}
@@ -131,30 +137,29 @@ challenges of Tier-3 computation power mentioned previously. Unfortunately, this
 approach delays the discovery and use of knowledge in the captured data by a
 substantial amount (e.g., many tens of minutes to a few hours).  Such delay may
 be unacceptable in use cases such as search-and-rescue using drones, or
-step-by-step instruction feedback from wearable devices. In this chapter, we focus
-on approaches that aim for much smaller result latency: ideally, close to
-real-time.
+real-time step-by-step instruction feedback in WCAs. In this chapter, we focus
+on approaches that aim for much smaller, real-time result latency.
 
 A different approach is to offload video processing during flight over a
 wireless link to an edge computing node (cloudlet). With this approach, even a
 weak Tier-3 device can leverage the substantial processing capability of a
-ground-located cloudlet, without concern for its weight, size, heat dissipation,
-or energy usage.  Much lower result latency is now possible.  However, even if
+ground-located cloudlet, without concern for its weight, size, heat dissipation
+or energy usage.  Much lower result latency is now possible.  However even if
 cloudlet resources are viewed as ``free'' from the viewpoint of mobile
 computing, the Tier-3 device consumes wireless bandwidth in transmitting video.
 
 Today, 4G LTE offers the most plausible wide-area connectivity from a Tier-3
-device to its associated cloudlet.  The much higher bandwidths of 5G are still
-many years away, especially at global scale.  More specialized wireless
-technologies, such as Lightbridge 2~\cite{LightBridge2} for drones, can also be
-used.  Regardless of specific wireless technology, the principles and techniques
-described in this chapter apply.
+device to its associated cloudlet. The much higher bandwidths of 5G are still
+several years away, especially at global scale.  More specialized wireless
+technologies, such as Lightbridge 2~\cite{LightBridge2} for drones, could also
+be used. Regardless of specific wireless technology, the principles and
+techniques described in this chapter apply.
 
-{\em Scalability,} in terms of maximum number of concurrently operating Tier-3
-devices within a 4G LTE cell becomes an important metric.  In this chapter we
-explore how the limited processing capability on a Tier-3 device can be used to
-greatly decrease the volume of data transmitted, thus improving scalability
-while minimally impacting result accuracy and result latency.
+When offloading, scalability in terms of maximum number of concurrently
+operating Tier-3 devices within a 4G LTE cell becomes an important metric.  In
+this chapter we explore how the limited processing capability on a Tier-3 device
+can be used to greatly decrease the volume of data transmitted, thus improving
+scalability while minimally impacting result accuracy and result latency.
 
 Note that the uplink capacity of 500 Mbps per 4G LTE cell assumes standard
 cellular infrastructure that is undamaged.  In natural disasters and military
@@ -166,13 +171,13 @@ LTE~\cite{Sankaran2018}.  Conserving wireless bandwidth from Tier-3 video
 transmission then becomes even more important, and the techniques described here
 will be even more valuable.
 
-% \emph{Result accuracy} influences a second dimension of scalability, namely
-% the ability of one individual to supervise the result streams from
-% many drones.  The output of each video processing pipeline should only
-% demand occasional human attention.  The accuracy, sophistication, and
-% speed of this pipeline determines the cognitive load on mission
-% personnel for a given video stream.  For example, a pipeline that has
-% virtually no false positives or false negatives in detecting survivors
-% will consume less supervisory human attention than a mediocre
-% pipeline.  That will allow one person to confidently supervise a large
-% swarm that rapidly covers a large search area.
+% Another metric of importance here is result accuracy, which influences a
+% second dimension of scalability, namely the ability of one individual to
+% supervise the result streams from many drones.  The output of each video
+% processing pipeline should only demand occasional human attention.  The
+% accuracy, sophistication, and speed of this pipeline determines the cognitive
+% load on mission personnel for a given video stream.  For example, a pipeline
+% that has virtually no false positives or false negatives in detecting survivors
+% will consume less supervisory human attention than a mediocre pipeline.  That
+% will allow one person to confidently supervise a large swarm that rapidly covers
+% a large search area.
