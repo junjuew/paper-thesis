@@ -6,7 +6,6 @@
 \includegraphics[trim={9cm 6.5cm 5cm 4.8cm},clip,width=\linewidth]{FIGS/fig-ondrone-early-discard.pdf}
 \caption{Early Discard on Tier-3 Devices}
 \label{fig:ondrone}
-\vspace{-0.2in}
 \end{figure}
 
 
@@ -115,8 +114,8 @@ in the evaluation.
 
 \begin{figure}
 \centering
-\includegraphics[width=\linewidth]{FIGS/fig-event-recall-frame-percentage-legend.pdf}
-
+\includegraphics[width=\linewidth]{FIGS/fig-event-recall-frame-percentage-legend.pdf}\\
+    \vspace{.5in}
 \begin{minipage}[]{0.45\linewidth}
 \centering
 \includegraphics[width=\linewidth]{FIGS/fig-event-recall-frame-percentage-vs-threshold-okutama.pdf}\\
@@ -127,6 +126,9 @@ in the evaluation.
     \includegraphics[width=\linewidth]{FIGS/fig-event-recall-frame-percentage-vs-threshold-stanford.pdf}\\
 {(b) T2}
 \end{minipage}
+
+\vspace{.5in}
+
 \begin{minipage}[]{0.45\linewidth}
 \centering
     \includegraphics[width=\linewidth]{FIGS/fig-event-recall-frame-percentage-vs-threshold-raft.pdf}\\
@@ -137,6 +139,8 @@ in the evaluation.
     \includegraphics[width=\linewidth]{FIGS/fig-event-recall-frame-percentage-vs-threshold-elephant.pdf}\\
 {(c) T4}
 \end{minipage}
+
+    \vspace{.5in}
 \caption{Bandwidth Breakdown}
 \label{fig:earlydiscard-frame-percent-breakdown}
 \end{figure}
@@ -149,7 +153,9 @@ maintaining high result accuracy and low average delay. For three out of four
 tasks, the average bandwidth is reduced by a factor of ten. Below we present
 our results in detail.
 
-\noindent{\textbf{Effects of Tiling}}: Tiling is used to improve the accuracy
+\subsubsection{Effects of Tiling}
+% \noindent{\textbf{Effects of Tiling}}: 
+Tiling is used to improve the accuracy
 for high resolution aerial images. We used the Okutama Action Dataset, whose
 attributes are shown in row T1 of Figure~\ref{fig:benchmarksuite}, to explore
 the effects of tiling.  For this dataset,
@@ -161,34 +167,39 @@ with the number of tiles. The choice of an operating point will need to strike a
 balance between the speed and accuracy.  In the rest of the chapter, we use two
 tiles per frame by default. 
 
-\noindent{\textbf{Drone Filter Accuracy}}: The output of a drone filter is the
+\subsubsection{Drone Filter Accuracy}
+% \noindent{\textbf{Drone Filter Accuracy}}: 
+The output of a drone filter is the
 probability of the current tile being ``interesting.''  A tunable {\em cutoff
 threshold} parameter specifies the threshold for transmission to the cloudlet.
 All tiles, whether deemed interesting or not, are still stored in the drone
 storage for offline processing.
 
-Figure~\ref{fig:earlydiscard-frame-percent-breakdown} shows our results on all
-four tasks. Events such as detection of a raft in T3 occur in consecutive
-frames, all of which contain the object of interest. A correct detection of an
-event is defined as at least one of the consecutive frames being transmitted to
-the cloudlet.  Blue lines in
-Figure~\ref{fig:earlydiscard-frame-percent-breakdown} shows how the event
-recalls of drone filters for different tasks change as a function of cutoff
-threshold. The MobileNet DNN filter we used is able to detect all the events for
-T1 and T4 even at a high cutoff threshold. For T2 and T3, the majority of the
-events are detected. Achieving high recall on T2 and T3 (on the order of 0.95 or
-better) requires setting a low cutoff threshold.  This leads to the possibility
-that many of the transmitted frames are actually uninteresting (i.e., false
-positives).
+Since objects have temporal locality in videos, we define an event (of an
+object) in a video to be consecutive frames containing the same object of
+interests. For example, the appearance of the same red raft in T3 in consecutive
+45 frames constitutes a single event. A correct detection of an event is defined
+as at least one of the consecutive frames being transmitted to the cloudlet.  
 
-\noindent{\textbf{False negatives}}: As discussed earlier, false negatives are
+Figure~\ref{fig:earlydiscard-frame-percent-breakdown} shows our results on all
+four tasks. Blue lines in Figure~\ref{fig:earlydiscard-frame-percent-breakdown}
+shows how the event recalls of drone filters for different tasks change as a
+function of cutoff threshold. The MobileNet DNN filter we used is able to detect
+all the events for T1 and T4 even at a high cutoff threshold. For T2 and T3, the
+majority of the events are detected. Achieving high recall on T2 and T3 (on the
+order of 0.95 or better) requires setting a low cutoff threshold.  This leads to
+the possibility that many of the transmitted frames are actually uninteresting
+(i.e., false positives).
+
+\subsubsection{False negatives}
+As discussed earlier, false negatives are
 a source of concern with early discard.  Once the drone drops a frame
 containing an important event, improved cloudlet processing cannot help. The
 results in the third column of Figure~\ref{fig:early-discard-results} confirm
 that there are no false negatives for T1 and T4 at a cutoff threshold of 0.5.
 For T2 and T3, lower cutoff thresholds are needed to achieve perfect recalls.
 
-\noindent{\textbf{Result latency}}:
+\subsubsection{Result latency}
 The contribution of early discard processing to total result latency
 is calculated as the average time difference between the first frame
 in which an object occurs (i.e., first occurrence in ground truth) and
@@ -221,17 +232,18 @@ T4 & \phantom{0}25  & 100~\%       & \phantom{0}0.3 & \phantom{0}167  &  0.43 & 
 \end{figure}
 
 
-\noindent{\textbf{Bandwidth}}: Columns 5--7 of
-Figure~\ref{fig:early-discard-results} pertain to wireless bandwidth demand for
-the benchmark suite with early discard.  The figures shown are based on H.264
-encoding of each individual frames in the drone-cloudlet video transmission.
-Average bandwidth is calculated as the total data transmitted divided by
-mission duration.  Comparing column 5 of Figure~\ref{fig:early-discard-results}
-with column 2 of Figure~\ref{fig:baseline}, we see that all videos in the
-benchmark suite are benefited by early discard (Note T3 and T4 have the same
-test dataset as T2). For T2, T3, and T4, the bandwidth is reduced by more than
-10x. The amount of benefit is greatest for rare events (T2 and T3).  When
-events are rare, the drone can drop many frames.
+\subsubsection{Bandwidth}
+Columns 5--7 of Figure~\ref{fig:early-discard-results} pertain to wireless
+bandwidth demand for the benchmark suite with early discard.  The figures shown
+are based on H.264 encoding of each individual frames in the drone-cloudlet
+video transmission. Average bandwidth is calculated as the total data
+transmitted divided by mission duration.  Comparing column 5 of
+Figure~\ref{fig:early-discard-results} with column 2 of
+Figure~\ref{fig:baseline}, we see that all videos in the benchmark suite are
+benefited by early discard (Note T3 and T4 have the same test dataset as T2).
+For T2, T3, and T4, the bandwidth is reduced by more than 10x. The amount of
+benefit is greatest for rare events (T2 and T3).  When events are rare, the
+drone can drop many frames.
 
 Figure~\ref{fig:earlydiscard-frame-percent-breakdown} provides deeper insight
 into the effectiveness of cutoff-threshold on event recall. It also shows how
@@ -332,14 +344,12 @@ processed frame, allowing more sophisticated algorithms to be
 employed, or to allow smaller tiles to be used, improving
 accuracy of early discard.  
 
-One case where sampling is not an effective solution is when all
-frames containing an object need to be sent to the cloudlet for
-some form of activity or behavior analysis from a complete video
-sequence (as may be needed for task T5).  In this case, bandwidth
-will not reduce much, as all frames in the event sequence must be
-sent.  However, the processing time benefits of sampling may
-still be exploited, provided all frames in a sample interval are
-transmitted on a match.  
+One case where sampling is not an effective solution is when all frames
+containing an object need to be sent to the cloudlet for some form of activity
+or behavior analysis from a complete video sequence.  In this case, bandwidth
+will not reduce much, as all frames in the event sequence must be sent.
+However, the processing time benefits of sampling may still be exploited,
+provided all frames in a sample interval are transmitted on a match.  
 
 
 \subsection{Effects of Video Encoding}
@@ -374,11 +384,11 @@ most accurate model (Faster-RCNN ResNet101) on low quality videos performs simil
 to the less accurate model (Faster-RCNN InceptionV2) on high quality
 JPEG images. This negates the benefits of using the state-of-art models.
 
-In this system, we pay a penalty of sending frames instead of a compressed low
-quality video stream. This overhead (approximately 30x) is compensated by the
-100x reduction in frames transmitted due to sampling with early discard. In
-addition, the selective frame transmission preserves the accuracy of the
-state-of-art detection techniques.
+In our EarlyDiscard design, we pay a penalty of sending frames instead of a
+compressed low quality video stream. This overhead (approximately 30x) is
+compensated by the 100x reduction in frames transmitted due to sampling with
+early discard. In addition, the selective frame transmission preserves the
+accuracy of the state-of-art detection techniques.
 
 Finally, one other option is to treat the set of disparate frames as a sequence
 and employ video encoding at high quality. This can ultimately eliminate the per
@@ -387,9 +397,9 @@ both low-latency encoders and decoders, which can generate output data
 corresponding to a frame as soon as input data is ingested, with no buffering,
 and can wait arbitrarily long for additional frame data to arrive. 
 
-For the experiments in the rest of the paper, we only account for the fraction
-of frames transmitted, rather than the choice of specific encoding methods used
-for those frames.
+For the experiments in the rest of this chapter, we only account for the
+fraction of frames transmitted, rather than the choice of specific encoding
+methods used for those frames.
 
 
 
