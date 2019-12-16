@@ -1,13 +1,73 @@
+
+\section{{\xc EarlyDiscard} Strategy}
+\label{sec:earlydiscard}
+
 \begin{figure}
 \includegraphics[trim={9cm 6.5cm 5cm 4.8cm},clip,width=\linewidth]{FIGS/fig-ondrone-early-discard.pdf}
-\caption{Drone-based Early Discard}
+\caption{Early Discard on Tier-3 Devices}
 \label{fig:ondrone}
 \vspace{-0.2in}
 \end{figure}
 
 
-\section{{\xc EarlyDiscard} S\lc{trategy}}
-\label{sec:earlydiscard}
+\subsection{Description}
+EarlyDiscard is based on the idea of using on-board processing to filter and
+transmit only interesting frames in order to save bandwidth when offloading
+computation. Frames are considered to be interesting if they capture objects or
+events valuable for processing, for instance, survivors for a search task.
+Previous work~\cite{Hu2015}~\cite{Naderiparizi2017} leveraged pixel-level
+features and multiple sensing modalities to select interesting frames from
+hand-held or body-worn cameras. In this section, we explore the use of DNNs to
+filter frames from aerial views. The benefits of using DNNs are as follows.
+First, DNNs, even shadow ones, are capable of understanding some semantically
+meaningful visual information. Their decisions of what to send are based on the
+reasoning of image content in addition to pixel-level characteristics. Next,
+DNNs are trained and specialized for each task, resulting in their high accuracy
+and robustness for that particular task. Finally, compared to a sensor fusing
+approach that requires other sensing modalities to be present on Tier-3 devices,
+no additional hardware is added to the existing platforms.
+
+Although smartphone-class hardware is incapable of supporting the most accurate
+object detection algorithms at full frame rate today, it is typically powerful
+enough to support less accurate algorithms.  These {\em weak detectors}, for
+instance, MobileNet in Figure~\ref{fig:onboard-dnn-speed}, are typically
+designed for mobile platforms or were the state of the art just a few years ago.
+In addition, they can be biased towards high recall with only modest loss of
+precision. In other words, many clearly irrelevant frames can be discarded by a
+weak detector, without unacceptably increasing the number of relevant frames
+that are erroneously discarded.  This asymmetry is the basis of the early
+discard strategy.
+
+As shown in Figure~\ref{fig:ondrone}, we envision a choice of weak detectors
+being available as early discard filters on Tier-3 devices, such as a drone,
+with the specific choice of filter being mission-specific.  Based on the
+measurements presented in Figure~\ref{fig:onboard-dnn-speed}, we choose cheap
+DNNs that can run in real-time as EarlyDiscard filters on Tier-3 devices. Note
+that both object detection and image classification algorithms can yield
+meaningful early discard results, as it is not necessary to know exactly where
+in the frame relevant objects occur --- just an estimate of key object presence
+is good enough. This suggests that MobileNet would be a good choice as a weak
+detector. For a given image or partial of an image, it can predict whether the
+input contains objects of interests. More importantly, MobileNet's speed of 13
+ms per frame on the Tier-3 platform Jetson yields more than 75 fps. We therefore
+use MobileNet on the drone for early discard in our experiments.
+
+Pre-trained classifiers for MobileNet are available today for objects such as
+cars, animals, human faces, human bodies, watercraft, and so on.  However, these
+DNN classifiers have typically been trained on images that were captured from a
+human perspective --- often by a camera held or worn by a person. These images
+typically have the objects at the center of the image and occupy the majority of
+the image A drone, however, has an aerial viewpoint and objects look rather
+different.  To improve classification accuracy on drones, we used {\em transfer
+learning}~\cite{Yosinski2014} to finetune the pre-trained classifiers on small
+training sets of images that were captured from an aerial viewpoint. Finetuning
+not only allows us to adapt pre-trained classifiers to drone views, but also
+makes it possible to target custom objects of interests that are not in the
+original dataset, for instance, survivors in orange life jacket. The process of
+fine-tuning involves initial re-training of the last DNN layer, followed by
+re-training of the entire network until convergence. Transfer learning enables
+accuracy to be improved significantly for aerial images without incurring the
+full cost of creating a large training set captured from an aerial viewpoint.
 
 \begin{figure}
 \centering
@@ -16,49 +76,6 @@
 \label{fig:tiling}
 \end{figure}
 
-\subsection{Description}
-EarlyDiscard is based on the idea of using on-board processing to filter and
-transmit only interesting frames in order to save bandwidth when offloading
-computation. Previous work~\cite{Hu2015}~\cite{Naderiparizi2017} leveraged
-pixel-level features and multiple sensing modalities to select interesting
-frames from hand-held or body-worn cameras. In this work, we explore the use
-of DNNs to filter frames from aerial views. The benefits of using DNNs are
-twofold. First, DNNs are trained and specialized for each task, resulting in
-their high accuracy and robustness. Second, no additional hardware is added to
-existing drone platforms.
-
-Although smartphone-class hardware is incapable of supporting the
-most accurate object detection algorithms at full frame rate today, it is
-typically powerful enough to support less accurate algorithms.  These {\em weak
-detectors} are typically designed for mobile platforms or were the state of the
-art just a few years ago.  In addition, they can be biased towards high recall
-with only modest loss of precision.  In other words, many clearly irrelevant
-frames can be discarded by a weak detector, without unacceptably increasing the
-number of relevant frames that are erroneously discarded.  This asymmetry is the
-basis of the early discard strategy.
-
-As shown in Figure~\ref{fig:ondrone}, we envision a choice of weak detectors
-being available as early discard filters on a drone, with the specific choice of
-filter being mission-specific.  Relative to the measurements presented in
-Figure~\ref{fig:onboard-dnn-speed}, early discard only requires image
-classification: it is not necessary to know exactly where in the frame a
-relevant object occurs.  This suggests that MobileNet would be a good choice as
-a weak detector. Its speed of 13 ms per frame on Jetson yields more than 75 fps.
-We therefore use MobileNet on the drone for early discard in our experiments.
-
-Pre-trained classifiers for MobileNet are available today for objects such as
-cars, animals, human faces, human bodies, watercraft, and so on.  However, these
-DNN classifiers have typically been trained on images that were captured from a
-human perspective --- often by a camera held or worn by a person.  A drone,
-however, has an aerial viewpoint and objects look rather different.  To improve
-classification accuracy on drones, we used {\em transfer learning}~\cite{Yosinski2014} to finetune
-the pre-trained classifiers on small training sets of images that were captured
-from an aerial viewpoint.  This involves initial re-training of the last DNN
-layer, followed by re-training of the entire network until convergence. Transfer
-learning enables accuracy to be improved significantly for aerial images without
-incurring the full cost of creating a large training set captured from an aerial
-viewpoint.
-
 Drone images are typically captured from a significant height, and hence objects
 in such an image are small.  This interacts negatively with the design of many
 DNNs, which first transform an input image to a fixed low resolution --- for
@@ -66,14 +83,17 @@ example, 224x224 pixels in MobileNet. Many important but small objects in the
 original image become less recognizable.  It has been shown that small object
 size correlates with poor accuracy in DNNs~\cite{Huang2017}.  To address this
 problem, we {\em tile} high resolution frames into multiple sub-frames and then
-perform recognition on the sub-frames.  This is done offline for training, as
-shown in Figure~\ref{fig:tiling}, and also for online inference on the drone and
-on the cloudlet.  The lowering of resolution of a sub-frame by a DNN is less
-harmful, since the scaling factor is smaller.  Objects are represented by many
-more pixels in a transformed sub-frame than if the entire frame had been
-transformed.  The price paid for tiling is increased computational demand.  For
-example, tiling a frame into four sub-frames results in four times the
-classification workload.
+perform recognition on the sub-frames as a batch.  This is done offline for
+training, as shown in Figure~\ref{fig:tiling}, and also for online inference on
+the drone and on the cloudlet.  The lowering of resolution of a sub-frame by a
+DNN is less harmful, since the scaling factor is smaller.  Objects are
+represented by many more pixels in a transformed sub-frame than if the entire
+frame had been transformed.  The price paid for tiling is increased
+computational demand.  For example, tiling a frame into four sub-frames results
+in four times the classification workload. Note that this increase in workload
+typically does not translates into the same increase in inference time, as
+workloads can be batched together to leverage hardware parallelism for a reduced
+total inference time.
 
 \begin{figure}
 \centering
@@ -85,18 +105,38 @@ classification workload.
 
 \subsection{Experimental Setup}
 
-Our experiments on the {\xc EarlyDiscard}
-strategy used the same benchmark suite described in
-Section~\ref{sec:dumbdrone-setup}. We used Jetson TX2 as the drone platform. We use
-both frame-based and event-based metrics to evaluate the MobileNet filters.
+Our experiments on the {\xc EarlyDiscard} strategy used the same benchmark suite
+described in Section~\ref{sec:dumbdrone-setup}. We used Jetson TX2 as the Tier-3
+device platform. We run MobileNet filters to get predictions on whether
+sub-frames contain objects of interests. We compare the predictions with ground
+truths (e.g. whether a sub-frame is indeed interesting) to evaluate the
+effectiveness of EarlyDiscard. Both frame-based and event-based metrics are used
+in the evaluation.
 
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=.9\linewidth]{FIGS/fig-event-recall-frame-percentage-legend.pdf}
-    \includegraphics[width=.48\linewidth]{FIGS/fig-event-recall-frame-percentage-vs-threshold-okutama.pdf}
-    \includegraphics[width=.48\linewidth]{FIGS/fig-event-recall-frame-percentage-vs-threshold-stanford.pdf}
-    \includegraphics[width=.48\linewidth]{FIGS/fig-event-recall-frame-percentage-vs-threshold-raft.pdf}
-    \includegraphics[width=.48\linewidth]{FIGS/fig-event-recall-frame-percentage-vs-threshold-elephant.pdf}
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth]{FIGS/fig-event-recall-frame-percentage-legend.pdf}
+
+\begin{minipage}[]{0.45\linewidth}
+\centering
+\includegraphics[width=\linewidth]{FIGS/fig-event-recall-frame-percentage-vs-threshold-okutama.pdf}\\
+{(a) T1}
+\end{minipage}
+\begin{minipage}[]{0.45\linewidth}
+\centering
+    \includegraphics[width=\linewidth]{FIGS/fig-event-recall-frame-percentage-vs-threshold-stanford.pdf}\\
+{(b) T2}
+\end{minipage}
+\begin{minipage}[]{0.45\linewidth}
+\centering
+    \includegraphics[width=\linewidth]{FIGS/fig-event-recall-frame-percentage-vs-threshold-raft.pdf}\\
+{(c) T3}
+\end{minipage}
+\begin{minipage}[]{0.45\linewidth}
+\centering
+    \includegraphics[width=\linewidth]{FIGS/fig-event-recall-frame-percentage-vs-threshold-elephant.pdf}\\
+{(c) T4}
+\end{minipage}
 \caption{Bandwidth Breakdown}
 \label{fig:earlydiscard-frame-percent-breakdown}
 \end{figure}
@@ -118,14 +158,14 @@ change with tile size.  Accuracy improves as tiles become smaller, but the
 sustainable frame rate drops.  We group all tiles from the same frame in a
 single batch to leverage parallelism, so the processing does not change linearly
 with the number of tiles. The choice of an operating point will need to strike a
-balance between the speed and accuracy.  In the rest of the paper, we use two
+balance between the speed and accuracy.  In the rest of the chapter, we use two
 tiles per frame by default. 
 
 \noindent{\textbf{Drone Filter Accuracy}}: The output of a drone filter is the
 probability of the current tile being ``interesting.''  A tunable {\em cutoff
 threshold} parameter specifies the threshold for transmission to the cloudlet.
 All tiles, whether deemed interesting or not, are still stored in the drone
-storage for post-mission processing.
+storage for offline processing.
 
 Figure~\ref{fig:earlydiscard-frame-percent-breakdown} shows our results on all
 four tasks. Events such as detection of a raft in T3 occur in consecutive
@@ -213,14 +253,29 @@ precision could be further improved, without hurting recall.
 
 
 \begin{figure}[h]
-    \centering
-    \includegraphics[width=0.7\linewidth]{FIGS/fig-recall-frame-aggregated-legend.pdf}
+\centering
+\includegraphics[width=0.7\linewidth]{FIGS/fig-recall-frame-aggregated-legend.pdf}
 
-    \includegraphics[trim={0.5cm 0.5cm 0 0},clip,width=0.47\linewidth]{FIGS/fig-random-select-and-filter-recall-frame-okutama-aggregated.pdf}
-    \includegraphics[trim={0.5cm 0.5cm 0
-      0},clip,width=0.47\linewidth]{FIGS/fig-random-select-and-filter-recall-frame-stanford-aggregated.pdf}
-    \includegraphics[trim={0.5cm 0.5cm 0 0},clip,width=0.47\linewidth]{FIGS/fig-random-select-and-filter-recall-frame-raft-aggregated.pdf}
-    \includegraphics[trim={0.5cm 0.5cm 0 0},clip,width=0.47\linewidth]{FIGS/fig-random-select-and-filter-recall-frame-elephant-aggregated.pdf}
+\begin{minipage}[]{0.47\linewidth}
+\centering
+\includegraphics[trim={0.5cm 0.5cm 0 0},clip,width=\linewidth]{FIGS/fig-random-select-and-filter-recall-frame-okutama-aggregated.pdf}\\
+{(a) T1}
+\end{minipage}
+\begin{minipage}[]{0.47\linewidth}
+\centering
+\includegraphics[trim={0.5cm 0.5cm 0 0},clip,width=\linewidth]{FIGS/fig-random-select-and-filter-recall-frame-stanford-aggregated.pdf}
+{(b) T2}
+\end{minipage}
+\begin{minipage}[]{0.47\linewidth}
+\centering
+\includegraphics[trim={0.5cm 0.5cm 0 0},clip,width=\linewidth]{FIGS/fig-random-select-and-filter-recall-frame-raft-aggregated.pdf}
+{(c) T3}
+\end{minipage}
+\begin{minipage}[]{0.47\linewidth}
+\centering
+\includegraphics[trim={0.5cm 0.5cm 0 0},clip,width=\linewidth]{FIGS/fig-random-select-and-filter-recall-frame-elephant-aggregated.pdf}
+{(c) T4}
+\end{minipage}
 \caption{Sample with Early Discard. Note the log scale on y-axis.}
 \label{fig:sampling-discard}
 \end{figure}

@@ -30,7 +30,7 @@ T3 &{\small Raft in flooding scene}&{\small YouTube collection~\cite{YouTube1}}&
 T4 &{\small Elephants in natural habitat}&{\small YouTube collection~\cite{YouTube2}}&\makecell[tl]{\small 11 videos \\\small 54203 fr\\\small 720p@25~fps}&\makecell[tl]{\small 8 videos\\\small 39466 fr} & \\ \cline{1-5}
 %% \makecell[tl]{\small 14 videos\\\small 92378 fr}\\
 %% \hline
-T5 &{\small Pushing or pulling Suitcases}&\small Okutama Action Dataset &\small Same as T1 &\small Same as T1 & \\
+% T5 &{\small Pushing or pulling Suitcases}&\small Okutama Action Dataset &\small Same as T1 &\small Same as T1 & \\
 %% \small Same as T1\\
 \hline
 \end{tabular}
@@ -40,7 +40,6 @@ fr = ``frames''\\
 fps = ``frames per second''\\
 No overlap between training and testing subsets of data
 \end{captiontext}
-\vspace{-0.1in}
 \caption{Benchmark Suite of Video Traces}
 \label{fig:benchmarksuite}
 \end{figure}
@@ -64,7 +63,7 @@ T2 & 2704 & \phantom{0}7.0 & 66\% & 90\%\\
 Peak bandwidth demand is same as average since video is transmitted
 continuously. Precision and recall are at the maximum F1 score.
 \end{captiontext}
-\caption{Baseline Object Detection KPIs}
+\caption{Baseline Object Detection Metrics}
 \label{fig:baseline}
 \end{figure}
 
@@ -87,31 +86,29 @@ and have been captured from aerial viewpoints. They characterize drone-relevant
 scenarios such as surveillance, search-and-rescue, and wildlife conservation.
 Figure~\ref{fig:benchmarksuite} presents this benchmark suite of videos,
 organized into five tasks. All the tasks involve detection of tiny objects on
-individual frames. Task T5 additionally involves action detection, which
-operates on short video segments rather than individual frames. Although T2 is
-also nominally about action detection (moving cars), it is implemented using
-object detection on individual frames and then comparing the pixel coordinates
-of vehicles in successive frames.
-
+individual frames. Although T2 is also nominally about action detection (moving
+cars), it is implemented using object detection on individual frames and then
+comparing the pixel coordinates of vehicles in successive frames.
+% Task T5 additionally involves action detection, which operates on short video segments rather than individual frames. 
 
 \subsection{Results}
 \label{sec:dumbdrone-results}
 
 Figure~\ref{fig:baseline} presents the key performance indicators on the object
-detection tasks T1 and T2. We use the well-labeled dataset to train and
-evaluate Faster-RCNN with ResNet 101. We report the precision and recall at
-maximum F1 score.  Peak bandwidth is not shown since it is identical to average
-bandwidth demand for continuous video transmission.  As shown earlier in
-Figure~\ref{fig:onboard-dnn-speed}, the accuracy of this algorithm comes at
-the price of very high resource demand.  This can only be met today by
-server-class hardware that is available in a cloudlet.  Even on a cloudlet, the
-figure of 438 milliseconds of processing time per frame indicates that only a
-rate of two frames per second is achievable.  Sustaining a higher frame rate
-will require striping the frames across cloudlet resources, thereby increasing
-resource demand considerably.  Note that the results in
+detection tasks T1 and T2. We use the well-labeled dataset to train and evaluate
+Faster-RCNN with ResNet 101. We report the precision and recall at maximum F1
+score.  Peak bandwidth is not shown since it is identical to average bandwidth
+demand for continuous video transmission.  As shown earlier in
+Figure~\ref{fig:onboard-dnn-speed}, the accuracy of this algorithm comes at the
+price of very high resource demand.  This can only be met today by server-class
+hardware that is available in a cloudlet.  Even on a cloudlet, the figure of 438
+milliseconds of processing time per frame indicates that only a rate of two
+frames per second is achievable.  Sustaining a higher frame rate will require
+striping the frames across cloudlet resources, thereby increasing resource
+demand considerably.  Note that the results in
 Figure~\ref{fig:onboard-dnn-speed} were based on 1080p frames, while tasks T1
-and T5 use the higher resolution of 4K. This will further increase demand on
-cloudlet resources.
+uses the higher resolution of 4K. This will further increase demand on cloudlet
+resources.
 
 Clearly, the strategy of blindly shipping all video to the cloudlet
 and processing every frame is resource-intensive to the point of being
