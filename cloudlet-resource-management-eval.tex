@@ -1,4 +1,4 @@
-\section{E\lc{valuation}}
+\section{Evaluation}
 
 We use five WCA applications, including FACE, PING PONG, LEGO, POOL, and IKEA
 for evaluation~\cite{chen2017empirical}~\cite{chen2018application}. These
@@ -21,10 +21,12 @@ comes 105ms after a user action for POOL is no longer of value.
 {(a) PING PONG}
 \end{minipage}
 \begin{minipage}[b]{0.3\linewidth}
+\centering
 \includegraphics[height=2.5in, trim=0em 1em 0em 0em, clip]{FIGS/fig-sec6-reduction-Lego.pdf}\\
 {(b) LEGO}
 \end{minipage}
 \begin{minipage}[b]{0.3\linewidth}
+\centering
 \includegraphics[height=2.5in, trim=0em 1em 0em 0em, clip]{FIGS/fig-sec6-reduction-Pool.pdf}\\
 {(c) POOL}
 \end{minipage}
@@ -37,15 +39,20 @@ comes 105ms after a user action for POOL is no longer of value.
 
 We first evaluate the effectiveness of all of the workload reduction techniques
 explored in Chapter~\ref{chapter: load}. For this set of experiments, we do not
-use multiple concurrent applications or resource allocation. We use four Nexus 6
-mobile phones as clients, connecting to a cloudlet over a Wi-Fi link. We run
-PING PONG, LEGO, and POOL applications one at a time with 2, 4, 6, and 8 cores
-available on the server. Figure~\ref{figs:workload-reduction} shows the total
-number of frames processed with and without workload reduction. Note that
-although the offered work is greatly reduced, the processed frames for active
-phases of the application have not been affected. Thus, we confirm that we can
-significantly reduce cloudlet load without affecting the critical processing
-needed by these applications.
+use multiple concurrent applications. Adaptation-centric cloudlet resource
+allocation is not enabled for a controlled setup. We use four Nexus 6 mobile
+phones as clients. They offload computation to a cloudlet over Wi-Fi links. We
+run PING PONG, LEGO, and POOL applications one at a time with 2, 4, 6, and 8
+cores on the edge server. We constrain the number of cores available using Linux
+cgroup. Figure~\ref{figs:workload-reduction} shows the total number of frames
+processed with and without workload reduction. The yellow lines for Original
+Gabriel do not have workload reduction while the blue lines for Scalable Gabriel
+do. The solid lines represent the total number of frames offloaded. The dashed
+lines represent the number of active frames, those frames that actually contain
+user state information. Note that although the offered work is greatly reduced,
+the processed frames for active phases of the application have not been
+affected. Thus, we confirm that we can significantly reduce cloudlet load
+without affecting the critical processing needed by these applications.
 
 \begin{table}[]
 \centering
@@ -69,43 +76,51 @@ needed by these applications.
 \label{tab:alloc-exps}
 \end{table}
 
-\begin{figure}[]
+\subsection{Effectiveness of Resource Allocation}
+
+We next evaluate our adaptation-centric resource allocation mechanism on a
+server machine with 2 Intel{\textregistered} Xeon{\textregistered} E5-2699 v3
+processors, totaling 36 physical cores running at 2.3 Ghz (turbo boost disabled)
+and 128 GB memory. We dedicate 8 physical cores (16 Intel{\textregistered} hyper
+threads) and 16 GB memory as cloudlet resources using cgroup. We run 8
+experiments with increasing numbers of clients across four concurrent
+applications. The total number of clients gradually increases from 15 to 40.
+Table~\ref{tab:alloc-exps} shows the breakdown of the number of clients used for
+each experiment. Note that these clients are running simultaneously, resulting
+in heavier and heavier contention. We generate application adapation profiles
+offline using the method discussed in Section~\ref{sec: resource-allocation}. We
+leverage these profiles to optimize for maximizing the total system utility.
+Figure~\ref{fig:alloc-max-util} shows how the total system utility changes as we
+add more clients and hence more workload. The yellow line represents the
+Original Gabriel which relies on the operating system alone to divide system
+resources. The blue line shows our Scalable Gabriel approach. In the beginning,
+while the system is under-utilized, we see that the Original Gabriel yields
+slightly higher total utility. However, as contention increases, Original
+Gabriel's total utility quickly drops, eventually more than 40\%, since every
+client contends for resources in an uncontrolled fashion.  All applications
+suffer, but the effects of increasing latencies are vastly different among
+different applications. In contrast, scalable Gabriel maintains a high level of
+system-wide utility by differentially allocating resources to different
+applications based on their sensitivity captured in the adaptation profiles.
+
+\begin{figure}[h]
   \centering
-  \includegraphics[width=\linewidth]{FIGS/fig-alloc-max-util.pdf}
+  \includegraphics[width=.9\linewidth]{FIGS/fig-alloc-max-util.pdf}
   \caption{Total Utility with Increasing Contention}
   \label{fig:alloc-max-util}
 \end{figure}
 
 
-\subsection{Effectiveness of Resource Allocation}
-
-We next evaluate resource allocation on a server machine with 2
-Intel{\textregistered} Xeon{\textregistered} E5-2699 v3 processors, totaling 36
-physical cores running at 2.3 Ghz (turbo boost disabled) and 128 GB memory. We
-dedicate 8 physical cores (16 Intel{\textregistered} hyper threads) and 16 GB memory as cloudlet
-resources using cgroup. We run 8 experiments with increasing numbers of clients
-across four concurrent applications with a total of 15 to 40 clients. The
-breakdown of the number of clients used for each experiment is given in
-Table~\ref{tab:alloc-exps}. We use offline generated application profiles
-discussed in Section~\ref{sec: resource-allocation} to optimize for total system
-utility. Figure~\ref{fig:alloc-max-util} shows how the system-wide total utility
-changes as we add more clients to the workload, under the original Gabriel
-approach and the scalable Gabriel approach. We see that original Gabriel's total
-utility drops more than 40\% as contention increases, since every client
-contends for resources in an uncontrolled fashion.  All applications suffer, but
-the effects of increasing latencies are vastly different among different
-applications. In contrast, scalable Gabriel maintains a high level of
-system-wide utility by differentially allocating resources to different
-applications based on their sensitivity captured in the utility profiles.
-
 Figure~\ref{fig:alloc-latency} and Figure~\ref{fig:alloc-fps} provide insights
-into how scalable Gabriel strikes the balance. Latencies are better controlled
-as resources are dedicated to applications with high utility, and more clients
-are kept within their latency bounds. Of course, with higher contention, fewer
-frames per second can be processed for each client. Original Gabriel degrades
-applications in an undifferentiated fashion. Scalable Gabriel, in contrast,
-tries to maintain higher throughput for some applications at the expense of the
-others, e.g. LEGO up to 25 clients.
+into how scalable Gabriel strikes the balance. We present both application
+throughput in terms of average frames per second and latency in terms of
+90\%-tile response delay. Latencies are better controlled as resources are
+dedicated to applications with high utility, and more clients are kept within
+their latency bounds. Of course, with higher contention, fewer frames per second
+can be processed for each client. Original Gabriel degrades applications in an
+undifferentiated fashion. Scalable Gabriel, in contrast, tries to maintain
+higher throughput for some applications at the expense of the others, e.g. LEGO
+up to 27 clients.
 
 \begin{figure}[]
   \begin{center}
@@ -213,23 +228,23 @@ clip]{FIGS/fig-sec6-latency-pool.pdf}\\[0.08in]
 \label{figs:inst-delay}
 \end{figure}
 		
-The previous plots consider per request latencies. The ultimate goal
-of our work is to maintain user experience as much as possible and
-degrade it gracefully when overloaded. For WCA applications, the key
-measure of user experience is guidance latency, the time between the
-occurrence of an event and the delivery of corresponding guidance.
-Figure~\ref{figs:inst-delay} shows boxplots of per-application
-guidance latency for the concurrent application experiments above. The
-red line denotes the application-required loose bound. It is clear
-that our methods control latency significantly better than the
-baseline. Scalable Gabriel is able to serve at least 3x number of clients
-when moderately loaded while continuing to serve half of the clients
-when severely loaded. In these experiments, the utility is maximized
-at the expense of the FACE application, which provides the least
-utility per resource consumed. At the highest number of clients, scalable
-Gabriel sacrifices the LEGO application to maintain the quality of service for
-the other two. This differentiated allocation is reflected in
-Figure~\ref{figs:resource-allocated}. In contrast, with original Gabriel,
-none of the applications are able to regularly meet deadlines.
+The previous plots consider per request latencies. The ultimate goal of our work
+is to maintain user experience as much as possible and degrade it gracefully
+when overloaded. For WCA applications, the key measure of user experience is
+guidance latency, the time between the occurrence of an event and the delivery
+of corresponding guidance. Note that guidance latency is different than per
+request latency, as a guidance may need not one but several frames to recognize
+a user state. Figure~\ref{figs:inst-delay} shows boxplots of per-application
+guidance latency for the concurrent application experiments above. The red
+dotted line denotes the application-required loose bound. It is clear that our
+methods control latency significantly better than the baseline. Scalable Gabriel
+is able to serve at least 3x number of clients when moderately loaded while
+continuing to serve more than half of the clients when severely loaded. In these
+experiments, the utility is maximized at the expense of the FACE application,
+which provides the least utility per resource consumed. At the highest number of
+clients, scalable Gabriel sacrifices the LEGO application to maintain the
+quality of service for PINGPONG and POOL. This differentiated allocation is
+reflected in Figure~\ref{figs:resource-allocated}. In contrast, with original
+Gabriel, none of the applications are able to regularly meet deadlines.
 
 \clearpage
