@@ -4,26 +4,26 @@
 Training a DNN for object detection is not trivial.  In particular, it involves
 constructing a correctly-labeled training data set with millions of positive and
 negative examples. The training process itself may take days to complete, and
-involves a set of arcane procedures to ensure both convergence and efficacy of
+requires a set of arcane procedures to ensure both convergence and efficacy of
 the model. Fortunately, one does not typically need to train a DNN from scratch.
-Rather, one can start with a pretrained model based on a public image data set
-such as ImageNet, and then adapt it to detect custom classes for a new
-application, though a process called \emph{transfer learning}.  The key idea is
-that much of the training teaches the model to discover low-level features, such
-as edges, textures, shapes, and patterns that are useful in distinguishing
-objects, and such features can largely be reused in other detection tasks on
-similar images.  Thus, adapting a pretrained model for new object classes
-requires only thousands of examples and hours of training time. 
+Rather, pretrained models based on a public image data set such as ImageNet are
+made publicly available. Developers can adapt these pretrained models to detect
+custom classes for new applications, though a process called \emph{transfer
+learning}.  The key assumption of transfer learning is that reusable is much of
+the training that teaches the model to discover low-level features, such as
+edges, textures, shapes, and patterns that are useful in distinguishing objects.
+Thus, adapting a pretrained model for new object classes requires only thousands
+or tens of thousands of examples and hours of training time. 
 
-However, even with transfer learning, collecting a labeled training set of a
-thousand examples per object class can be a daunting and painful task. In
-addition, implementing DNNs requires expertise and takes time. TPOD is a
-web-based tool we developed to streamline the process of creating DNN-based
-object detectors for fast prototype. It provides a tracking-assisted labeling
-interface for speedy annotation and transfer learning-based DNN training and
-evaluation backends that abstract the nuances of DNNs. It helps to greatly
-reduce the labeling effort while constructing the dataset, and automates and
-takes some of the guesswork out of training a DNN model.
+However, even with transfer learning, collecting a labeled training set of
+several thousand examples per object class can be a daunting and painful task.
+In addition, implementing object detection DNNs itself requires expertise and
+takes time. TPOD is a web-based tool we developed to streamline the process of
+creating DNN-based object detectors for fast prototyping. It provides a
+tracking-assisted labeling interface for speedy annotation and a DNN training
+and evaluation portal that leverages transfer learning underneath to hide the
+nuances of DNN creation. It greatly reduces the labeling effort while
+constructing a dataset, and automates training a object detection DNN model.
 
 % A user would first
 % upload short videos of the object collected from varying lighting conditions and
@@ -54,19 +54,20 @@ takes some of the guesswork out of training a DNN model.
   \label{figs:tpod-example-training-images}
 \end{figure}
 
-Using TPOD to create object detectors is straight-forward. Developer first
+Using TPOD to create object detectors is straight-forward. A developer first
 captures videos of objects from various viewing angles and diverse backgrounds.
-These videos can be captured on a mobile phone. At 30 frames per second, ten
-mintues of video footage contain 18000 frames, which is already an acceptable
-amount of training data for transfer learning. An larger amount of training data
-typically helps increase the accuracy, although diminishing return also applies.
-Moreover, it is preferred to collect training examples similar to the test
-environment, as they present more suitable distribution for the model to learn.
-Figure~\ref{figs:tpod-example-training-images} shows three example training
-images for a toy cooking set. Note that the image background will be used as
-negative examples to illustrate to the neural network about what an object does
-not look like. Therefore, background better contains common objects in the test
-environment that may cause wrong detections.
+For example, these videos can be acquired on a mobile phone. At 30 frames per
+second, ten minutes of video footage contain 18000 frames, which is already a
+reasonable amount of training data for transfer learning. Larger amounts of
+training data typically help increase the accuracy, although diminishing returns
+apply. Moreover, it is preferred to collect training examples in environments
+similar to the test environment to make the training examples exhibit similar
+distribution as test data. Figure~\ref{figs:tpod-example-training-images} shows
+three example training images for a toy cooking set. Note that the image
+background are randomly cropped to be used as negative examples. These
+background examples illustrate to the neural network what an object of interests
+does not look like. Therefore, it is recommended that the background contains
+common objects in the test environment that may cause confusion.
 
 
 \begin{figure}[]
@@ -78,20 +79,21 @@ environment that may cause wrong detections.
 
 Next, developers upload the collected training videos to TPOD either directly
 from the phone or from a computer. As shown in Figure~\ref{figs:tpod-video-gui},
-TPOD helps user to store and organize training videos. TPOD helps users annotate
-the training videos by integrating an external labeling tool into the GUI. Uers
-annotate objects of interests by draw bounding boxes on the video frame. To help
-facilitate the annotation process, TPOD leverages the fact that the frames are
-part of a continuous video shot, and automatically generate bounding box in
-subsequent frames using a correlation tracking
-algorithm~\cite{danelljan2014accurate}. Therefore, users only need to label a
-few key frames in a video with the rest of frames auto-populated with generated
-labels. Of course, tracking is not perfect, and the bounding box may drift off
-the object over time. In this case, the user can scroll forward or back in the
-video, and adjust the bounding box to better match the object.  The adjustment
-of bounding boxes reinitializes the tracking for subsequent frames. Overall,
-this approach of labeling followed by tracking can reduce the number of frames
-that the user needs to manually label by a factor of 10-20x.
+TPOD helps user to store and organize training videos. In addition, TPOD assist
+users to annotate the training videos by integrating an external labeling tool
+into the GUI. Uers can annotate objects of interests by draw bounding boxes on
+the uploaded video frames. To facilitate the annotation process, TPOD leverages
+the fact that the individual frames are part of a continuous video shoot. It
+automatically generates bounding box in subsequent frames either using a
+correlation tracking algorithm~\cite{danelljan2014accurate} or linear
+interpolation. As a result, users only need to label a few key frames in a video
+with the rest of frames auto-populated with generated labels. Of course,
+tracking is not perfect, and the bounding box may drift off over time. In this
+case, the user can forward or rewind in a video to adjust the bounding box.  The
+adjustment of bounding boxes re-initializes the tracking for subsequent frames.
+From our experience usage, this approach of labeling followed by tracking can
+reduce the number of frames that the user needs to manually label by a factor of
+10-20x.
 
 \begin{figure}[]
   \centering
@@ -100,59 +102,55 @@ that the user needs to manually label by a factor of 10-20x.
   \label{figs:tpod-label-gui}
 \end{figure}
 
-With videos annotated, users can move on to create dataset for training by
-selecting videos to use. TPOD performs a data cleaning and augmentation pass to
-prepare a high quality training set. Due to interframe correlations, adjacent
-frames within the video may appear to be very similar or even identical. These
-highly correlated frames violates the indepedent and identically distributed
-assumption of training data for DNNs. TPOD eliminates these near duplicate
-examples, as they would increase the model biases.  Optionally, data
-augmentation can be employed. It adds synthetic images, created by cutting and
-pasting the object of interests on varying backgrounds, at different scales and
-rotations. Such augmentation has been shown to help produce more robust object
-detectors~\cite{dwibedi2017cut}.
+With videos annotated, users can move on to create a training dataset on the
+webpage by selecting videos to use. TPOD performs a data cleaning and
+augmentation pass to prepare a high quality training set. Due to inter-frame
+correlation, adjacent frames within a video may appear to be substantially
+similar or identical. These highly correlated frames violate the independent and
+identically distributed assumption of training data for DNNs. TPOD eliminates
+these near duplicate examples. Optionally, data augmentation can be employed. It
+adds synthetic images, created by cutting and pasting the object of interests on
+varying backgrounds, at different scales and rotations. Such augmentation helps
+produce more robust object detectors~\cite{dwibedi2017cut}.
 
 Then, by submitting a form on the web GUI, users can launch the DNN training
-process with writing a single line of code. TPOD underneath automate the
-transfer learning process of a DNN model using user specified dataset. TPOD
-supports several state-of-the-art object detection network for transfer
-learning, including FasterRCNN-ResNet~\cite{ren2015faster}~\cite{He2016} and
-SSD-MobileNet~\cite{Liu2016}~\cite{Howard2017}. These different networks exhibit
-different accuracy versus speed trade-off. While FasterRCNN-ResNet achieves
-higher accuracies on standard datasets, its training and inference time are
+process without writing a single line of code. Under the hood, TPOD automates
+the transfer learning process. TPOD supports several state-of-the-art object
+detection network, including FasterRCNN-ResNet~\cite{ren2015faster,He2016} and
+SSD-MobileNet~\cite{Liu2016,Howard2017}. These different networks exhibit
+varying accuracy versus speed trade-off. While FasterRCNN-ResNet achieves higher
+accuracies on standard datasets, its training and inference time are
 significantly longer than SSD-MobileNet. Application developers should choose
 the appropriate DNN network based on their accuracy and latency constraints.
 Negative examples are mined from the video background; these are parts of the
-frames not included in the object bounding boxes.  The training is started as a
-batch process that uses a standard, scripted learning schedule, and generates
-downloadable Tensorflow model in the end. The TPOD web interface provides
-training monitoring and download links for the created model files. TPOD also
-provides a container image that can directly serve the downloaded model files
-for inference.
+frames not included in the object bounding boxes.  The training process
+generates downloadable Tensorflow models in the end. The TPOD web GUI provides
+training monitoring through Tensorboard~\cite{tensorflow2017}. TPOD also
+provides a container image that can serve the downloaded model files for
+inference.
 
 Overall, TPOD can greatly reduce both the labeling effort and in-depth machine
-learning knowledge needed to effectively train and deploy a DNN-based detector.
-The initial prototype of TPOD has been used by researchers and students to build
-wearable cognitive assistance. For example, a group of master students in CMU
-mobile and pervasive computing class successfully used TPOD to build an
-assistant for using Automated External Defibrillator (AED) machines.
+learning knowledge required to train and deploy a DNN-based detector. TPOD has
+been used by tens of researchers and students to build wearable cognitive
+assistance. For example, a group of master students in CMU mobile and pervasive
+computing class successfully used TPOD to build an assistant for using Automated
+External Defibrillator (AED) machines.
 
-\subsection{TPOD Case Study for Cooking Application}
+\subsection{TPOD Case Study With the COOKING Application}
 
-To quantify how much TPOD can help reduce laboring efforts in training object
-detectors, we conduct a case study to train detectors for the Cooking cognitive
+To quantify how much TPOD can help reduce laboring efforts, we conducted a case
+study to train detectors for the COOKING cognitive
 assistance~\cite{chen2018application}. We trained object detectors for 9
 components of a toy sandwich, including bread, ham, lettuce, cucumber, cheese,
-half sandwich, ham wrong state, tomato, and full sandwich. We collected 53 short
-training videos, annotated all videos, and trained object detectors all with
-TPOD.
+half sandwich, wrong ham, tomato, and full sandwich. We collected 53 short
+training videos, annotated all of them, and trained object detectors with TPOD.
 
-In total, we collected 21218 frames with the videos. When using TPOD's labeling,
-we only manually labeled 91 frames. The rest of frames are automatically labeled
-by TPOD's tracking component. The total labeling session lasted 80 minutes. The
-total number of frames used for training is 21013, because of data set
-optimization. We fine-tuned from a FasterRCNN-VGG network. The finetuning
-process took 54 minutes to finish on a NVIDIA K40c GPU.
+In total, we collected 21218 video frames. In contrast, we only manually labeled
+91 frames on TPOD annotation interface. The rest of frames are automatically
+labeled by tracking. The entire labeling session lasted 80 minutes. The total
+number of frames used for training is 21013 due to training set optimization. We
+fine-tuned from a FasterRCNN-VGG network. The transfer learning process took 54
+minutes to finish on a NVIDIA K40c GPU.
 
 
 \subsection{TPOD Architecture}
@@ -164,43 +162,40 @@ process took 54 minutes to finish on a NVIDIA K40c GPU.
   \label{figs:tpod-arch}
 \end{figure}
 
-TPOD adopts a Model-View-Controller (MVC) design for web
-applications~\cite{krasner1988description}. Figure~\ref{figs:tpod-arch} shows
-TPOD architecture. TPOD frontend handles UI logic and is built using React, a
-declarative, efficient, and flexible JavaScript library for creating user
-interface~\cite{staff2016react}. React enable TPOD frontend code to be modular
-and reusable. The frontend has three major components: video management,
-detector management, and an external labeling tool. TPOD integrate the labeling
-tool CVAT~\cite{cvat2019} into its frontend through embedding via an iframe. The
-embedding of an labeling tool directly into the GUI unifies the workflow to
-eliminate users' need to set up and use another piece of software. TPOD frontend
-communicates with the backend using a set of RESTful
-apis~\cite{richardson2008restful}, centered around \textit{Video} and
-\textit{Detector} resources. 
+TPOD adopts a Model-View-Controller (MVC) design~\cite{krasner1988description}.
+Figure~\ref{figs:tpod-arch} shows TPOD architecture. TPOD frontend handles UI
+logic and is built using React, a declarative, efficient, and flexible
+JavaScript library for creating user interface~\cite{staff2016react}. React
+enables TPOD frontend code to be modular and reusable. The frontend has three
+major components: video management, detector management, and an external
+labeling tool. TPOD integrates the labeling tool CVAT~\cite{cvat2019} into its
+frontend UI through HTML iframe embedding. The integration of an labeling tool
+into the TPOD GUI unifies the workflow. Users no longer need to install and set
+up another piece of software. TPOD frontend communicates with the backend
+through a set of RESTful apis~\cite{richardson2008restful}. 
 
 TPOD backend is developed using the Django web
 framework~\cite{holovaty2009definitive} and served with Nginx web
-server~\cite{nedelcu2010nginx} and Gunicorn application
-server~\cite{gunicorn2017http}. The backend implements the RESTful apis to
-create, read, update, and delete \textit{Video} and \textit{Detector} resources.
-It also interface with the external labeling tool CVAT's backend to read and
-write annotations. Long running background jobs, such as DNN model training and
-video extraction is processed asynchronously using a task queue and
-long running worker processes. Metadata about videos and DNN models are stored
-in a relational database while large binary files, such as video files and
-trained DNN model weights are stored in the file system. An in-memory caching
-layer on top of the file system and database is created using key-value store
-Redis. The entire application is containerized and can be deployed easily onto
-bare-metal or virtualized environment.
+server~\cite{nedelcu2010nginx} and Gunicorn gateway~\cite{gunicorn2017http}. The
+backend implements RESTful apis to create, read, update, and delete
+\textit{Video} and \textit{Detector} resources. It also interface with the
+backend of the external labeling tool to read and write annotations. Long
+running background jobs, such as DNN model training and video extraction, are
+processed asynchronously using a task queue and worker processes. Metadata about
+videos and DNN models are stored in a relational database while large binary
+files, such as video files and trained DNN model weights, are stored in the file
+system. An in-memory caching layer on top of the file system and database is
+created using key-value store Redis. The entire application is containerized and
+can be deployed easily onto bare-metal or virtualized environments.
 
 One key design choice of TPOD is to be extensible for new DNN architectures.
-TPOD provide a standard interface, shown in
-Figure~\ref{figs:tpod-provider-interface} to add new DNNs implementation for
-transfer learning. TPOD refers to these DNN implementations as DNN
-\textit{Providers}. Providers do no need to know anything else about TPOD and
-only need to implement the Provider interface to be integrated and used. The
-built-in \textit{Provider} is Tensorflow's object detection API, which supports
-transfer learning for a wide set of object detectors~\cite{tfod2019}. 
+TPOD provides a standard interface, shown in
+Figure~\ref{figs:tpod-provider-interface}, in order to easily add new DNNs
+implementation for transfer learning. TPOD refers to these DNN implementations
+as DNN \textit{Providers}. Without modifying other components, providers can be
+added and integrated by implement this interface. The built-in \textit{Provider}
+is Tensorflow Object Detection API~\cite{tfod2019}, which supports transfer
+learning for a wide set of object detectors. 
 
 
 \begin{algorithm} 

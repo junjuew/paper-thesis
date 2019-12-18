@@ -1,22 +1,19 @@
 \section{Finite State Machine (FSM) Authoring Tools}
 \label{sec: app-dev-fsm}
 
-In addition to creating DNN-based object detectors, developers needs to write
-custom logic to implement the cognitive assistance running on the client side.
-In this section, we introduce our FSM authoring tools that provides libraries
-and GUI to enable quick implementation turn-around time to allow for faster
-development iterations.
+In addition to creating DNN-based object detectors, developers need to write
+custom logic to implement the WCA task model running on the cloudlet. In this
+section, we introduce a FSM authoring tool that provides libraries and GUI to
+enable fast implementation to allow for quick development iteration.
 
 As discussed in Section~\ref{sec: app-dev-fsm-representation}, WCA cloudlet
-logic can be represented as a finite state machine. The key benefit of
-representing the application this way is that we can impose the same structure
-onto varying logic for each use case and provide tooling. Our FSM authoring
-tools consist of a web GUI that allows users to visualize and edit a WCA FSM
-within the browser, a python library that supports the creation and execution of
-a WCA FSM on top of Gabriel platform, and a binary file format that efficiently
-stores the FSM.
+logic can be represented as a finite state machine. The FSM representation
+allows us to impose structure and provide tools for task model implementation.
+Our FSM authoring tool consists of a web GUI that allows users to visualize and
+edit a WCA FSM within a browser, a python library that supports the creation and
+execution of a FSM, and a binary file format that efficiently stores the FSM.
 
-\subsection{FSM Web GUI}
+\subsection{FSM Editor}
 
 \begin{figure}
     \centering
@@ -25,42 +22,40 @@ stores the FSM.
     \label{figs:fsm-web-gui}
 \end{figure}
 
-Figure~\ref{figs:fsm-web-gui} shows our FSM Web GUI. Users can build a WCA FSM
-all from the GUI by editing states and transitions. State processors, e.g. the
+Figure~\ref{figs:fsm-web-gui} shows our FSM Web Editor. Users can create a WCA
+FSM from the GUI by editing states and transitions. State processors, e.g. the
 computer vision processing logic to run in a given state, can be specified by a
-container url. User guidance can be added through text, video urls or by
-uploading images. The Web GUI also support FSM import and export to interface
-with other tools developed for WCAs. The exported FSM is in a custom binary
-format and can be executed by WCA FSM python library.
+container url. User guidance can be added through adding text, video urls or by
+uploading images. The Web GUI also supports import and export functionalities to
+interface with other WCA tools. The exported FSM is in a custom binary format
+and can be executed by FSM python library.
 
 The GUI is implemented as a pure browser-based user interface, using
 React~\cite{staff2016react}. No web backend is needed. This makes the GUI easy
-to set up and deploy. User only needs to open an HTML file in a browser to start
-using the tool.
+to set up and deploy. User only needs to open an HTML file in a browser to 
+use the tool.
 
 \subsection{FSM Python Library}
 
-Another way to programmatically create a FSM is through WCA FSM Python library.
+Another way to programmatically create a FSM is through the FSM Python library.
 The library provides python APIs to create and modify FSMs. The python APIs
-provides additional interfaces to add custom computer vision processing as for
-user states (e.g. recognizing absolute object scale) and ad hoc transition
-predicates to support full customization. 
+provides additional interfaces to add custom computer vision processing as
+functions and ad hoc transition predicates for customization. 
 
 In addition, the Python library provides a state machine executor that takes a
-WCA FSM (e.g. made with the Web GUI) and spins up a WCA program using the
-Gabriel platform ready to be connected and used by wearable clients. The WCA
-program follows the logic defined in the state machine. A Jupyter Notebook is
-also provided to make it possible to launch the program from a browser. 
-
-The library has been made available on The Python Package Index for easy
-installation.
+WCA FSM (e.g. made with the Web GUI) and launches a WCA program using the
+Gabriel platform. The program is then ready to be connected by Gabriel Android
+Client. The WCA program follows the logic defined in the state machine. A
+Jupyter Notebook~\cite{kluyver2016jupyter} is also provided to make it possible to launch the program from
+a browser. This library has been made available on The Python Package Index for
+easy installation.
 
 \subsection{FSM Binary Format}
 
-We defined a custom FSM binary format for WCAs that can be read and wrote from many
-programming languages. We use serialization libary Protocol Buffer to generate
-language-specific stub code. Figure~\ref{figs:fsm-binary-format} shows the
-serialization format in proto3 syntax.
+We define a custom FSM binary format for WCAs that can be read and wrote using
+multiple programming languages. We use serialization library Protocol Buffers to
+generate language-specific stub code. Figure~\ref{figs:fsm-binary-format} shows
+a summary of the serialization format.
 
 
 \begin{figure}
