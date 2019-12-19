@@ -14,7 +14,7 @@ EarlyDiscard is based on the idea of using on-board processing to filter and
 transmit only interesting frames in order to save bandwidth when offloading
 computation. Frames are considered to be interesting if they capture objects or
 events valuable for processing, for instance, survivors for a search task.
-Previous work~\cite{Hu2015}~\cite{Naderiparizi2017} leveraged pixel-level
+Previous work~\cite{Hu2015,Naderiparizi2017} leveraged pixel-level
 features and multiple sensing modalities to select interesting frames from
 hand-held or body-worn cameras. In this section, we explore the use of DNNs to
 filter frames from aerial views. The benefits of using DNNs are as follows.
@@ -182,14 +182,13 @@ interests. For example, the appearance of the same red raft in T3 in consecutive
 as at least one of the consecutive frames being transmitted to the cloudlet.  
 
 Figure~\ref{fig:earlydiscard-frame-percent-breakdown} shows our results on all
-four tasks. Blue lines in Figure~\ref{fig:earlydiscard-frame-percent-breakdown}
-shows how the event recalls of drone filters for different tasks change as a
-function of cutoff threshold. The MobileNet DNN filter we used is able to detect
-all the events for T1 and T4 even at a high cutoff threshold. For T2 and T3, the
-majority of the events are detected. Achieving high recall on T2 and T3 (on the
-order of 0.95 or better) requires setting a low cutoff threshold.  This leads to
-the possibility that many of the transmitted frames are actually uninteresting
-(i.e., false positives).
+four tasks. Blue lines show how the event recalls of drone filters for different
+tasks change as a function of cutoff threshold. The MobileNet DNN filter we used
+is able to detect all the events for T1 and T4 even at a high cutoff threshold.
+For T2 and T3, the majority of the events are detected. Achieving high recall on
+T2 and T3 (on the order of 0.95 or better) requires setting a low cutoff
+threshold.  This leads to the possibility that many of the transmitted frames
+are actually uninteresting (i.e., false positives).
 
 \subsubsection{False negatives}
 As discussed earlier, false negatives are
@@ -258,7 +257,7 @@ precision could be further improved, without hurting recall.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=.9\linewidth]{FIGS/fig-random-select-interval-recall-hatch.pdf}
+    \includegraphics[width=.7\linewidth]{FIGS/fig-random-select-interval-recall-hatch.pdf}
 \caption{Event Recall at Different Sampling Intervals}
 \label{fig:sampling-only}
 \end{figure}
@@ -305,7 +304,7 @@ JPEG Frame Sequence  & H264 High Quality  & H264 Medium Quality & H264 Low Quali
 \vspace{0.1in}
 \begin{captiontext}
 H264 high quality uses Constant Rate Factor (CRF) 23. Medium
-uses CRF 28 and low uses 40~\cite{Merritt2007}.
+uses CRF 28 and low uses CRF 40~\cite{Merritt2007}.
 \end{captiontext}
 \caption{Test Dataset Size With Different Encoding Settings}
 \label{fig:video-vs-images}

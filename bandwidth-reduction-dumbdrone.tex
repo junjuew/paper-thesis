@@ -40,7 +40,7 @@ fr = ``frames''\\
 fps = ``frames per second''\\
 No overlap between training and testing subsets of data
 \end{captiontext}
-\caption{Benchmark Suite of Video Traces}
+\caption{Benchmark Suite of Drone Video Traces}
 \label{fig:benchmarksuite}
 \end{figure}
 
@@ -85,7 +85,7 @@ All of the pre-captured videos in the benchmark suite are publicly accessible,
 and have been captured from aerial viewpoints. They characterize drone-relevant
 scenarios such as surveillance, search-and-rescue, and wildlife conservation.
 Figure~\ref{fig:benchmarksuite} presents this benchmark suite of videos,
-organized into five tasks. All the tasks involve detection of tiny objects on
+organized into four tasks. All the tasks involve detection of tiny objects on
 individual frames. Although T2 is also nominally about action detection (moving
 cars), it is implemented using object detection on individual frames and then
 comparing the pixel coordinates of vehicles in successive frames.
@@ -115,7 +115,7 @@ and processing every frame is resource-intensive to the point of being
 impractical today.  It may be acceptable as an offline processing
 approach in the cloud, but is unrealistic for real-time processing on
 cloudlets.  We therefore explore an approach in which a modest amount
-of computation on the drone is able, with high confidence, to avoid
+of computation on the Tier-3 is able, with high confidence, to avoid
 transmitting many video frames and thereby saving wireless bandwidth
 as well as cloudlet processing resources.  This leads us to the {\xc
   EarlyDiscard} strategy of the next section.

@@ -49,7 +49,7 @@ loaded.  Alternatively, Tier-2 or Tier-3 may determine that the wireless channel
 is congested; based on this guidance, Tier-3 may reduce offered load by
 preprocessing a video frame and using the result to decide whether it is
 worthwhile to offload further processing of that frame to the cloudlet.  Several
-earlier work~\cite{Hu2015}~\cite{christensen2019towards} have shown that even
+earlier work~\cite{Hu2015, christensen2019towards} have shown that even
 modest computation, such as color filtering and shallow DNN processing, at Tier-3
 can make surprisingly good predictions about whether a specific use of Tier-2 is
 likely to be worthwhile.
@@ -127,7 +127,7 @@ application characteristics to reduce offered load. Our approach to increased
 scalability is through adaptation. Specifically, we first present an
 adaptation-centric architecture that monitors and coordinates Tier-3 devices and
 the edge server. When contention arises, enabled are application-specific
-techniques to reduce offered load to the edge server. In addition, we highlight
+optimizations to reduce offered load to the edge server. In addition, we highlight
 two of adaptation techniques, selective sampling and IMU-based suppression. Our
 experiment show that they can significantly reduce the offered load. Finally, we
 provide a taxonomy to help developers reason about characteristics of their

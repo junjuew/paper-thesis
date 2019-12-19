@@ -6,9 +6,9 @@ constructing a correctly-labeled training data set with millions of positive and
 negative examples. The training process itself may take days to complete, and
 requires a set of arcane procedures to ensure both convergence and efficacy of
 the model. Fortunately, one does not typically need to train a DNN from scratch.
-Rather, pretrained models based on a public image data set such as ImageNet are
-made publicly available. Developers can adapt these pretrained models to detect
-custom classes for new applications, though a process called \emph{transfer
+Rather, pretrained models based on public image data sets such as ImageNet are
+publicly available. Developers can adapt these pretrained models to detect
+custom classes for new applications, through a process called \emph{transfer
 learning}.  The key assumption of transfer learning is that reusable is much of
 the training that teaches the model to discover low-level features, such as
 edges, textures, shapes, and patterns that are useful in distinguishing objects.
@@ -21,9 +21,9 @@ In addition, implementing object detection DNNs itself requires expertise and
 takes time. TPOD is a web-based tool we developed to streamline the process of
 creating DNN-based object detectors for fast prototyping. It provides a
 tracking-assisted labeling interface for speedy annotation and a DNN training
-and evaluation portal that leverages transfer learning underneath to hide the
-nuances of DNN creation. It greatly reduces the labeling effort while
-constructing a dataset, and automates training a object detection DNN model.
+and evaluation portal that leverages transfer learning to hide the nuances of
+DNN creation. It greatly reduces the labeling effort while constructing a
+dataset, and automates training a object detection DNN model.
 
 % A user would first
 % upload short videos of the object collected from varying lighting conditions and
@@ -60,7 +60,7 @@ For example, these videos can be acquired on a mobile phone. At 30 frames per
 second, ten minutes of video footage contain 18000 frames, which is already a
 reasonable amount of training data for transfer learning. Larger amounts of
 training data typically help increase the accuracy, although diminishing returns
-apply. Moreover, it is preferred to collect training examples in environments
+apply. Moreover, it is preferred to collect training examples in environment
 similar to the test environment to make the training examples exhibit similar
 distribution as test data. Figure~\ref{figs:tpod-example-training-images} shows
 three example training images for a toy cooking set. Note that the image
@@ -79,21 +79,20 @@ common objects in the test environment that may cause confusion.
 
 Next, developers upload the collected training videos to TPOD either directly
 from the phone or from a computer. As shown in Figure~\ref{figs:tpod-video-gui},
-TPOD helps user to store and organize training videos. In addition, TPOD assist
+TPOD helps user to store and organize training videos. In addition, TPOD assists
 users to annotate the training videos by integrating an external labeling tool
-into the GUI. Uers can annotate objects of interests by draw bounding boxes on
-the uploaded video frames. To facilitate the annotation process, TPOD leverages
-the fact that the individual frames are part of a continuous video shoot. It
-automatically generates bounding box in subsequent frames either using a
-correlation tracking algorithm~\cite{danelljan2014accurate} or linear
-interpolation. As a result, users only need to label a few key frames in a video
-with the rest of frames auto-populated with generated labels. Of course,
-tracking is not perfect, and the bounding box may drift off over time. In this
-case, the user can forward or rewind in a video to adjust the bounding box.  The
-adjustment of bounding boxes re-initializes the tracking for subsequent frames.
-From our experience usage, this approach of labeling followed by tracking can
-reduce the number of frames that the user needs to manually label by a factor of
-10-20x.
+into the GUI. Uers can annotate objects by draw bounding boxes on the uploaded
+video frames. To facilitate the annotation process, TPOD leverages the fact that
+the individual frames come from a continuous video shoot. It automatically
+generates bounding box in subsequent frames either using a correlation tracking
+algorithm~\cite{danelljan2014accurate} or linear interpolation. As a result,
+users only need to label a few key frames in a video with the rest of frames
+auto-populated with generated labels. Of course, tracking is not perfect, and
+the bounding box may drift off over time. In this case, the user can forward or
+rewind the video to adjust the bounding box.  The adjustment of bounding boxes
+re-initializes the tracking for subsequent frames. From our experience usage,
+this approach of labeling followed by tracking can reduce the number of frames
+that the user needs to manually label by a factor of 10-20x.
 
 \begin{figure}[]
   \centering
@@ -125,9 +124,9 @@ the appropriate DNN network based on their accuracy and latency constraints.
 Negative examples are mined from the video background; these are parts of the
 frames not included in the object bounding boxes.  The training process
 generates downloadable Tensorflow models in the end. The TPOD web GUI provides
-training monitoring through Tensorboard~\cite{tensorflow2017}. TPOD also
-provides a container image that can serve the downloaded model files for
-inference.
+training monitoring through Tensorflow visualization library
+Tensorboard~\cite{tensorflow2017}. TPOD also provides a container image that can
+serve the downloaded model files for inference.
 
 Overall, TPOD can greatly reduce both the labeling effort and in-depth machine
 learning knowledge required to train and deploy a DNN-based detector. TPOD has
@@ -147,7 +146,7 @@ training videos, annotated all of them, and trained object detectors with TPOD.
 
 In total, we collected 21218 video frames. In contrast, we only manually labeled
 91 frames on TPOD annotation interface. The rest of frames are automatically
-labeled by tracking. The entire labeling session lasted 80 minutes. The total
+labeled by tracking. The entire labeling session took 80 minutes. The total
 number of frames used for training is 21013 due to training set optimization. We
 fine-tuned from a FasterRCNN-VGG network. The transfer learning process took 54
 minutes to finish on a NVIDIA K40c GPU.
@@ -172,13 +171,13 @@ labeling tool. TPOD integrates the labeling tool CVAT~\cite{cvat2019} into its
 frontend UI through HTML iframe embedding. The integration of an labeling tool
 into the TPOD GUI unifies the workflow. Users no longer need to install and set
 up another piece of software. TPOD frontend communicates with the backend
-through a set of RESTful apis~\cite{richardson2008restful}. 
+through a set of RESTful APIs~\cite{richardson2008restful}. 
 
 TPOD backend is developed using the Django web
 framework~\cite{holovaty2009definitive} and served with Nginx web
 server~\cite{nedelcu2010nginx} and Gunicorn gateway~\cite{gunicorn2017http}. The
 backend implements RESTful apis to create, read, update, and delete
-\textit{Video} and \textit{Detector} resources. It also interface with the
+\textit{Video} and \textit{Detector} resources. It also interfaces with the
 backend of the external labeling tool to read and write annotations. Long
 running background jobs, such as DNN model training and video extraction, are
 processed asynchronously using a task queue and worker processes. Metadata about
