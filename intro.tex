@@ -8,22 +8,21 @@ with exceeding speed and flexibility" in the seminal article \textit{As We May
 Think}~\cite{bush1945we}. This vision has been brought closer to reality by
 years of research in computing hardware, artificial intelligence, and
 human-computer interaction. In late 90s to early 2000s, Smailagic et al.
-~\cite{smailagic1993case}~\cite{smailagic1998very}~\cite{smailagic2002application}
-created prototypes of wearable computers to assist cognitive tasks. For example,
-they displayed inspection manuals in a head-up screen to facilitate aircraft
+~\cite{smailagic1993case,smailagic1998very,smailagic2002application} created
+prototypes of wearable computers to assist cognitive tasks. For example, they
+displayed inspection manuals in a head-up screen to facilitate aircraft
 maintenance. Around the same time, Loomis et
-al.~\cite{loomis1998navigation}~\cite{loomis1994personal} explored using
-computers carried in a backpack to provide auditory cues in order to help the
-blind navigate.  Davis et
-al.~\cite{davies1998developing}~\cite{cheverst2000developing} developed a
-context-sensitive intelligent visitor guide leveraging hand-portable multimedia
-systems. While these research work pioneered cognitive assistance and its
-related fields, their robustness and functionality were limited by the
+al.~\cite{loomis1998navigation,loomis1994personal} explored using computers
+carried in a backpack to provide auditory cues in order to help the blind
+navigate.  Davis et al.~\cite{davies1998developing,cheverst2000developing}
+developed a context-sensitive intelligent visitor guide leveraging hand-portable
+multimedia systems. While these research work pioneered cognitive assistance and
+its related fields, their robustness and functionality were limited by the
 supporting technologies of their time.
 
-More recently, as underlying technologies experience significant advancement, a
-new genre of applications, Wearable Cognitive Assistance
-(WCA)~\cite{ha2014towards}~\cite{chen2018application}, has emerged that pushes
+More recently, as the underlying technologies experience significant
+advancement, a new genre of applications, Wearable Cognitive Assistance
+(WCA)~\cite{ha2014towards,chen2018application}, has emerged that pushes
 the boundaries of augmented cognition. WCA applications continuously process
 data from body-worn sensors and provide just-in-time guidance to help a user
 complete a specific task. For example, an IKEA Lamp
@@ -46,7 +45,7 @@ million of research on such applications~\cite{Oakley2018, Stokes2018}.  At the
 Mobile World Congress in February 2018, wearable cognitive assistance was the
 focus of an entire session~\cite{Ray2018}.  For AI-based military use cases,
 this class of applications is the centerpiece of ``Battlefield
-2.0''~\cite{Doffman2018}. By mid-2019, WCA was being viewed as a prime source of
+2.0''~\cite{Doffman2018}. By 2019, WCA was being viewed as a prime source of
 ``killer apps'' for edge computing~\cite{Satya2019b,Satya2019c}.
 
 
@@ -76,32 +75,32 @@ edge of the Internet, one wireless hop away from users. Researchers have
 developed an application framework for wearable cognitive assistance, named
 Gabriel, that leverages cloudlets, optimizes for end-to-end latency, and eases
 application
-development~\cite{chen2018application}~\cite{ha2014towards}~\cite{chen2017empirical}.
-On top of Gabriel, several prototype applications have been built, such as
-Ping-Pong Assistance, Lego Assistance, Sandwich Assistance, and Ikea Lamp
-Assembly Assistance. Using these applications as benchmarks,
-Chen et al.~\cite{chen2017empirical} presented empirical measurements detailing the latency
-contributions of individual system components. Furthermore, a multi-algorithm
-approach was proposed to reduce the latency of computer vision computation by
-executing multiple algorithms in parallel and conditionally selecting a fast and
-accurate algorithm for the near future.
+development~\cite{chen2018application,ha2014towards,chen2017empirical}. On top
+of Gabriel, several prototype applications have been built, such as PINGPONG
+Assistance, LEGO Assistance, COOKING Assistance, and IKEA LAMP Assembly
+Assistance. Using these applications as benchmarks, Chen et
+al.~\cite{chen2017empirical} presented empirical measurements detailing the
+latency contributions of individual system components. Furthermore, a
+multi-algorithm approach was proposed to reduce the latency of computer vision
+computation by executing multiple algorithms in parallel and conditionally
+selecting a fast and accurate algorithm for the near future.
 
 While previous research has demonstrated the technical feasibility of wearable
 cognitive assistants and meeting latency requirements, many practical concerns
 have not been addressed. First, previous work operates the wireless networks and
 cloudlets at low utilization in order to meet application latency. The economics
-of practical deployment preclude operation at such low utilization. In contrast,
-resources are often highly utilized and congested when serving many users. How
-to efficiently scale Gabriel applications to a large number of users remains to
-be answered. Second, previous work on the Gabriel framework reduces application
-development efforts by managing client-server communication, network flow
-control, and cognitive engine discovery. However, the framework does not address
-the most time-consuming parts of creating a wearable cognitive assistance
-application. Experience has shown that developing computer vision modules that
-analyze video feeds is a time-consuming and painstaking process that requires
-special expertise and involves rounds of trial and error. Developer tools that
-alleviate the time and the expertise needed can greatly facilitate the creation
-of these applications.
+of practical deployment precludes operation at such low utilization. In
+contrast, resources are often highly utilized and congested when serving many
+users. How to efficiently scale Gabriel applications to a large number of users
+remains to be answered. Second, previous work on the Gabriel framework reduces
+application development efforts by managing client-server communication, network
+flow control, and cognitive engine discovery. However, the framework does not
+address the most time-consuming parts of creating a wearable cognitive
+assistance application. Experience has shown that developing computer vision
+modules that analyze video feeds is a time-consuming and painstaking process
+that requires special expertise and involves rounds of trials and errors.
+Development tools that alleviate the time and the expertise needed can greatly
+facilitate the creation of these applications.
 
 
 \section{Thesis Statement}
@@ -125,12 +124,14 @@ We claim that:
 We validate this thesis in this dissertation. The main contributions of the
 dissertation are as follows:
 \begin{enumerate}
-  \item{We propose application-agnostic and application-aware techniques 
-  to reduce offered load from WCA mobile client when oversubscription occurs.}
+  \item{We propose application-agnostic and application-aware techniques to
+  reduce bandwidth consumption and offered load when the cloudlet is
+  oversubscribed.}
   \item{We provide a profiling-based cloudlet resource allocation mechanism that
-  takes into account the unique adaptation behaviors of different applications.}
-  \item{We create a suite of development and deployment tools to reduce the time
-  and lower the barrier of entry for WCA development.}
+  takes account of diverse application adaptation characteristics.}
+  \item{We propose a new prototyping methodology and create a suite of
+  development tools to reduce the time and lower the barrier of entry for WCA
+  creation.}
 \end{enumerate}
 
 \section{Thesis Overview}
@@ -138,18 +139,16 @@ dissertation are as follows:
 The remainder of this dissertation is organized as follows.
 
 \begin{itemize}
-  \item{In Chapter~\ref{chapter: bandwidth}, we describe application-agnostic techniques to reduce bandwidth consumption.}
+  \item{In Chapter~\ref{chapter: background}, we introduce prior work in wearable cognitive assistance.}
+  \item{In Chapter~\ref{chapter: bandwidth}, we describe and evaluate application-agnostic techniques to reduce bandwidth consumption when offloading computation.}
   \item{In Chapter~\ref{chapter: load}, we propose and evaluate 
   application-specific techniques to reduce offered load. 
   We demonstrate their effectiveness 
   with minimal impact on result latency.}
   \item{In Chapter~\ref{chapter: cloudlet}, we present a resource management
-  mechanisms that takes into the account application adaptation characteristics
-  to optimize system-wide aggregation metrics.}
-  \item{In Chapter~\ref{chapter: app-dev}, 
-  we introduce a suite of development tools for quick prototyping.
-  }
-  % \item{In Chapter~\ref{chapter: deploy}, 
-  % we showcase a deployment system to facilitate 
-  % deploying WCAs on cloudlets.}
+  mechanisms that takes application adaptation characteristics into account to
+  optimize system-wide metrics.}
+  \item{In Chapter~\ref{chapter: app-dev}, we introduce a methodology and
+  development tools for quick prototyping.}
+  \item{In Chapter~\ref{chapter: conclusion}, we conclude this dissertation and discuss future directions.}
 \end{itemize}
