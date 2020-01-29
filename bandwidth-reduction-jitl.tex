@@ -1,3 +1,11 @@
+
+\begin{figure}
+    \centering
+        \includegraphics[width=\linewidth]{FIGS/fig-jitl.pdf}
+\caption{JITL Pipeline}
+\label{fig:jitl}
+\end{figure}
+
 \section{Just-in-time-Learning Strategy To Improve Early Discard}
 \label{sec:jitl}
 
@@ -41,8 +49,8 @@ exist if we could further specialize the computer vision processing to the
 characteristics of video streams.
 
 We propose Just-in-time-learning  (JITL), which tunes the Tier-3 processing
-pipeline to the characteristics of the current mission in order to reduce
-transmitted false positives from the Tier-3 device, and therefore reduce wasted
+pipeline to the characteristics of the current task in order to reduce
+transmitted false positives from the Tier-3 device, and thereby reducing wasted
 bandwidth.  Intuitively, JITL leverages temporal locality in video streams to
 quickly adapt processing outcomes based on recent feedback. 
 
@@ -59,21 +67,20 @@ positives} from EarlyDiscard are marked \emph{negative}.  Frames dropped by
 EarlyDiscard are not processed by the JITL filter, so this approach can only
 serve to improve precision, but not recall.
 
+As shown in Figure~\ref{fig:jitl} during task execution, a JITL filter is
+trained on the cloudlet using the frames transmitted from the Tier-3 device.
+The frames received on the cloudlet are predicted positive by the EarlyDiscard
+filter. The cloudlet, with more processing power, is able to run more accurate
+DNNs to identify true positives and false positives. Using this information as a
+feedback on how well current Tier-3 processing pipeline is doing, a small and
+lightweight JITL filter is trained to distinguish true positives and false
+positives of EarlyDiscard filters. These JITL filters are then pushed to the
+Tier-3 device to run as a cascade filter after the EarlyDiscard DNN.
 
-Periodically during a drone mission, a JITL filter is trained on the cloudlet
-using the frames transmitted from the drone.  The frames received on the
-cloudlet are predicted positive by the EarlyDiscard filter. The cloudlet, with
-more processing power, is able to run more accurate DNNs to identify true
-positives and false positives. Using this information as a feedback on how well
-current Tier-3 processing pipeline is doing, a small and lightweight JITL filter
-is trained to distinguish true positives and false positives of EarlyDiscard
-filters. These JITL filters are then pushed to the drone to run as a cascade
-filter after the EarlyDiscard DNN.
-
-True/false positive frames have high temporal locality throughout a drone
-mission. The JITL filter is expected to pick up the features that confused the
-EarlyDiscard DNN in the immediate past and improve the pipeline's accuracy in
-the near future. These features are usually specific to the current flight, and
+True or false positive frames have high temporal locality throughout a task. The
+JITL filter is expected to pick up the features that confused the EarlyDiscard
+DNN in the immediate past and improve the pipeline's accuracy in the near
+future. These features are usually specific to the current task execution, and
 may be affected by terrain, shades, object colors, and particular shapes or
 background textures.
 
@@ -98,11 +105,12 @@ unique to MobileNet. Most image classification DNNs can be used as a feature
 extractor in this way.
 
 \subsection{JITL Experimental Setup}
+
 We used Jetson TX2 as our Tier-3 device platform and evaluated the JITL strategy
 on four tasks, T1 to T4. For the test videos in each task, we began with the
 EarlyDiscard filter alone and gradually trained and deployed JITL filters.
 Specifically, every ten seconds, we trained an SVM using the frames transmitted
-from the drone and the ground-truth labels for these frames. In a real
+from the Tier-3 device and the ground-truth labels for these frames. In a real
 deployment, the frames would be marked as true positives or false positives by
 an accurate DNN running on the cloudlet since ground-truth labels are not
 available. In our experiments, we used ground-truth labels to control variables
@@ -111,26 +119,26 @@ cloudlet.
 
 In addition, we used the true and false positives from all previous intervals,
 not just the last ten seconds when training the SVM. The SVM, once trained, is
-used as a cascade filter running after the EarlyDiscard filter on the drone to
-predict whether the output of the EarlyDiscard filter is correct or not. For a
-frame, if the EarlyDiscard filter predicts it to be interesting, but the JITL
-filter predicts the EarlyDiscard filter is wrong, it would not be transmitted to
-the cloudlet. In other words, following two criteria need to be satisfied for a
-frame to be transmitted to the cloudlet: 1) EarlyDiscard filter predicts it to
-be interesting 2) JITL filter predicts the EarlyDiscard filter is correct on
-this frame.
+used as a cascade filter running after the EarlyDiscard filter on the Tier-3
+device to predict whether the output of the EarlyDiscard filter is correct or
+not. For a frame, if the EarlyDiscard filter predicts it to be interesting, but
+the JITL filter predicts the EarlyDiscard filter is wrong, it would not be
+transmitted to the cloudlet. In other words, following two criteria need to be
+satisfied for a frame to be transmitted to the cloudlet: 1) EarlyDiscard filter
+predicts it to be interesting 2) JITL filter predicts the EarlyDiscard filter is
+correct on this frame.
 
 \subsection{Evaluation}
 
 From our experiments, JITL is able to filter out more than 15\% of remaining
 frames after EarlyDiscard without loss of event recall for three of four tasks.
 Figure~\ref{fig:jitl-eventrecall} details the fraction of frames saved by JITL.
-The x-axis presents event recall. Y-axis represents the fraction of total
+The X-axis presents event recall. Y-axis represents the fraction of total
 frames. The blue region presents the achievable fraction of frames by
 EarlyDiscard. The orange region shows the additional savings using JITL. For T1,
 T3, and T4, at the highest event recall, JITL filters out more than 15\% of
 remaining frames. This shows that JITL is effective at reducing the false
-positives thus improving the precision of the drone filter. However,
+positives thus improving the precision of the pipeline. However,
 occasionally, JITL predicts wrongly and removes true positives. For example, for
 T2, JITL does not achieve a perfect event recall. This is due to shorter event
 duration in T2, which results in fewer positive training examples to learn
@@ -138,4 +146,4 @@ from. Depending on tasks, getting enough positive training examples for JITL
 could be difficult, especially when events are short or occurrences are few. To
 overcome this problem in practice, techniques such as synthetic data
 generation~\cite{Dwibedi2017} could be explored to synthesize true positives
-from the background of the current flight.
+from the background of the current task.
