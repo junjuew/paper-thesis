@@ -1,4 +1,4 @@
-\section{Baseline: {\xc Dumb}  S\lc{trategy}}
+\section{Baseline: Dumb  S\lc{trategy}}
 \label{sec:dumbdrone}
 
 \subsection{Description}
@@ -8,8 +8,7 @@ performed at the Tier-3 device.  Instead, all captured video is immediately
 transmitted to the cloudlet.  Result latency is very low, merely the sum of
 transmission delay and cloudlet processing delay. We use drones as the example
 of Tier-3 devices and drone video search as the scenario of video analytics
-first. We later demonstrate how to apply the techniques developed for drone
-search to WCAs.
+first. We later demonstrate how to apply the techniques developed to WCAs.
 
 \begin{figure}
 \centering
@@ -110,15 +109,14 @@ Figure~\ref{fig:onboard-dnn-speed} were based on 1080p frames, while tasks T1
 uses the higher resolution of 4K. This will further increase demand on cloudlet
 resources.
 
-Clearly, the strategy of blindly shipping all video to the cloudlet
-and processing every frame is resource-intensive to the point of being
-impractical today.  It may be acceptable as an offline processing
-approach in the cloud, but is unrealistic for real-time processing on
-cloudlets.  We therefore explore an approach in which a modest amount
-of computation on the Tier-3 is able, with high confidence, to avoid
-transmitting many video frames and thereby saving wireless bandwidth
-as well as cloudlet processing resources.  This leads us to the {\xc
-  EarlyDiscard} strategy of the next section.
+Clearly, the strategy of blindly shipping all video to the cloudlet and
+processing every frame is resource-intensive to the point of being impractical
+today.  It may be acceptable as an offline processing approach in the cloud, but
+is unrealistic for real-time processing on cloudlets.  We therefore explore an
+approach in which a modest amount of computation on the Tier-3 is able, with
+high confidence, to avoid transmitting many video frames and thereby saving
+wireless bandwidth as well as cloudlet processing resources.  This leads us to
+the EarlyDiscard strategy of the next section.
 
 
 

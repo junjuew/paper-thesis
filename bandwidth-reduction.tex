@@ -6,12 +6,12 @@ modality is, the more information can be extracted. The core sensing modality of
 WCAs is visual data, e.g. egocentric images and videos from wearable cameras.
 Compared to other sensors, e.g. microphones and inertial measurement units
 (IMUs), cameras capture visual information with rich semantics. As commercial
-camera hardwares become more affordable, they are increasingly pervasive in
-recent years. For example, in 2013, it is estimated that there are 5.9 million
-security cameras in the UK~\cite{Barrett2013}. In the meantime, deep neural
-networks (DNNs) have driven significant advancement in computer vision and have
-achieved human-level accuracy in several previously untractable perception
-problems (e.g. face recognition, image classification)~\cite{learned2016labeled,
+camera hardware become more affordable, they have become increasingly pervasive.
+In 2013, it is estimated that there is one security camera for every eleven
+citizens in the UK~\cite{Barrett2013}. In the meantime, deep neural networks
+(DNNs) have driven significant advancement in computer vision and have achieved
+human-level accuracy in several previously intractable perception problems (e.g.
+face recognition, image classification)~\cite{learned2016labeled,
 schroff2015facenet}. The richness and the open-endness of visual data makes
 camera the ideal sensor for WCAs.
 
@@ -30,7 +30,9 @@ We aim to reduce bandwidth demand without compromising the timeliness or
 accuracy of results. In contrast to previous
 works~\cite{Wang2017networked,zhang2015design,Wang2016skyeyes}, we leverage
 state-of-the-art deep neural networks (DNNs) to selectively transmit interesting
-data from a video stream and explore environment-specific optimizations. 
+data from a video stream and explore environment-specific optimizations. The
+accuracy of the data selection is important, as fewer false positives result in
+lower network bandwidth and cloudlet computing cycle consumption.
 
 This chapter is organized as follows. We first discuss the challenges of running
 DNNs for visual perception solely on Tier-3 devices in

@@ -1,9 +1,9 @@
 
-\section{{\xc EarlyDiscard} Strategy}
+\section{EarlyDiscard Strategy}
 \label{sec:earlydiscard}
 
 \begin{figure}
-\includegraphics[trim={9cm 6.5cm 5cm 4.8cm},clip,width=\linewidth]{FIGS/fig-ondrone-early-discard.pdf}
+\includegraphics[trim={0cm 13cm 14cm 0cm},clip,width=\linewidth]{FIGS/fig-early-discard.pdf}
 \caption{Early Discard on Tier-3 Devices}
 \label{fig:ondrone}
 \end{figure}
@@ -18,7 +18,7 @@ Previous work~\cite{Hu2015,Naderiparizi2017} leveraged pixel-level
 features and multiple sensing modalities to select interesting frames from
 hand-held or body-worn cameras. In this section, we explore the use of DNNs to
 filter frames from aerial views. The benefits of using DNNs are as follows.
-First, DNNs, even shadow ones, are capable of understanding some semantically
+First, DNNs, even shallow ones, are capable of understanding some semantically
 meaningful visual information. Their decisions of what to send are based on the
 reasoning of image content in addition to pixel-level characteristics. Next,
 DNNs are trained and specialized for each task, resulting in their high accuracy
@@ -38,35 +38,43 @@ that are erroneously discarded.  This asymmetry is the basis of the early
 discard strategy.
 
 As shown in Figure~\ref{fig:ondrone}, we envision a choice of weak detectors
-being available as early discard filters on Tier-3 devices, such as a drone,
-with the specific choice of filter being mission-specific.  Based on the
-measurements presented in Figure~\ref{fig:onboard-dnn-speed}, we choose cheap
-DNNs that can run in real-time as EarlyDiscard filters on Tier-3 devices. Note
-that both object detection and image classification algorithms can yield
-meaningful early discard results, as it is not necessary to know exactly where
-in the frame relevant objects occur --- just an estimate of key object presence
-is good enough. This suggests that MobileNet would be a good choice as a weak
-detector. For a given image or partial of an image, it can predict whether the
-input contains objects of interests. More importantly, MobileNet's speed of 13
-ms per frame on the Tier-3 platform Jetson yields more than 75 fps. We therefore
-use MobileNet on the drone for early discard in our experiments.
+being available as early discard filters on Tier-3 devices with the specific
+choice of filter being task-specific.  Based on the measurements presented in
+Figure~\ref{fig:onboard-dnn-speed}, we choose cheap DNNs that can run in
+real-time as EarlyDiscard filters on Tier-3 devices. Note that both object
+detection and image classification algorithms can yield meaningful early discard
+results, as it is not necessary to know exactly where in the frame relevant
+objects occur --- just an estimate of key object presence is good enough. This
+suggests that MobileNet would be a good choice as a weak detector. For a given
+image or partial of an image, it can predict whether the input contains objects
+of interests. More importantly, MobileNet's speed of 13 ms per frame on the
+Tier-3 platform Jetson yields more than 75 fps. We therefore use MobileNet for
+early discard in our experiments.
 
-Pre-trained classifiers for MobileNet are available today for objects such as
-cars, animals, human faces, human bodies, watercraft, and so on.  However, these
-DNN classifiers have typically been trained on images that were captured from a
-human perspective --- often by a camera held or worn by a person. These images
-typically have the objects at the center of the image and occupy the majority of
-the image A drone, however, has an aerial viewpoint and objects look rather
-different.  To improve classification accuracy on drones, we used {\em transfer
-learning}~\cite{Yosinski2014} to finetune the pre-trained classifiers on small
-training sets of images that were captured from an aerial viewpoint. Finetuning
-not only allows us to adapt pre-trained classifiers to drone views, but also
-makes it possible to target custom objects of interests that are not in the
-original dataset, for instance, survivors in orange life jacket. The process of
-fine-tuning involves initial re-training of the last DNN layer, followed by
-re-training of the entire network until convergence. Transfer learning enables
-accuracy to be improved significantly for aerial images without incurring the
-full cost of creating a large training set captured from an aerial viewpoint.
+Pre-trained classifiers for MobileNet are available today for generic objects
+such as cars, animals, human faces, human bodies, watercraft, and so on.
+However, these DNN classifiers have typically been trained on images that were
+captured from a human perspective --- often by a camera held or worn by a
+person. These images typically have the objects at the center of the image and
+occupy the majority of the image. Many Tier-3 devices, however, capture images
+from different viewpoints (e.g. aerial views) and need to recognize rare
+task-specific objects different from generic categories. To improve the
+classification accuracy for custom objects from different viewpoints, we used
+{\em transfer learning}~\cite{Yosinski2014} to finetune the pre-trained
+classifiers on small training sets of images that were captured from correct
+viewpoint. The process of fine-tuning involves initial re-training of the last
+DNN layer, followed by re-training of the entire network until convergence.
+Transfer learning enables accuracy to be improved significantly for custom
+objects without incurring the full cost of creating a large training set.
+
+% captured
+% from an aerial viewpoint.
+
+% Finetuning not only allows us to adapt pre-trained classifiers to
+% drone views, but also makes it possible to target custom objects of interests
+% that are not in the original dataset, for instance, survivors in orange life
+% jacket. 
+
 
 \begin{figure}
 \centering
@@ -75,19 +83,19 @@ full cost of creating a large training set captured from an aerial viewpoint.
 \label{fig:tiling}
 \end{figure}
 
-Drone images are typically captured from a significant height, and hence objects
-in such an image are small.  This interacts negatively with the design of many
-DNNs, which first transform an input image to a fixed low resolution --- for
-example, 224x224 pixels in MobileNet. Many important but small objects in the
-original image become less recognizable.  It has been shown that small object
-size correlates with poor accuracy in DNNs~\cite{Huang2017}.  To address this
-problem, we {\em tile} high resolution frames into multiple sub-frames and then
-perform recognition on the sub-frames as a batch.  This is done offline for
-training, as shown in Figure~\ref{fig:tiling}, and also for online inference on
-the drone and on the cloudlet.  The lowering of resolution of a sub-frame by a
-DNN is less harmful, since the scaling factor is smaller.  Objects are
-represented by many more pixels in a transformed sub-frame than if the entire
-frame had been transformed.  The price paid for tiling is increased
+For live drone video analytics, images are typically captured from a significant
+height, and hence objects in such an image are small.  This interacts negatively
+with the design of many DNNs, which first transform an input image to a fixed
+low resolution --- for example, 224x224 pixels in MobileNet. Many important but
+small objects in the original image become less recognizable.  It has been shown
+that small object size correlates with poor accuracy in DNNs~\cite{Huang2017}.
+To address this problem, we {\em tile} high resolution frames into multiple
+sub-frames and then perform recognition on the sub-frames as a batch.  This is
+done offline for training, as shown in Figure~\ref{fig:tiling}, and also for
+online inference on the drone and on the cloudlet.  The lowering of resolution
+of a sub-frame by a DNN is less harmful, since the scaling factor is smaller.
+Objects are represented by many more pixels in a transformed sub-frame than if
+the entire frame had been transformed. The price paid for tiling is increased
 computational demand.  For example, tiling a frame into four sub-frames results
 in four times the classification workload. Note that this increase in workload
 typically does not translates into the same increase in inference time, as
@@ -104,7 +112,7 @@ total inference time.
 
 \subsection{Experimental Setup}
 
-Our experiments on the {\xc EarlyDiscard} strategy used the same benchmark suite
+Our experiments on the EarlyDiscard strategy used the same benchmark suite
 described in Section~\ref{sec:dumbdrone-setup}. We used Jetson TX2 as the Tier-3
 device platform. We run MobileNet filters to get predictions on whether
 sub-frames contain objects of interests. We compare the predictions with ground
@@ -167,13 +175,12 @@ with the number of tiles. The choice of an operating point will need to strike a
 balance between the speed and accuracy.  In the rest of the chapter, we use two
 tiles per frame by default. 
 
-\subsubsection{Drone Filter Accuracy}
-% \noindent{\textbf{Drone Filter Accuracy}}: 
-The output of a drone filter is the
-probability of the current tile being ``interesting.''  A tunable {\em cutoff
-threshold} parameter specifies the threshold for transmission to the cloudlet.
-All tiles, whether deemed interesting or not, are still stored in the drone
-storage for offline processing.
+\subsubsection{EarlyDiscard Filter Accuracy}
+
+The output of a Tier-3 filter is the probability of the current tile being
+``interesting.''  A tunable {\em cutoff threshold} parameter specifies the
+threshold for transmission to the cloudlet. All tiles, whether deemed
+interesting or not, are still stored in the Tier-3 storage for offline processing.
 
 Since objects have temporal locality in videos, we define an event (of an
 object) in a video to be consecutive frames containing the same object of
@@ -182,7 +189,7 @@ interests. For example, the appearance of the same red raft in T3 in consecutive
 as at least one of the consecutive frames being transmitted to the cloudlet.  
 
 Figure~\ref{fig:earlydiscard-frame-percent-breakdown} shows our results on all
-four tasks. Blue lines show how the event recalls of drone filters for different
+four tasks. Blue lines show how the event recalls of EarlyDiscard filters for different
 tasks change as a function of cutoff threshold. The MobileNet DNN filter we used
 is able to detect all the events for T1 and T4 even at a high cutoff threshold.
 For T2 and T3, the majority of the events are detected. Achieving high recall on
@@ -192,7 +199,7 @@ are actually uninteresting (i.e., false positives).
 
 \subsubsection{False negatives}
 As discussed earlier, false negatives are
-a source of concern with early discard.  Once the drone drops a frame
+a source of concern with early discard.  Once the Tier-3 device drops a frame
 containing an important event, improved cloudlet processing cannot help. The
 results in the third column of Figure~\ref{fig:early-discard-results} confirm
 that there are no false negatives for T1 and T4 at a cutoff threshold of 0.5.
@@ -206,8 +213,10 @@ the first frame containing the object that is transmitted to the
 backend (i.e., first detection).  The results in the fourth column of
 Figure~\ref{fig:early-discard-results} confirm that early discard
 contributes little to result latency.  The amounts range from 0.1~s
-for T1 to 12.7~s for T3.  At the timescale of human actions
-such as dispatching of a rescue team, these are negligible delays.
+for T1 to 12.7~s for T3.  
+
+% At the timescale of human actions
+% such as dispatching of a rescue team, these are negligible delays.
 
 \begin{figure}
 \centering
@@ -234,15 +243,14 @@ T4 & \phantom{0}25  & 100~\%       & \phantom{0}0.3 & \phantom{0}167  &  0.43 & 
 \subsubsection{Bandwidth}
 Columns 5--7 of Figure~\ref{fig:early-discard-results} pertain to wireless
 bandwidth demand for the benchmark suite with early discard.  The figures shown
-are based on H.264 encoding of each individual frames in the drone-cloudlet
-video transmission. Average bandwidth is calculated as the total data
-transmitted divided by mission duration.  Comparing column 5 of
-Figure~\ref{fig:early-discard-results} with column 2 of
-Figure~\ref{fig:baseline}, we see that all videos in the benchmark suite are
-benefited by early discard (Note T3 and T4 have the same test dataset as T2).
-For T2, T3, and T4, the bandwidth is reduced by more than 10x. The amount of
-benefit is greatest for rare events (T2 and T3).  When events are rare, the
-drone can drop many frames.
+are based on H.264 encoding of each individual frames in the video transmission.
+Average bandwidth is calculated as the total data transmitted divided by mission
+duration.  Comparing column 5 of Figure~\ref{fig:early-discard-results} with
+column 2 of Figure~\ref{fig:baseline}, we see that all videos in the benchmark
+suite are benefited by early discard (Note T3 and T4 have the same test dataset
+as T2). For T2, T3, and T4, the bandwidth is reduced by more than 10x. The
+amount of benefit is greatest for rare events (T2 and T3).  When events are
+rare, the Tier-3 device can drop many frames.
 
 Figure~\ref{fig:earlydiscard-frame-percent-breakdown} provides deeper insight
 into the effectiveness of cutoff-threshold on event recall. It also shows how
@@ -319,7 +327,7 @@ This suggests that simply restricting the number of transmitted
 frames by sampling may help reduce bandwidth consumption.  
 
 Figure~\ref{fig:sampling-only} shows the effects of 
-sending a sample of frames from the drone, without any
+sending a sample of frames from Tier-3, without any
 content-based filtering.  Based on these results, we can reduce
 the frames sent as little as one per second and still get
 adequate recall at the cloudlet.  Note that this result is very
@@ -353,7 +361,7 @@ provided all frames in a sample interval are transmitted on a match.
 
 \subsection{Effects of Video Encoding}
 
-One advantage of the {\xc Dumb} strategy is that since all
+One advantage of the Dumb strategy is that since all
 frames are transmitted, one can use a modern video encoding to
 reduce transmission bandwidth.  With early discard, only a subset
 of disparate frames are sent.  These will likely need to be
@@ -378,7 +386,7 @@ However, this compression does affect analytics. Even at medium quality level,
 visible compression artifacts, blurring, and motion distortions begin to appear.
 Initial experiments analyzing compressed videos show that these distortions do
 have a negative impact on accuracy of analytics. Using average precision
-analysis, a standard method to evaluate accuracy, we see that the 
+analysis, a standard method to evaluate accuracy, we estimate that the 
 most accurate model (Faster-RCNN ResNet101) on low quality videos performs similarly
 to the less accurate model (Faster-RCNN InceptionV2) on high quality
 JPEG images. This negates the benefits of using the state-of-art models.

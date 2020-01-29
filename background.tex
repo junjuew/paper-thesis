@@ -69,7 +69,7 @@ audio stream is captured by the smart speaker and transmitted to the cloud for
 speech recognition, text understanding, and question answering.
 
 However, offloading computation to the cloud has its own downside. Because of
-the consolidation needed to achieve the economy of scale, today's datacenters
+the consolidation needed to achieve the economy of scale, today's data centers
 are ``far'' from Tier-3 devices. The latency, throughput, and cost of wide-area
 network (WAN) significantly limit the amount of applications that can benefit
 from computation offloading. Even worse, it is the logical distance in the
@@ -83,7 +83,7 @@ has the nearest peering point of the particular commercial LTE network in use to
 the public Internet. In 2010, Li et al.~\cite{li2010cloudcmp} report that the
 average round trip time (RTT) from 260 global vantage points to their optimal
 Amazon EC2 instances is 74 ms. In addition to long network delay, the high
-network fan-in of datacenters means its aggregation network needs to carry
+network fan-in of data centers means its aggregation network needs to carry
 significant amount of traffic. As the number of Tier-3 devices is expected to
 grow exponentially, these network links face significant challenges to handle
 the ever-increasing volume of ingress traffic. 
@@ -120,7 +120,7 @@ energy (e.g. fuels in a vehicle). Cloudlets serve two purposes in the tiered
 model. First, they provide infrastructure for compute-intensive and
 latency-sensitive applications for Tier-3. Wearable cognitive assistance is an
 examplar of these applications. Second, by processing data closer to the source
-of the content, it reduces the excessive traffic going into Tier-1 datacenters.
+of the content, it reduces the excessive traffic going into Tier-1 data centers.
 Figure~\ref{fig:ping-CDF} shows the RTT comparison of PING to the cloud and the
 cloudlet over WiFi and LTE. Cloudlet's RTT is on average 80 to 100ms shorter
 than its counterpart to the cloud. Figure~\ref{fig:response-time-lte-face} shows
@@ -136,9 +136,9 @@ execution and about 250 ms faster than the nearest cloud.
 
 The low-latency and high-bandwidth compute infrastructure provided by cloudlets
 is an indispensible foundation for latency-sensitive and compute-intensive
-wearable cognitive assistance. Cloudlet also poses unique challenges for
-scalability as resources are a lot more limited compared to datacenters. How to
-scale WCAs to many users using cloudlets is the key question we set out to
+wearable cognitive assistance. Cloudlets also pose unique challenges for
+scalability as resources are a lot more limited compared to data centers. How to
+scale WCAs to many users using cloudlets is a key question we set out to
 investigate in this dissertation. 
 
 
@@ -172,7 +172,7 @@ state, detecting errors, and generating guidance in one or more modalities
 (e.g., audio, video, text, etc.). The Gabriel platform automatically discovers
 cognitive engines on the local network via a universal plug-and-play (UPnP)
 protocol. The platform is designed to run on a small cluster of machines with
-each modules capable of being separated or co-located with other modules via
+each module capable of being separated or co-located with other modules via
 process, container, or virtual machine virtualization. 
 
 The original Gabriel platform was built with a single user in mind, and did not
@@ -264,7 +264,7 @@ video of RibLoc WCA is at \url{https://youtu.be/YRTXUty2P1U}.
 \end{figure}
 
 In collaboration with InWin~\cite{inwin}, a computer hardware manufacturer, we
-created a cognitive assistance to train operators how to assemble their disk
+created a cognitive assistant to train operators how to assemble their disk
 tray product. Figure~\ref{fig:disktray} shows the assembled tray, which is used
 to host hard drives that go into a server chassis. As with all the other WCAs,
 we do not modify the original parts. 
@@ -314,7 +314,7 @@ human speed. For example, for assembly tasks, an instruction delivered tens of
 seconds after a user has finished a step can cause user annoyance and
 frustration. For PING PONG assistant, a task that is even more fast-paced, an
 instruction on where to hit the ball becomes useless if it is delivered after
-the user has made a hit. 
+the user has hit the ball. 
 
 Previous work~\cite{chen2017empirical} quantifies task-dependent application
 latency bounds by answering the question \textit{How fast does an instruction
