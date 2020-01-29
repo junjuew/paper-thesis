@@ -62,13 +62,13 @@ optimizations (e.g., cache sharing) in an application.
 \end{figure}
 
 \subsection{System Model}
-Figure~\ref{fig:allocation-system-model} shows the system model we
-consider. Each application is given a separate input queue. Each queue
-can feed one or more application instances. Each application instance
-is encapsulated in a container with controlled resources. In this
-model, with adequate computational resources, clients of different
-applications have minimal sharing and mainly contend for the wireless
-network.
+Figure~\ref{fig:allocation-system-model} shows the system model we consider.
+Each application is given a separate input queue. Each queue can feed one or
+more application instances, which are the units of application logic that can be
+replicated (e.g. a single process or several collaborative processes). Each
+application instance is encapsulated in a container with controlled resources.
+In this model, with adequate computational resources, clients of different
+applications have minimal sharing and mainly contend for the wireless network.
 
 We use a utility-based approach to measure and compare system-wide
 performance under different allocation schemes. For WCA, the utility

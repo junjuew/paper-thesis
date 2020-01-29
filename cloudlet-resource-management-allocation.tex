@@ -46,8 +46,9 @@ no more than one third of frames (from a 30FPS source)
 will be processed within satisfactory latency bounds for a given
 client.
 
-Solving the above optimization problem is computationally difficult. We thus use an
-iterative greedy allocation algorithm as follows.
+Solving the above optimization problem is computationally difficult. We thus use
+an iterative greedy allocation algorithm as shown in
+Figure~\ref{fig:cloudlet-allocation-algorithm}.
 
 \begin{algorithm}[]
 \SetAlgoLined
@@ -67,6 +68,7 @@ each with resource $\mathbf{r}^*_a$, such that $k_a$ is the largest integer with
 $k_a \cdot u_a(\mathbf{r}^*_a) \le \gamma \cdot c_a$\;
  }
  \caption{Iterative Allocation Algorithm to Maximize Overall System Utility}
+ \label{fig:cloudlet-allocation-algorithm}
 \end{algorithm}
 
 % For each application profile $u_a(\mathbf{r})$, we find the resource point that gives

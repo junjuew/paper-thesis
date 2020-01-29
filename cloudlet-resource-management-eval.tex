@@ -10,7 +10,8 @@ instructions is high, as a user could not proceed without the instruction. On
 the other hand, users could still continue their tasks without the instructions
 from FACE, POOL, and PING PONG assistants. For POOL and PING PONG, the speed of
 an instruction is paramount to its usefulness. For example, any instruction that
-comes 105ms after a user action for POOL is no longer of value.
+comes 105ms after a user action for POOL is no longer of value, because it is
+too late to guide the next action.
 
 \begin{figure}
 \centering
@@ -224,7 +225,7 @@ POOL}\end{turn}\hspace{0.2in}\includegraphics[width=2.5in, trim=0em 0em 0em 0em,
 clip]{FIGS/fig-sec6-latency-pool.pdf}\\[0.08in]
   \vspace{0in}
 \begin{turn}{90}{\hspace{0.6in}\small (e) IKEA}\end{turn}\hspace{0.2in}\includegraphics[width=2.5in, trim=0em 0em 0em 0em, clip]{FIGS/fig-sec6-latency-ikea.pdf}
-\caption{Guidance Latency}
+\caption{Guidance Latency Compared to Loose Latency Bound}
 \label{figs:inst-delay}
 \end{figure}
 		
