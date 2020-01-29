@@ -9,9 +9,9 @@ the model. Fortunately, one does not typically need to train a DNN from scratch.
 Rather, pretrained models based on public image data sets such as ImageNet are
 publicly available. Developers can adapt these pretrained models to detect
 custom classes for new applications, through a process called \emph{transfer
-learning}.  The key assumption of transfer learning is that reusable is much of
-the training that teaches the model to discover low-level features, such as
-edges, textures, shapes, and patterns that are useful in distinguishing objects.
+learning}.  The key assumption of transfer learning is that much of the training
+that teaches the model to discover low-level features, such as edges, textures,
+shapes, and patterns that are useful in distinguishing objects can be reused.
 Thus, adapting a pretrained model for new object classes requires only thousands
 or tens of thousands of examples and hours of training time. 
 
@@ -23,7 +23,7 @@ creating DNN-based object detectors for fast prototyping. It provides a
 tracking-assisted labeling interface for speedy annotation and a DNN training
 and evaluation portal that leverages transfer learning to hide the nuances of
 DNN creation. It greatly reduces the labeling effort while constructing a
-dataset, and automates training a object detection DNN model.
+dataset, and automates training an object detection DNN model.
 
 % A user would first
 % upload short videos of the object collected from varying lighting conditions and
@@ -64,9 +64,9 @@ apply. Moreover, it is preferred to collect training examples in environment
 similar to the test environment to make the training examples exhibit similar
 distribution as test data. Figure~\ref{figs:tpod-example-training-images} shows
 three example training images for a toy cooking set. Note that the image
-background are randomly cropped to be used as negative examples. These
-background examples illustrate to the neural network what an object of interests
-does not look like. Therefore, it is recommended that the background contains
+background is randomly cropped to be used as negative examples. These
+background examples illustrate to the neural network what an object of interest
+does \textit{not} look like. Therefore, it is recommended that the background contains
 common objects in the test environment that may cause confusion.
 
 
@@ -115,9 +115,9 @@ produce more robust object detectors~\cite{dwibedi2017cut}.
 Then, by submitting a form on the web GUI, users can launch the DNN training
 process without writing a single line of code. Under the hood, TPOD automates
 the transfer learning process. TPOD supports several state-of-the-art object
-detection network, including FasterRCNN-ResNet~\cite{ren2015faster,He2016} and
+detection networks, including FasterRCNN-ResNet~\cite{ren2015faster,He2016} and
 SSD-MobileNet~\cite{Liu2016,Howard2017}. These different networks exhibit
-varying accuracy versus speed trade-off. While FasterRCNN-ResNet achieves higher
+varying accuracy versus speed trade-offs. While FasterRCNN-ResNet achieves higher
 accuracies on standard datasets, its training and inference time are
 significantly longer than SSD-MobileNet. Application developers should choose
 the appropriate DNN network based on their accuracy and latency constraints.
@@ -137,9 +137,9 @@ External Defibrillator (AED) machines.
 
 \subsection{TPOD Case Study With the COOKING Application}
 
-To quantify how much TPOD can help reduce laboring efforts, we conducted a case
+To quantify how much TPOD can help reduce labeling efforts, we conducted a case
 study to train detectors for the COOKING cognitive
-assistance~\cite{chen2018application}. We trained object detectors for 9
+assistant~\cite{chen2018application}. We trained object detectors for 9
 components of a toy sandwich, including bread, ham, lettuce, cucumber, cheese,
 half sandwich, wrong ham, tomato, and full sandwich. We collected 53 short
 training videos, annotated all of them, and trained object detectors with TPOD.
@@ -147,9 +147,9 @@ training videos, annotated all of them, and trained object detectors with TPOD.
 In total, we collected 21218 video frames. In contrast, we only manually labeled
 91 frames on TPOD annotation interface. The rest of frames are automatically
 labeled by tracking. The entire labeling session took 80 minutes. The total
-number of frames used for training is 21013 due to training set optimization. We
-fine-tuned from a FasterRCNN-VGG network. The transfer learning process took 54
-minutes to finish on a NVIDIA K40c GPU.
+number of frames used for training is 21013 due to training set optimization by
+TPOD. We fine-tuned from a FasterRCNN-VGG network. The transfer learning process
+took 54 minutes to finish on a NVIDIA K40c GPU.
 
 
 \subsection{TPOD Architecture}

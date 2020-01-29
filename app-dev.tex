@@ -4,31 +4,31 @@
 While previous chapters address the system challenges of scaling wearable
 cognitive assistance at the edge, another key obstacle to the widespread
 adoption of WCAs is the level of specialized skills and the long development
-time needed to create new applications. Such expertise include task domain
+time needed to create new applications. Such expertise includes task domain
 knowledge, networked application development skills, and computer vision
 insights. Researchers~\cite{chen2018application} report that it typically takes
 multiple person-months of effort to create a single application. The majority of
 development time is spent on learning new computer vision techniques, selecting
 robust algorithms to use through trial and error, and implementing the
-application. The high barrier of entry significantly limit the number of
+application. The high barrier to entry significantly limits the number of
 wearable cognitive assistants available today. Clearly, this is not scalable. 
 
-In this chapter, we reflect on existing ad hoc WCA development process, propose
-a new development methodology centered around DNN-based object detection, and
-present development tools we have built to lower the barrier of WCA development.
-Our goal is to simplify the process so that a small team (1-2 people) of a task
-expert and a developer, without computer vision expertise, can create an initial
-version of a Gabriel application within a few days. This is a productivity
-improvement of at least one order of magnitude. Refinement and tuning may take
-longer, but can be guided by the early use of the application. 
+In this chapter, we reflect on the existing ad hoc WCA development process,
+propose a new development methodology centered around DNN-based object
+detection, and present development tools that we have built to lower the barrier
+of WCA development. Our goal is to simplify the process so that a small team
+(1-2 people) of a task expert and a developer, without computer vision
+expertise, can create an initial version of a Gabriel application within a few
+days. This is a productivity improvement of at least one order of magnitude.
+Refinement and tuning may take longer, but can be guided by the early use of the
+application. 
 
 Simplification is difficult. The application needs a precise definition of the
 end-point state of each step (e.g., a particular screw mounted into a
 workpiece), yet needs to be tolerant of alternative paths to reaching that end
 point (e.g., hand-tightening versus using a screwdriver). We assume the small
 development team has knowledge of the task specifics and general programming
-skills, but not necessarily experiences with wearable devices or computer
-vision.
+skills, but not necessarily experience with wearable devices or computer vision.
 
 \section{Ad Hoc WCA Development Process}
 \label{sec: app-dev-adhoc}
@@ -40,14 +40,14 @@ vision.
     \label{figs:workflow}
 \end{figure}
 
-Existing ad hoc development process of WCAs can be described as
-figure~\ref{figs:workflow}. Developers first work with task expert to identify
-and pinpoint a specific use case. With the use case in mind, the development
-team needs to identify critical visual features and states that can be reliably
-recognized with machine vision. In the meantime, the use case is broken down
-into individual steps. For each step, feedback messages to users are created
-based on detected visual states. Potential errors are also enumerated and
-included as additional steps. We refer to the complete set of the steps
+The existing ad hoc development process of WCAs can be described as
+figure~\ref{figs:workflow}. Developers first work with the task expert to
+identify and pinpoint a specific use case. With the use case in mind, the
+development team needs to identify critical visual features and states that can
+be reliably recognized with machine vision. In the meantime, the use case is
+broken down into individual steps. For each step, feedback messages to users are
+created based on detected visual states. Potential errors are also enumerated
+and included as additional steps. We refer to the complete set of the steps
 annotated with visual states and feedback as the \textit{Task Model}. For
 example, for the LEGO wearable cognitive assistance~\cite{chen2017empirical},
 the task model contains the sequence of blocks to build up the final assembled
@@ -67,7 +67,7 @@ user to hold the object of interests at a fixed viewpoint shown in the image
 guidance. Narrowing the viewing angle makes the recognition problem more
 tractable.
 
-Application task model serves as a blueprint for implementation. For each step
+The application task model serves as a blueprint for implementation. For each step
 in the task model, developers select and implement computer vision algorithms.
 Custom logic is also written to handle step transitions and interface with the
 Gabriel platform. After initial implementation, test runs are conducted to
@@ -81,7 +81,7 @@ WCA creators in the following aspects.
   \item Developers need to be familiar with various computer vision algorithms
 to determine what visual states can be recognized reliably. The knowledge of
 selecting algorithms for specific objects, environments, and setups requires
-years of experience. This high bar of entry hinders more WCAs to be developed.
+years of experience. This high bar of entry hinders the creation of WCAs.
   \item It takes a significant amount of time to implement computer vision
 algorithms in a trial and error fashion. Several months of coding time could
 turn into a fruitless outcome when the algorithm turns out to be a bad fit. For
@@ -166,7 +166,7 @@ reasoning framework to decompose user states into visual states.
 \begin{figure}
   \centering
   \includegraphics[trim={0 0 0 0},width=.9\linewidth]{FIGS/pingpong}
-	\caption{A Frame Seen by the PING PONG Assistance}
+	\caption{A Frame Seen by the PING PONG Assistant}
     \label{figs:pingpong-frame}
 \end{figure}
 
@@ -190,7 +190,7 @@ instruction is produced.
 \begin{figure}
   \centering
   \includegraphics[trim={0 0 0 0},width=.9\linewidth]{FIGS/lego}
-	\caption{A Frame Seen by the LEGO Assistance}
+	\caption{A Frame Seen by the LEGO Assistant}
     \label{fig:lego-image}
 \end{figure}
 
@@ -236,9 +236,9 @@ In addition to significant improvement in accuracy, DNNs also provide a unified
 method to create object detectors. Modern DNN-based object detection employs an
 end-to-end learning approach, in which one or multiple deep neural networks are
 trained to predict the object classes and locations directly from RGB images.
-Gone is the need of hand-crafted feature engineering. Instead, DNNs, on their
+Gone is the need to hand craft features. Instead, DNNs, on their
 own, find distinguishable features during the training process as they are
-presented with labeled examples of different objects. The substitute of custom
+presented with labeled examples of different objects. The substitution of custom
 CV with machine-learned models makes automation possible. A typical DNN training
 process consists of the following steps.
 
@@ -274,27 +274,27 @@ web browser without writing a single line of code.
 \label{sec: app-dev-fsm-representation}
 
 While the Gabriel platform handles data acquisition and transmission from mobile
-wearable devices to cloudlet, application developers still need to write custom
-business logic for their own use cases. Since the task model can change
+wearable devices to a cloudlet, application developers still need to write
+custom business logic for their own use cases. Since the task model can change
 frequently during development, a fast turn-around time to implement changes can
 reduce the overall development time. Therefore, we propose a finite state
 machine representation of application logic and a GUI tool to enable fast
 turn-around. 
 
 Our choice of finite state machine representation is based on the observation
-that WCAs, in their nature, consist of states. A FSM ``State'' corresponds to a
+that WCAs, in their nature, consist of states. A FSM State corresponds to a
 user state at a particular time instance. At a given state, the WCA runs
 computer vision processing specific to the state to analyze the current scene.
-We refer to the computer vision algorithms as ``Processors'' for the state. The
-outputs of ``Processors'' are symbolic states of current scene. For example, a
-symbolic state can be a vector of objects. ``Transitions'' to other states
+We refer to the computer vision algorithms as Processors for the state. The
+outputs of Processors are symbolic states of current scene. For example, a
+symbolic state can be a vector of objects. Transitions to other states
 happen when the symbolic states meet some criteria, for example, the presence of
-a new object. We refer to these criteria as ``Predicates'' for transitions. A
-``State'' can have multiple transitions into different adjacent ``States''. Each
-``Transition'' has its own ``Predicate''. ``Transitions'' also have the concept
-of precedence. The first ``Transition'' whose ``Predicate'' is satisfied is
-triggered for a state change. In addition to predicates, ``Transitions'' also
-have guidance instructions. When a ``Transition'' is taken, the corresponding
+a new object. We refer to these criteria as Predicates for transitions. A
+State can have multiple transitions into different adjacent States. Each
+Transition has its own Predicate. Transitions also have the concept
+of precedence. The first Transition whose Predicate is satisfied is
+triggered for a state change. In addition to predicates, Transitions also
+have guidance instructions. When a Transition is taken, the corresponding
 guidance instruction is delivered to the user.
 
 
@@ -310,13 +310,13 @@ finite state machine. This example WCA checks whether a piece of bread is
 present. If so, it congratulates the user. On the other hand, if it detects a
 piece of ham is present, a corrective guidance is sent to the user. There are
 four states in total. The application starts from the ``Start'' state and
-immediately transitions to ``Check Bread'' state as the predicate is ``Always''.
-At ``Check Bread'' state, for each frame, a DNN to detect bread and ham is run
-to extract the symbolic state. Then, every transition is checked to see if its
-predicate is satisfied. If a ``Bread'' is detected, the transition predicate to
-the ``Finish'' state is satisfied and hence the transition taken. The
-corresponding instruction ``Good Job'' is delivered to the user. Similarly, when
-in ``Check Bread'' state, if a ``Ham'' is detected, the transition to the
+immediately transitions to the ``Check Bread'' state as the predicate is
+``Always''. At the ``Check Bread'' state, for each frame, a DNN to detect bread
+and ham is run to extract the symbolic state. Then, every transition is checked
+to see if its predicate is satisfied. If a ``Bread'' is detected, the transition
+predicate to the ``Finish'' state is satisfied and hence the transition taken.
+The corresponding instruction ``Good Job'' is delivered to the user. Similarly,
+when in ``Check Bread'' state, if a ``Ham'' is detected, the transition to the
 ``Error: Ham'' state is satisfied and taken. The instruction ``Replace Ham with
 Bread'' would be delivered as the corrective guidance to the user.
 
