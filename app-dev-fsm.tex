@@ -6,7 +6,7 @@ custom logic to implement the WCA task model running on the cloudlet. In this
 section, we introduce a FSM authoring tool that provides libraries and a GUI to
 enable fast implementation to allow for quick development iteration.
 
-As discussed in Section~\ref{sec: app-dev-fsm-representation}, WCA cloudlet
+As discussed in Section~\ref{sec: app-dev-fsm-representation}, the WCA cloudlet
 logic can be represented as a finite state machine. The FSM representation
 allows us to impose structure and provide tools for task model implementation.
 Our FSM authoring tool consists of a web GUI that allows users to visualize and
@@ -28,11 +28,11 @@ computer vision processing logic to run in a given state, can be specified by a
 container url. User guidance can be added through adding text, video urls or by
 uploading images. The Web GUI also supports import and export functionalities to
 interface with other WCA tools. The exported FSM is in a custom binary format
-and can be executed by FSM python library.
+and can be executed by the FSM python library.
 
 The GUI is implemented as a pure browser-based user interface, using
 React~\cite{staff2016react}. No web backend is needed. This makes the GUI easy
-to set up and deploy. User only needs to open an HTML file in a browser to 
+to set up and deploy. The user only needs to open an HTML file in a browser to 
 use the tool.
 
 \subsection{FSM Python Library}
@@ -53,9 +53,9 @@ easy installation.
 \subsection{FSM Binary Format}
 
 We define a custom FSM binary format for WCAs that can be read and wrote using
-multiple programming languages. We use serialization library Protocol Buffers to
-generate language-specific stub code. Figure~\ref{figs:fsm-binary-format} shows
-a summary of the serialization format.
+multiple programming languages. We use the serialization library Protocol
+Buffers to generate language-specific stub code.
+Figure~\ref{figs:fsm-binary-format} shows a summary of the serialization format.
 
 
 \begin{figure}

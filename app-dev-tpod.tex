@@ -162,21 +162,21 @@ took 54 minutes to finish on a NVIDIA K40c GPU.
 \end{figure}
 
 TPOD adopts a Model-View-Controller (MVC) design~\cite{krasner1988description}.
-Figure~\ref{figs:tpod-arch} shows TPOD architecture. TPOD frontend handles UI
-logic and is built using React, a declarative, efficient, and flexible
-JavaScript library for creating user interface~\cite{staff2016react}. React
-enables TPOD frontend code to be modular and reusable. The frontend has three
-major components: video management, detector management, and an external
+Figure~\ref{figs:tpod-arch} shows the TPOD architecture. The TPOD frontend
+handles UI logic and is built using React, a declarative, efficient, and
+flexible JavaScript library for creating user interfaces~\cite{staff2016react}.
+React enables TPOD frontend code to be modular and reusable. The frontend has
+three major components: video management, detector management, and an external
 labeling tool. TPOD integrates the labeling tool CVAT~\cite{cvat2019} into its
 frontend UI through HTML iframe embedding. The integration of an labeling tool
 into the TPOD GUI unifies the workflow. Users no longer need to install and set
-up another piece of software. TPOD frontend communicates with the backend
+up another piece of software. The TPOD frontend communicates with the backend
 through a set of RESTful APIs~\cite{richardson2008restful}. 
 
 TPOD backend is developed using the Django web
-framework~\cite{holovaty2009definitive} and served with Nginx web
-server~\cite{nedelcu2010nginx} and Gunicorn gateway~\cite{gunicorn2017http}. The
-backend implements RESTful apis to create, read, update, and delete
+framework~\cite{holovaty2009definitive} and served with the Nginx web
+server~\cite{nedelcu2010nginx} and the Gunicorn gateway~\cite{gunicorn2017http}.
+The backend implements RESTful apis to create, read, update, and delete
 \textit{Video} and \textit{Detector} resources. It also interfaces with the
 backend of the external labeling tool to read and write annotations. Long
 running background jobs, such as DNN model training and video extraction, are
@@ -184,7 +184,7 @@ processed asynchronously using a task queue and worker processes. Metadata about
 videos and DNN models are stored in a relational database while large binary
 files, such as video files and trained DNN model weights, are stored in the file
 system. An in-memory caching layer on top of the file system and database is
-created using key-value store Redis. The entire application is containerized and
+created using the Redis key-value store. The entire application is containerized and
 can be deployed easily onto bare-metal or virtualized environments.
 
 One key design choice of TPOD is to be extensible for new DNN architectures.
@@ -193,7 +193,7 @@ Figure~\ref{figs:tpod-provider-interface}, in order to easily add new DNNs
 implementation for transfer learning. TPOD refers to these DNN implementations
 as DNN \textit{Providers}. Without modifying other components, providers can be
 added and integrated by implement this interface. The built-in \textit{Provider}
-is Tensorflow Object Detection API~\cite{tfod2019}, which supports transfer
+is the Tensorflow Object Detection API~\cite{tfod2019}, which supports transfer
 learning for a wide set of object detectors. 
 
 
