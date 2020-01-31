@@ -121,7 +121,14 @@ their latency bounds. Of course, with higher contention, fewer frames per second
 can be processed for each client. Original Gabriel degrades applications in an
 undifferentiated fashion. Scalable Gabriel, in contrast, tries to maintain
 higher throughput for some applications at the expense of the others, e.g. LEGO
-up to 27 clients.
+up to 27 clients. The accuracies of application profiles influence how well
+Scalable Gabriel can manage latency. Run-time resource demand could deviate
+from profiles due to the differences in the request content (e.g. image
+content). Profile inaccuracies result in the overshoot of POOL and IKEA
+90\%-tile latencies in Figure~\ref{fig:alloc-latency}, as the profiles
+underestimate their resource demand and overestimate LEGO resource demand when
+the number of clients is low. When the system becomes more crowded, the
+throttling of LEGO throughput reduces such an effect.
 
 \begin{figure}[]
   \begin{center}
@@ -133,7 +140,10 @@ up to 27 clients.
   \end{center}
 \begin{captiontext}
   \centering
-The normalization is  by per-application tight and loose bounds~\cite{chen2017empirical}
+The normalization is  by per-application tight and loose
+bounds~\cite{chen2017empirical}.
+
+The allocation policy is to maximize the overall system utility.
 \end{captiontext}
   \caption{Normalized 90\%-tile Response Latency}
   \label{fig:alloc-latency}
@@ -180,7 +190,8 @@ resource allocation alone.
 
 \begin{captiontext}
 \centering
-The normalization is by per-application tight and loose bounds~\cite{chen2017empirical}
+The normalization is by per-application tight and loose
+bounds~\cite{chen2017empirical}.
 \end{captiontext}
 \vspace{-0.1in}
 	\caption{Normalized 90\%-tile Response Latency}
