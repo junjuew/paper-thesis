@@ -1,4 +1,4 @@
-\section{Tools For Painless Object Detection (TPOD)}
+\section{OpenTPOD: Open-Source Tools For Painless Object Detection}
 \label{sec: app-dev-tpod}
 
 Training a DNN for object detection is not trivial.  In particular, it involves
@@ -18,7 +18,7 @@ or tens of thousands of examples and hours of training time.
 However, even with transfer learning, collecting a labeled training set of
 several thousand examples per object class can be a daunting and painful task.
 In addition, implementing object detection DNNs itself requires expertise and
-takes time. TPOD is a web-based tool we developed to streamline the process of
+takes time. OpenTPOD is a web-based tool we developed to streamline the process of
 creating DNN-based object detectors for fast prototyping. It provides a
 tracking-assisted labeling interface for speedy annotation and a DNN training
 and evaluation portal that leverages transfer learning to hide the nuances of
@@ -27,17 +27,17 @@ dataset, and automates training an object detection DNN model.
 
 % A user would first
 % upload short videos of the object collected from varying lighting conditions and
-% perspectives. Then, the user would label these objects using TPOD's labeling
-% interface. TPOD assists labeling by tracking the labeled object across frames.
+% perspectives. Then, the user would label these objects using OpenTPOD's labeling
+% interface. OpenTPOD assists labeling by tracking the labeled object across frames.
 % Augmenting training data with synthetically generated data is also supported. A
-% user then can start training from the web interface. TPOD backend uses transfer
+% user then can start training from the web interface. OpenTPOD backend uses transfer
 % learning to finetune an object detector DNN from publicly available networks
 % that have been trained with millions of images. When the training is done, a
 % user can downl.oad the object detector as a container image to run the trained
-% models for inference. TPOD also provides interfaces for evaluating and testing
+% models for inference. OpenTPOD also provides interfaces for evaluating and testing
 % trained DNNs.
 
-\subsection{Creating a Object Detector with TPOD}
+\subsection{Creating a Object Detector with OpenTPOD}
 
 \begin{figure}[]
   \centering
@@ -50,11 +50,11 @@ dataset, and automates training an object detection DNN model.
   \begin{minipage}[b]{0.32\textwidth}
     \includegraphics[width=\textwidth]{FIGS/sandwich-training-3.jpg}
   \end{minipage}
-    \caption{TPOD Training Images Examples}
+    \caption{OpenTPOD Training Images Examples}
   \label{figs:tpod-example-training-images}
 \end{figure}
 
-Using TPOD to create object detectors is straight-forward. A developer first
+Using OpenTPOD to create object detectors is straight-forward. A developer first
 captures videos of objects from various viewing angles and diverse backgrounds.
 For example, these videos can be acquired on a mobile phone. At 30 frames per
 second, ten minutes of video footage contain 18000 frames, which is already a
@@ -73,16 +73,16 @@ common objects in the test environment that may cause confusion.
 \begin{figure}[]
   \centering
     \fbox{\includegraphics[width=\textwidth]{FIGS/tpod-video-gui}}
-    \caption{TPOD Video Management GUI}
+    \caption{OpenTPOD Video Management GUI}
   \label{figs:tpod-video-gui}
 \end{figure}
 
-Next, developers upload the collected training videos to TPOD either directly
+Next, developers upload the collected training videos to OpenTPOD either directly
 from the phone or from a computer. As shown in Figure~\ref{figs:tpod-video-gui},
-TPOD helps user to store and organize training videos. In addition, TPOD assists
+OpenTPOD helps user to store and organize training videos. In addition, OpenTPOD assists
 users to annotate the training videos by integrating an external labeling tool
 into the GUI. Uers can annotate objects by draw bounding boxes on the uploaded
-video frames. To facilitate the annotation process, TPOD leverages the fact that
+video frames. To facilitate the annotation process, OpenTPOD leverages the fact that
 the individual frames come from a continuous video shoot. It automatically
 generates bounding box in subsequent frames either using a correlation tracking
 algorithm~\cite{danelljan2014accurate} or linear interpolation. As a result,
@@ -97,24 +97,24 @@ that the user needs to manually label by a factor of 10-20x.
 \begin{figure}[]
   \centering
     \fbox{\includegraphics[width=\textwidth]{FIGS/tpod-label-gui}}
-    \caption{TPOD Integration of an External Labeling Tool}
+    \caption{OpenTPOD Integration of an External Labeling Tool}
   \label{figs:tpod-label-gui}
 \end{figure}
 
 With videos annotated, users can move on to create a training dataset on the
-webpage by selecting videos to use. TPOD performs a data cleaning and
+webpage by selecting videos to use. OpenTPOD performs a data cleaning and
 augmentation pass to prepare a high quality training set. Due to inter-frame
 correlation, adjacent frames within a video may appear to be substantially
 similar or identical. These highly correlated frames violate the independent and
-identically distributed assumption of training data for DNNs. TPOD eliminates
+identically distributed assumption of training data for DNNs. OpenTPOD eliminates
 these near duplicate examples. Optionally, data augmentation can be employed. It
 adds synthetic images, created by cutting and pasting the object of interests on
 varying backgrounds, at different scales and rotations. Such augmentation helps
 produce more robust object detectors~\cite{dwibedi2017cut}.
 
 Then, by submitting a form on the web GUI, users can launch the DNN training
-process without writing a single line of code. Under the hood, TPOD automates
-the transfer learning process. TPOD supports several state-of-the-art object
+process without writing a single line of code. Under the hood, OpenTPOD automates
+the transfer learning process. OpenTPOD supports several state-of-the-art object
 detection networks, including FasterRCNN-ResNet~\cite{ren2015faster,He2016} and
 SSD-MobileNet~\cite{Liu2016,Howard2017}. These different networks exhibit
 varying accuracy versus speed trade-offs. While FasterRCNN-ResNet achieves higher
@@ -123,57 +123,58 @@ significantly longer than SSD-MobileNet. Application developers should choose
 the appropriate DNN network based on their accuracy and latency constraints.
 Negative examples are mined from the video background; these are parts of the
 frames not included in the object bounding boxes.  The training process
-generates downloadable Tensorflow models in the end. The TPOD web GUI provides
+generates downloadable Tensorflow models in the end. The OpenTPOD web GUI provides
 training monitoring through Tensorflow visualization library
-Tensorboard~\cite{tensorflow2017}. TPOD also provides a container image that can
+Tensorboard~\cite{tensorflow2017}. OpenTPOD also provides a container image that can
 serve the downloaded model files for inference.
 
-Overall, TPOD can greatly reduce both the labeling effort and in-depth machine
-learning knowledge required to train and deploy a DNN-based detector. TPOD has
-been used by tens of researchers and students to build wearable cognitive
-assistance. For example, a group of master students in CMU mobile and pervasive
-computing class successfully used TPOD to build an assistant for using Automated
-External Defibrillator (AED) machines.
+Overall, OpenTPOD can greatly reduce both the labeling effort and in-depth
+machine learning knowledge required to train and deploy a DNN-based detector.
+The OpenTPOD demo video can be found at \url{https://youtu.be/B_PX5SSSLJM}.
+OpenTPOD has been used by tens of researchers and students to build wearable
+cognitive assistance. For example, a group of master students in CMU mobile and
+pervasive computing class successfully used OpenTPOD to build an assistant for
+using Automated External Defibrillator (AED) machines.
 
-\subsection{TPOD Case Study With the COOKING Application}
+\subsection{OpenTPOD Case Study With the COOKING Application}
 
-To quantify how much TPOD can help reduce labeling efforts, we conducted a case
+To quantify how much OpenTPOD can help reduce labeling efforts, we conducted a case
 study to train detectors for the COOKING cognitive
 assistant~\cite{chen2018application}. We trained object detectors for 9
 components of a toy sandwich, including bread, ham, lettuce, cucumber, cheese,
 half sandwich, wrong ham, tomato, and full sandwich. We collected 53 short
-training videos, annotated all of them, and trained object detectors with TPOD.
+training videos, annotated all of them, and trained object detectors with OpenTPOD.
 
 In total, we collected 21218 video frames. In contrast, we only manually labeled
-91 frames on TPOD annotation interface. The rest of frames are automatically
+91 frames on OpenTPOD annotation interface. The rest of frames are automatically
 labeled by tracking. The entire labeling session took 80 minutes. The total
 number of frames used for training is 21013 due to training set optimization by
-TPOD. We fine-tuned from a FasterRCNN-VGG network. The transfer learning process
+OpenTPOD. We fine-tuned from a FasterRCNN-VGG network. The transfer learning process
 took 54 minutes to finish on a NVIDIA K40c GPU.
 
 
-\subsection{TPOD Architecture}
+\subsection{OpenTPOD Architecture}
 
 \begin{figure}[]
   \hspace{-.1in}
     \includegraphics[width=1.1\textwidth]{FIGS/tpod-arch}
-    \caption{TPOD Architecture}
+    \caption{OpenTPOD Architecture}
   \label{figs:tpod-arch}
 \end{figure}
 
-TPOD adopts a Model-View-Controller (MVC) design~\cite{krasner1988description}.
-Figure~\ref{figs:tpod-arch} shows the TPOD architecture. The TPOD frontend
+OpenTPOD adopts a Model-View-Controller (MVC) design~\cite{krasner1988description}.
+Figure~\ref{figs:tpod-arch} shows the OpenTPOD architecture. The OpenTPOD frontend
 handles UI logic and is built using React, a declarative, efficient, and
 flexible JavaScript library for creating user interfaces~\cite{staff2016react}.
-React enables TPOD frontend code to be modular and reusable. The frontend has
+React enables OpenTPOD frontend code to be modular and reusable. The frontend has
 three major components: video management, detector management, and an external
-labeling tool. TPOD integrates the labeling tool CVAT~\cite{cvat2019} into its
+labeling tool. OpenTPOD integrates the labeling tool CVAT~\cite{cvat2019} into its
 frontend UI through HTML iframe embedding. The integration of an labeling tool
-into the TPOD GUI unifies the workflow. Users no longer need to install and set
-up another piece of software. The TPOD frontend communicates with the backend
+into the OpenTPOD GUI unifies the workflow. Users no longer need to install and set
+up another piece of software. The OpenTPOD frontend communicates with the backend
 through a set of RESTful APIs~\cite{richardson2008restful}. 
 
-TPOD backend is developed using the Django web
+OpenTPOD backend is developed using the Django web
 framework~\cite{holovaty2009definitive} and served with the Nginx web
 server~\cite{nedelcu2010nginx} and the Gunicorn gateway~\cite{gunicorn2017http}.
 The backend implements RESTful apis to create, read, update, and delete
@@ -187,10 +188,10 @@ system. An in-memory caching layer on top of the file system and database is
 created using the Redis key-value store. The entire application is containerized and
 can be deployed easily onto bare-metal or virtualized environments.
 
-One key design choice of TPOD is to be extensible for new DNN architectures.
-TPOD provides a standard interface, shown in
+One key design choice of OpenTPOD is to be extensible for new DNN architectures.
+OpenTPOD provides a standard interface, shown in
 Figure~\ref{figs:tpod-provider-interface}, in order to easily add new DNNs
-implementation for transfer learning. TPOD refers to these DNN implementations
+implementation for transfer learning. OpenTPOD refers to these DNN implementations
 as DNN \textit{Providers}. Without modifying other components, providers can be
 added and integrated by implement this interface. The built-in \textit{Provider}
 is the Tensorflow Object Detection API~\cite{tfod2019}, which supports transfer
@@ -198,13 +199,13 @@ learning for a wide set of object detectors.
 
 
 \begin{algorithm} 
-% \addcontentsline{TPOD Provider Interface}{algorithm}{TPOD Provider Interface}
+% \addcontentsline{OpenTPOD Provider Interface}{algorithm}{OpenTPOD Provider Interface}
 \SetAlgoLined
  property \textbf{training\_configurations}: user customizable hyperparameters\;
  \textbf{init(dnn\_type, training\_set, output\_directory)}: initialization\;
  \textbf{train(training\_configurations)}: launch training\;
  \textbf{export()}: export trained models\;
  \textbf{visualization()}: monitor training process\;
-\caption{TPOD Provider Interface}
+\caption{OpenTPOD Provider Interface}
 \label{figs:tpod-provider-interface}
 \end{algorithm}
