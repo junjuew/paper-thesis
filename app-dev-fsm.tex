@@ -1,20 +1,21 @@
-\section{Finite State Machine (FSM) Authoring Tools}
+\section{OpenWorkflow: FSM Workflow Authoring Tools}
 \label{sec: app-dev-fsm}
 
 In addition to creating DNN-based object detectors, developers need to write
 custom logic to implement the WCA task model running on the cloudlet. In this
-section, we introduce a FSM authoring tool that provides libraries and a GUI to
-enable fast implementation to allow for quick development iteration.
+section, we introduce OpenWorkflow, an FSM authoring tool that provides a Python
+library and a GUI to enable fast implementation to allow for quick development
+iteration.
 
 As discussed in Section~\ref{sec: app-dev-fsm-representation}, the WCA cloudlet
 logic can be represented as a finite state machine. The FSM representation
 allows us to impose structure and provide tools for task model implementation.
-Our FSM authoring tool consists of a web GUI that allows users to visualize and
+OpenWorkflow consists of a web GUI that allows users to visualize and
 edit a WCA FSM within a browser, a python library that supports the creation and
 execution of a FSM, and a binary file format that efficiently stores the FSM.
-The FSM authoring tool video demo can be found at \url{https://youtu.be/TgHOVF0ktVs}.
+The OpenWorkflow video demo can be found at \url{https://youtu.be/L9ugONLpnwc}.
 
-\subsection{FSM Editor}
+\subsection{OpenWorkflow Web GUI}
 
 \begin{figure}
     \centering
@@ -23,24 +24,24 @@ The FSM authoring tool video demo can be found at \url{https://youtu.be/TgHOVF0k
     \label{figs:fsm-web-gui}
 \end{figure}
 
-Figure~\ref{figs:fsm-web-gui} shows our FSM Web Editor. Users can create a WCA
+Figure~\ref{figs:fsm-web-gui} shows the OpenWorkflow web GUI. Users can create a WCA
 FSM from the GUI by editing states and transitions. State processors, e.g. the
 computer vision processing logic to run in a given state, can be specified by a
 container url. User guidance can be added through adding text, video urls or by
 uploading images. The Web GUI also supports import and export functionalities to
 interface with other WCA tools. The exported FSM is in a custom binary format
-and can be executed by the FSM python library.
+and can be executed by the OpenWorkflow Python library.
 
 The GUI is implemented as a pure browser-based user interface, using
 React~\cite{staff2016react}. No web backend is needed. This makes the GUI easy
 to set up and deploy. The user only needs to open an HTML file in a browser to 
 use the tool.
 
-\subsection{FSM Python Library}
+\subsection{OpenWorkflow Python Library}
 
-Another way to programmatically create a FSM is through the FSM Python library.
-The library provides python APIs to create and modify FSMs. The python APIs
-provides additional interfaces to add custom computer vision processing as
+Another way to programmatically create a FSM is through the OpenWorkflow Python
+library. The library provides python APIs to create and modify FSMs. The python
+APIs provides additional interfaces to add custom computer vision processing as
 functions and ad hoc transition predicates for customization. 
 
 In addition, the Python library provides a state machine executor that takes a
@@ -51,7 +52,7 @@ Jupyter Notebook~\cite{kluyver2016jupyter} is also provided to make it possible 
 a browser. This library has been made available on The Python Package Index for
 easy installation.
 
-\subsection{FSM Binary Format}
+\subsection{OpenWorkflow Binary Format}
 
 We define a custom FSM binary format for WCAs that can be read and wrote using
 multiple programming languages. We use the serialization library Protocol
@@ -108,7 +109,7 @@ message StateMachine {
   string start_state = 4;
 }
 \end{lstlisting}
-\caption{FSM Binary Format}
+\caption{OpenWorkflow FSM Binary Format}
 \label{figs:fsm-binary-format}
 \end{figure}
 
