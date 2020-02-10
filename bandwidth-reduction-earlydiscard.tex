@@ -29,7 +29,7 @@ no additional hardware is added to the existing platforms.
 Although smartphone-class hardware is incapable of supporting the most accurate
 object detection algorithms at full frame rate today, it is typically powerful
 enough to support less accurate algorithms.  These {\em weak detectors}, for
-instance, MobileNet in Figure~\ref{fig:onboard-dnn-speed}, are typically
+instance, MobileNet in Table~\ref{fig:onboard-dnn-speed}, are typically
 designed for mobile platforms or were the state of the art just a few years ago.
 In addition, they can be biased towards high recall with only modest loss of
 precision. In other words, many clearly irrelevant frames can be discarded by a
@@ -40,7 +40,7 @@ discard strategy.
 As shown in Figure~\ref{fig:ondrone}, we envision a choice of weak detectors
 being available as early discard filters on Tier-3 devices with the specific
 choice of filter being task-specific.  Based on the measurements presented in
-Figure~\ref{fig:onboard-dnn-speed}, we choose cheap DNNs that can run in
+Table~\ref{fig:onboard-dnn-speed}, we choose cheap DNNs that can run in
 real-time as EarlyDiscard filters on Tier-3 devices. Note that both object
 detection and image classification algorithms can yield meaningful early discard
 results, as it is not necessary to know exactly where in the frame relevant
@@ -165,7 +165,7 @@ our results in detail.
 % \noindent{\textbf{Effects of Tiling}}: 
 Tiling is used to improve the accuracy
 for high resolution aerial images. We used the Okutama Action Dataset, whose
-attributes are shown in row T1 of Figure~\ref{fig:benchmarksuite}, to explore
+attributes are shown in row T1 of Table~\ref{fig:benchmarksuite}, to explore
 the effects of tiling.  For this dataset,
 Figure~\ref{fig:earlydiscard-tile-accuracy-speed} shows how speed and accuracy
 change with tile size.  Accuracy improves as tiles become smaller, but the
@@ -201,7 +201,7 @@ are actually uninteresting (i.e., false positives).
 As discussed earlier, false negatives are
 a source of concern with early discard.  Once the Tier-3 device drops a frame
 containing an important event, improved cloudlet processing cannot help. The
-results in the third column of Figure~\ref{fig:early-discard-results} confirm
+results in the third column of Table~\ref{fig:early-discard-results} confirm
 that there are no false negatives for T1 and T4 at a cutoff threshold of 0.5.
 For T2 and T3, lower cutoff thresholds are needed to achieve perfect recalls.
 
@@ -211,14 +211,14 @@ is calculated as the average time difference between the first frame
 in which an object occurs (i.e., first occurrence in ground truth) and
 the first frame containing the object that is transmitted to the
 backend (i.e., first detection).  The results in the fourth column of
-Figure~\ref{fig:early-discard-results} confirm that early discard
+Table~\ref{fig:early-discard-results} confirm that early discard
 contributes little to result latency.  The amounts range from 0.1~s
 for T1 to 12.7~s for T3.  
 
 % At the timescale of human actions
 % such as dispatching of a rescue team, these are negligible delays.
 
-\begin{figure}
+\begin{table}
 \centering
 \begin{tabular}{|c|c|c|c|c|c|c|}
 \hline
@@ -237,16 +237,16 @@ T4 & \phantom{0}25  & 100~\%       & \phantom{0}0.3 & \phantom{0}167  &  0.43 & 
 \end{tabular}\\
 \caption{Recall, Event Latency and Bandwidth at Cutoff Threshold 0.5}
 \label{fig:early-discard-results}
-\end{figure}
+\end{table}
 
 
 \subsubsection{Bandwidth}
-Columns 5--7 of Figure~\ref{fig:early-discard-results} pertain to wireless
+Columns 5--7 of Table~\ref{fig:early-discard-results} pertain to wireless
 bandwidth demand for the benchmark suite with early discard.  The figures shown
 are based on H.264 encoding of each individual frames in the video transmission.
 Average bandwidth is calculated as the total data transmitted divided by mission
-duration.  Comparing column 5 of Figure~\ref{fig:early-discard-results} with
-column 2 of Figure~\ref{fig:baseline}, we see that all videos in the benchmark
+duration.  Comparing column 5 of Table~\ref{fig:early-discard-results} with
+column 2 of Table~\ref{fig:baseline}, we see that all videos in the benchmark
 suite are benefited by early discard (Note T3 and T4 have the same test dataset
 as T2). For T2, T3, and T4, the bandwidth is reduced by more than 10x. The
 amount of benefit is greatest for rare events (T2 and T3).  When events are
@@ -299,7 +299,7 @@ precision could be further improved, without hurting recall.
 \label{fig:sampling-discard}
 \end{figure}
 
-\begin{figure}[h]
+\begin{table}[h]
 \centering
 \begin{tabular}{|c|c|c|c|c|}
 \hline
@@ -316,7 +316,7 @@ uses CRF 28 and low uses CRF 40~\cite{Merritt2007}.
 \end{captiontext}
 \caption{Test Dataset Size With Different Encoding Settings}
 \label{fig:video-vs-images}
-\end{figure}
+\end{table}
 
 Given the relatively low precision of the weak detectors, a significant number 
 of false positives are transmitted.  Furthermore, the occurrence of an object will
@@ -375,7 +375,7 @@ the information across a set of frames. Image compression can only exploit
 similarity within a frame, and cannot efficiently reduce number of bits needed
 to encode redundant content across frames. To evaluate this difference, we start
 with extracted JPEG frame sequences of our video data set. We encode the frame
-sequence with different H.264 settings. Figure~\ref{fig:video-vs-images}
+sequence with different H.264 settings. Table~\ref{fig:video-vs-images}
 compares the size of frame sequences in JPEG and the encoded video file sizes.
 We see only about 3x difference in the data size for the medium quality. We can
 increase the compression (at the expense of quality) very easily, and are able

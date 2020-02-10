@@ -15,7 +15,7 @@ their implications below.
 Unfortunately, the hardware needed for deep video stream processing in real time
 is larger and heavier than what can fit on a typical Tier-3 device. State-of-art
 techniques in image processing use DNNs that are compute- and memory-intensive.
-Figure~\ref{fig:onboard-dnn-speed} presents experimental results on two
+Table~\ref{fig:onboard-dnn-speed} presents experimental results on two
 fundamental computer vision tasks, image classification and object detection, on
 four different devices. In the figure, MobileNet V1 and ResNet101 V1 are image
 classification DNNs. Others are object detection DNNs. We use publicly available
@@ -30,13 +30,13 @@ credible as wearable device platforms in the future.
 Note that the absolute speed of DNN inference depends on a wide range of
 factors, including the optimizations used in DNN model implementation, the
 choice of linear algebra libraries, the presence of vectorized instructions and
-hardware accelerators. In Fig.~\ref{fig:onboard-dnn-speed}, we present the best
+hardware accelerators. In Table~\ref{fig:onboard-dnn-speed}, we present the best
 results we could obtain on each platform. This is not intended to directly
 compare frameworks and platforms (as others have been
 doing~\cite{Zhang2018pcamp}), but rather to illustrate the differences between
 wearable platforms and fixed infrastructure servers. 
 
-\begin{figure}
+\begin{table}
 \centering
 \begin{flushleft}
 M: MobileNet V1; R: ResNet101 V1;
@@ -79,7 +79,7 @@ Intel$^{\tiny\textregistered}$ Computer Vision SDK beta 3 is used.
 \end{captiontext}
 \caption{Deep Neural Network Inference Speed on Tier-3 Devices}
 \label{fig:onboard-dnn-speed}
-\end{figure}
+\end{table}
 
 Image classification is a computer vision task that maps an image into
 categories, with each category indicating whether one or many particular objects
@@ -107,7 +107,7 @@ potential regions for objects and therefore requires less computation and runs
 faster. On the other hand, Faster R-CNN~\cite{Ren2015} uses a separate region
 proposal neural network to predict regions of interest and has been shown to
 achieve higher accuracy~\cite{Huang2017} for difficult tasks.
-Figure~\ref{fig:onboard-dnn-speed} presents results in four columns: SSD
+Table~\ref{fig:onboard-dnn-speed} presents results in four columns: SSD
 combined with MobileNet V1 or Inception V2, and Faster R-CNN combined with
 Inception V2 or ResNet101 V1~\cite{He2016}. The combination of Faster R-CNN and
 ResNet101 V1 is one of the most accurate object detectors available

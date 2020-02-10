@@ -10,7 +10,7 @@ transmission delay and cloudlet processing delay. We use drones as the example
 of Tier-3 devices and drone video search as the scenario of video analytics
 first. We later demonstrate how to apply the techniques developed to WCAs.
 
-\begin{figure}
+\begin{table}
 \centering
 \begin{tabular}{|p{1cm}|p{2.5cm}|p{2.5cm}|p{2.5cm}|p{2.5cm}|p{2.5cm}|}
 \hline
@@ -41,9 +41,9 @@ No overlap between training and testing subsets of data
 \end{captiontext}
 \caption{Benchmark Suite of Drone Video Traces}
 \label{fig:benchmarksuite}
-\end{figure}
+\end{table}
 
-\begin{figure}
+\begin{table}
 \centering
 \begin{tabular}{|c|c|c|c|c|}
 \hline
@@ -64,7 +64,7 @@ continuously. Precision and recall are at the maximum F1 score.
 \end{captiontext}
 \caption{Baseline Object Detection Metrics}
 \label{fig:baseline}
-\end{figure}
+\end{table}
 
 \subsection{Experimental Setup}
 \label{sec:dumbdrone-setup}
@@ -83,7 +83,7 @@ other drones, or aircraft.
 All of the pre-captured videos in the benchmark suite are publicly accessible,
 and have been captured from aerial viewpoints. They characterize drone-relevant
 scenarios such as surveillance, search-and-rescue, and wildlife conservation.
-Figure~\ref{fig:benchmarksuite} presents this benchmark suite of videos,
+Table~\ref{fig:benchmarksuite} presents this benchmark suite of videos,
 organized into four tasks. All the tasks involve detection of tiny objects on
 individual frames. Although T2 is also nominally about action detection (moving
 cars), it is implemented using object detection on individual frames and then
@@ -93,19 +93,19 @@ comparing the pixel coordinates of vehicles in successive frames.
 \subsection{Evaluation}
 \label{sec:dumbdrone-results}
 
-Figure~\ref{fig:baseline} presents the key performance indicators on the object
+Table~\ref{fig:baseline} presents the key performance indicators on the object
 detection tasks T1 and T2. We use the well-labeled dataset to train and evaluate
 Faster-RCNN with ResNet 101. We report the precision and recall at maximum F1
 score.  Peak bandwidth is not shown since it is identical to average bandwidth
 demand for continuous video transmission.  As shown earlier in
-Figure~\ref{fig:onboard-dnn-speed}, the accuracy of this algorithm comes at the
+Table~\ref{fig:onboard-dnn-speed}, the accuracy of this algorithm comes at the
 price of very high resource demand.  This can only be met today by server-class
 hardware that is available in a cloudlet.  Even on a cloudlet, the figure of 438
 milliseconds of processing time per frame indicates that only a rate of two
 frames per second is achievable.  Sustaining a higher frame rate will require
 striping the frames across cloudlet resources, thereby increasing resource
 demand considerably.  Note that the results in
-Figure~\ref{fig:onboard-dnn-speed} were based on 1080p frames, while tasks T1
+Table~\ref{fig:onboard-dnn-speed} were based on 1080p frames, while tasks T1
 uses the higher resolution of 4K. This will further increase demand on cloudlet
 resources.
 
