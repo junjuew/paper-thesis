@@ -9,11 +9,11 @@ the model. Fortunately, one does not typically need to train a DNN from scratch.
 Rather, pretrained models based on public image data sets such as ImageNet are
 publicly available. Developers can adapt these pretrained models to detect
 custom classes for new applications, through a process called \emph{transfer
-learning}.  The key assumption of transfer learning is that much of the training
+  learning}.  The key assumption of transfer learning is that much of the training
 that teaches the model to discover low-level features, such as edges, textures,
 shapes, and patterns that are useful in distinguishing objects can be reused.
 Thus, adapting a pretrained model for new object classes requires only thousands
-or tens of thousands of examples and hours of training time. 
+or tens of thousands of examples and hours of training time.
 
 However, even with transfer learning, collecting a labeled training set of
 several thousand examples per object class can be a daunting and painful task.
@@ -50,7 +50,7 @@ dataset, and automates training an object detection DNN model.
   \begin{minipage}[b]{0.32\textwidth}
     \includegraphics[width=\textwidth]{FIGS/sandwich-training-3.jpg}
   \end{minipage}
-    \caption{OpenTPOD Training Images Examples}
+  \caption{OpenTPOD Training Images Examples}
   \label{figs:tpod-example-training-images}
 \end{figure}
 
@@ -72,8 +72,8 @@ common objects in the test environment that may cause confusion.
 
 \begin{figure}[]
   \centering
-    \fbox{\includegraphics[width=\textwidth]{FIGS/tpod-video-gui}}
-    \caption{OpenTPOD Video Management GUI}
+  \fbox{\includegraphics[width=\textwidth]{FIGS/tpod-video-gui}}
+  \caption{OpenTPOD Video Management GUI}
   \label{figs:tpod-video-gui}
 \end{figure}
 
@@ -96,8 +96,8 @@ that the user needs to manually label by a factor of 10-20x.
 
 \begin{figure}[]
   \centering
-    \fbox{\includegraphics[width=\textwidth]{FIGS/tpod-label-gui}}
-    \caption{OpenTPOD Integration of an External Labeling Tool}
+  \fbox{\includegraphics[width=\textwidth]{FIGS/tpod-label-gui}}
+  \caption{OpenTPOD Integration of an External Labeling Tool}
   \label{figs:tpod-label-gui}
 \end{figure}
 
@@ -115,7 +115,7 @@ produce more robust object detectors~\cite{dwibedi2017cut}.
 Then, by submitting a form on the web GUI, users can launch the DNN training
 process without writing a single line of code. Under the hood, OpenTPOD automates
 the transfer learning process. OpenTPOD supports several state-of-the-art object
-detection networks, including FasterRCNN-ResNet~\cite{ren2015faster,He2016} and
+detection networks, including FasterRCNN-ResNet~\cite{Ren2015,He2016} and
 SSD-MobileNet~\cite{Liu2016,Howard2017}. These different networks exhibit
 varying accuracy versus speed trade-offs. While FasterRCNN-ResNet achieves higher
 accuracies on standard datasets, its training and inference time are
@@ -157,8 +157,8 @@ took 54 minutes to finish on a NVIDIA K40c GPU.
 
 \begin{figure}[]
   \hspace{-.1in}
-    \includegraphics[width=1.1\textwidth]{FIGS/tpod-arch}
-    \caption{OpenTPOD Architecture}
+  \includegraphics[width=1.1\textwidth]{FIGS/tpod-arch}
+  \caption{OpenTPOD Architecture}
   \label{figs:tpod-arch}
 \end{figure}
 
@@ -172,7 +172,7 @@ labeling tool. OpenTPOD integrates the labeling tool CVAT~\cite{cvat2019} into i
 frontend UI through HTML iframe embedding. The integration of an labeling tool
 into the OpenTPOD GUI unifies the workflow. Users no longer need to install and set
 up another piece of software. The OpenTPOD frontend communicates with the backend
-through a set of RESTful APIs~\cite{richardson2008restful}. 
+through a set of RESTful APIs~\cite{richardson2008restful}.
 
 OpenTPOD backend is developed using the Django web
 framework~\cite{holovaty2009definitive} and served with the Nginx web
@@ -195,17 +195,17 @@ implementation for transfer learning. OpenTPOD refers to these DNN implementatio
 as DNN \textit{Providers}. Without modifying other components, providers can be
 added and integrated by implement this interface. The built-in \textit{Provider}
 is the Tensorflow Object Detection API~\cite{tfod2019}, which supports transfer
-learning for a wide set of object detectors. 
+learning for a wide set of object detectors.
 
 
-\begin{algorithm} 
-% \addcontentsline{OpenTPOD Provider Interface}{algorithm}{OpenTPOD Provider Interface}
-\SetAlgoLined
- property \textbf{training\_configurations}: user customizable hyperparameters\;
- \textbf{init(dnn\_type, training\_set, output\_directory)}: initialization\;
- \textbf{train(training\_configurations)}: launch training\;
- \textbf{export()}: export trained models\;
- \textbf{visualization()}: monitor training process\;
-\caption{OpenTPOD Provider Interface}
-\label{figs:tpod-provider-interface}
+\begin{algorithm}
+  % \addcontentsline{OpenTPOD Provider Interface}{algorithm}{OpenTPOD Provider Interface}
+  \SetAlgoLined
+  property \textbf{training\_configurations}: user customizable hyperparameters\;
+  \textbf{init(dnn\_type, training\_set, output\_directory)}: initialization\;
+  \textbf{train(training\_configurations)}: launch training\;
+  \textbf{export()}: export trained models\;
+  \textbf{visualization()}: monitor training process\;
+  \caption{OpenTPOD Provider Interface}
+  \label{figs:tpod-provider-interface}
 \end{algorithm}

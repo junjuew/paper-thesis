@@ -1,4 +1,4 @@
-\section{Baseline: Dumb  S\lc{trategy}}
+\section{Baseline S\lc{trategy}}
 \label{sec:dumbdrone}
 
 \subsection{Description}
@@ -11,59 +11,59 @@ of Tier-3 devices and drone video search as the scenario of video analytics
 first. We later demonstrate how to apply the techniques developed to WCAs.
 
 \begin{table}
-\centering
-\begin{tabular}{|p{1cm}|p{2.5cm}|p{2.5cm}|p{2.5cm}|p{2.5cm}|p{2.5cm}|}
-\hline
-   & Detection & Data & Data & Training & Testing \\ 
-Task& Goal & Source & Attributes & Subset & Subset\\ 
-\hline
-T1 & {\small People in scenes of daily life}&{\small Okutama Action Dataset~\cite{Barekatain2017}}&\makecell[tl]{\small 33 videos \\\small 59842 fr\\\small 4K@30~fps}&\makecell[tl]{\small 9 videos\\\small 17763 fr}&\makecell[tl]{\small 6 videos\\\small 20751 fr}\\ 
-\hline
-T2 &{\small Moving cars}&{\small Stanford Drone Dataset~\cite{Robicquet2016}}&\makecell[tl]{\small 60 videos \\\small 522497 fr\\\small 1080p@30~fps}&\makecell[tl]{\small 16 videos\\\small 179992 fr} & \multirow{4}{*}{\parbox{1.5cm}{\centering\small 14 videos 92378 fr\\ Combination of test videos from each dataset.}} \\ \cline{1-5}
-  %% \makecell[tl]{\small 14 videos\\\small 92378 fr\\\small Combination of \\\small human, car, raft \\\small and elephant videos\\\small from each datasets}} \\ \cline{1-5}
-%% \makecell[tl]{\small 14 videos\\\small 92378 fr}\\ 
-%% \hline
-T3 &{\small Raft in flooding scene}&{\small YouTube collection~\cite{YouTube1}}&\makecell[tl]{\small 11 videos \\\small 54395 fr\\\small 720p@25~fps}&\makecell[tl]{\small 8 videos\\\small 43017 fr} & \\ \cline{1-5}
-%% \makecell[tl]{\small 14 videos\\\small 92378 fr}\\
-%% \hline
-T4 &{\small Elephants in natural habitat}&{\small YouTube collection~\cite{YouTube2}}&\makecell[tl]{\small 11 videos \\\small 54203 fr\\\small 720p@25~fps}&\makecell[tl]{\small 8 videos\\\small 39466 fr} & \\ \cline{1-5}
-%% \makecell[tl]{\small 14 videos\\\small 92378 fr}\\
-%% \hline
-% T5 &{\small Pushing or pulling Suitcases}&\small Okutama Action Dataset &\small Same as T1 &\small Same as T1 & \\
-%% \small Same as T1\\
-\hline
-\end{tabular}
-\vspace{0.1in}
-\begin{captiontext}
-fr = ``frames''\\
-fps = ``frames per second''\\
-No overlap between training and testing subsets of data
-\end{captiontext}
-\caption{Benchmark Suite of Drone Video Traces}
-\label{fig:benchmarksuite}
+  \centering
+  \begin{tabular}{|p{1cm}|p{2.5cm}|p{2.5cm}|p{2.5cm}|p{2.5cm}|p{2.5cm}|}
+    \hline
+         & Detection                               & Data                                                  & Data                           & Training & Testing \\
+    Task & Goal                                    & Source                                                & Attributes                     & Subset   & Subset  \\
+    \hline
+    T1   & {\small People in scenes of daily life} & {\small Okutama Action Dataset~\cite{Barekatain2017}} & \makecell[tl]{\small 33 videos                      \\\small 59842 fr\\\small 4K@30~fps}&\makecell[tl]{\small 9 videos\\\small 17763 fr}&\makecell[tl]{\small 6 videos\\\small 20751 fr}\\
+    \hline
+    T2   & {\small Moving cars}                    & {\small Stanford Drone Dataset~\cite{Robicquet2016}}  & \makecell[tl]{\small 60 videos                      \\\small 522497 fr\\\small 1080p@30~fps}&\makecell[tl]{\small 16 videos\\\small 179992 fr} & \multirow{4}{*}{\parbox{1.5cm}{\centering\small 14 videos 92378 fr\\ Combination of test videos from each dataset.}} \\ \cline{1-5}
+    %% \makecell[tl]{\small 14 videos\\\small 92378 fr\\\small Combination of \\\small human, car, raft \\\small and elephant videos\\\small from each datasets}} \\ \cline{1-5}
+    %% \makecell[tl]{\small 14 videos\\\small 92378 fr}\\ 
+    %% \hline
+    T3   & {\small Raft in flooding scene}         & {\small YouTube collection~\cite{YouTube1}}           & \makecell[tl]{\small 11 videos                      \\\small 54395 fr\\\small 720p@25~fps}&\makecell[tl]{\small 8 videos\\\small 43017 fr} & \\ \cline{1-5}
+    %% \makecell[tl]{\small 14 videos\\\small 92378 fr}\\
+    %% \hline
+    T4   & {\small Elephants in natural habitat}   & {\small YouTube collection~\cite{YouTube2}}           & \makecell[tl]{\small 11 videos                      \\\small 54203 fr\\\small 720p@25~fps}&\makecell[tl]{\small 8 videos\\\small 39466 fr} & \\ \cline{1-5}
+    %% \makecell[tl]{\small 14 videos\\\small 92378 fr}\\
+    %% \hline
+    % T5 &{\small Pushing or pulling Suitcases}&\small Okutama Action Dataset &\small Same as T1 &\small Same as T1 & \\
+    %% \small Same as T1\\
+    \hline
+  \end{tabular}
+  \vspace{0.1in}
+  \begin{captiontext}
+    fr = ``frames''\\
+    fps = ``frames per second''\\
+    No overlap between training and testing subsets of data
+  \end{captiontext}
+  \caption{Benchmark Suite of Drone Video Traces}
+  \label{fig:benchmarksuite}
 \end{table}
 
 \begin{table}
-\centering
-\begin{tabular}{|c|c|c|c|c|}
-\hline
-     & Total & Avg & & \\ 
-     & Bytes & BW & & \\ 
-Task & (MB) & (Mbps) & Recall & Precision \\ 
+  \centering
+  \begin{tabular}{|c|c|c|c|c|}
+    \hline
+         & Total          & Avg            &        &           \\
+         & Bytes          & BW             &        &           \\
+    Task & (MB)           & (Mbps)         & Recall & Precision \\
 
-\hline
-T1 & \phantom{0}924 & 10.7 & 74\% & 92\%\\ 
-\hline
-T2 & 2704 & \phantom{0}7.0 & 66\% & 90\%\\ 
-\hline
-\end{tabular}
-\vspace{0.2in}
-\begin{captiontext}
-Peak bandwidth demand is same as average since video is transmitted
-continuously. Precision and recall are at the maximum F1 score.
-\end{captiontext}
-\caption{Baseline Object Detection Metrics}
-\label{fig:baseline}
+    \hline
+    T1   & \phantom{0}924 & 10.7           & 74\%   & 92\%      \\
+    \hline
+    T2   & 2704           & \phantom{0}7.0 & 66\%   & 90\%      \\
+    \hline
+  \end{tabular}
+  \vspace{0.2in}
+  \begin{captiontext}
+    Peak bandwidth demand is same as average since video is transmitted
+    continuously. Precision and recall are at the maximum F1 score.
+  \end{captiontext}
+  \caption{Baseline Object Detection Metrics}
+  \label{fig:baseline}
 \end{table}
 
 \subsection{Experimental Setup}

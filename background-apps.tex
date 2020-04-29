@@ -8,13 +8,13 @@ App Name & Example Input Video Frame & Description & Symbolic \phantom{000} Repr
 \hline
 \phantom{000} \textbf{Pool}     & \raisebox{-0.9\totalheight}{\psfig{file=FIGS/bigtable2/example-pool.png, width=0.97in}}
 &
-Helps a novice pool player aim correctly. Gives continuous visual feedback (left arrow, right arrow, or thumbs up) as the user turns his cue stick. Correct shot angle is calculated based on fractional aiming system~\cite{FractionalAiming}. Color, line, contour, and shape detection are used. The symbolic representation describes the positions of the balls, target pocket, and the top and bottom of cue stick.
+Helps a novice pool player aim correctly. Gives continuous visual feedback (left arrow, right arrow, or thumbs up) as the user turns his cue stick. Correct shot angle is calculated based on fractional aiming system. Color, line, contour, and shape detection are used. The symbolic representation describes the positions of the balls, target pocket, and the top and bottom of cue stick.
 &
 \phantom{000} $<$Pocket, object ball, cue ball, cue top, cue bottom$>$ & \phantom{000} \raisebox{-0.85\totalheight}{\psfig{file=FIGS/bigtable2/guidance-pool.png, width=0.8in}} \\
 \hline
 \phantom{000} \textbf{Ping-pong} & \raisebox{-0.9\totalheight}{\psfig{file=FIGS/bigtable2/example-pingpong.png, width=0.97in}}
 &
-Tells novice to hit ball to the left or right, depending on which is more likely to beat opponent. Uses color, line and optical-flow based motion detection to detect ball, table, and opponent. The symbolic representation is a 3-tuple: in rally or not, opponent position, ball position. Whispers ``left'' or ``right'' or offers spatial audio guidance using~\cite{tang2014assistive}.
+Tells novice to hit ball to the left or right, depending on which is more likely to beat opponent. Uses color, line and optical-flow based motion detection to detect ball, table, and opponent. The symbolic representation is a 3-tuple: in rally or not, opponent position, ball position. Whispers ``left'' or ``right'' or offers spatial audio guidance using.
 
     Video URL: {\em \href{https://youtu.be/\_lp32sowyUA}{https://youtu.be/\_lp32sowyUA}}
 &
@@ -22,7 +22,7 @@ Tells novice to hit ball to the left or right, depending on which is more likely
 \hline
 \phantom{000} \textbf{Work-out} & \raisebox{-0.9\totalheight}{\psfig{file=FIGS/bigtable2/example-workout.png, width=0.97in}}
 &
-Guides correct user form in exercise actions like sit-ups and push-ups, and counts out repetitions. Uses Volumetric Template Matching~\cite{ke2007event} on a 10-15 frame video segment to classify the exercise.
+Guides correct user form in exercise actions like sit-ups and push-ups, and counts out repetitions. Uses Volumetric Template Matching on a 10-15 frame video segment to classify the exercise.
 %A poorly-performed repetition is classified as a distinct type of exercise (e.g. ``good pushup'' versus ``bad pushup'').
 Uses smart phone on the floor for third-person viewpoint.
 &
@@ -30,8 +30,8 @@ Uses smart phone on the floor for third-person viewpoint.
 \hline
 \phantom{000} \textbf{Face}     & \raisebox{-0.9\totalheight}{\psfig{file=FIGS/bigtable2/example-face.png, width=0.97in}}
 &
-Jogs your memory on a familiar face whose name you cannot recall. Detects and extracts a tightly-cropped image of each face, and then applies a state-of-art face recognizer using deep residual network~\cite{He2016}. Whispers the name of a person.
-Can be used in combination with Expression~\cite{anam2014expression} to offer conversational hints.
+Jogs your memory on a familiar face whose name you cannot recall. Detects and extracts a tightly-cropped image of each face, and then applies a state-of-art face recognizer using deep residual network. Whispers the name of a person.
+Can be used in combination with Expression to offer conversational hints.
 &
 \phantom{000} ASCII text of name & \phantom{000} Whispers ``Barack Obama'' \\
 \hline
@@ -45,7 +45,7 @@ Guides a user in assembling 2D Lego models. Each video frame is analyzed in thre
 \hline
 \phantom{000} \textbf{Draw} & \raisebox{-0.9\totalheight}{\psfig{file=FIGS/bigtable2/example-draw.png, width=0.97in}}
 &
-Helps a user to sketch better. Builds on third-party app~\cite{Iarussi2013} that was originally designed to take input sketches from pen-tablets and to output feedback on a desktop screen. Our implementation preserves the back-end logic. A new Glass-based front-end allows a user to use any drawing surface and instrument. Displays the error alignment in sketch on Glass.
+Helps a user to sketch better. Builds on third-party app that was originally designed to take input sketches from pen-tablets and to output feedback on a desktop screen. Our implementation preserves the back-end logic. A new Glass-based front-end allows a user to use any drawing surface and instrument. Displays the error alignment in sketch on Glass.
 
     Video URL: {\em \href{https://youtu.be/nuQpPtVJC6o}{https://youtu.be/nuQpPtVJC6o}}
 &
@@ -53,7 +53,7 @@ Helps a user to sketch better. Builds on third-party app~\cite{Iarussi2013} that
 \hline
 \phantom{000} \textbf{Sand-wich} & \raisebox{-0.9\totalheight}{\psfig{file=FIGS/bigtable2/example-sandwich.png, width=0.97in}}
 &
-Helps a cooking novice prepare sandwiches according to a recipe. Since real food is perishable, we use a food toy with plastic ingredients. Object detection follows the state-of-art faster-RCNN deep neural net approach~\cite{ren2015faster}. Implementation is on top of Caffe~\cite{jia2014caffe} and Dlib~\cite{dlib09}. Transfer learning~\cite{Pan2010} helped us save time in labeling data and in training.
+Helps a cooking novice prepare sandwiches according to a recipe. Since real food is perishable, we use a food toy with plastic ingredients. Object detection follows the state-of-art faster-RCNN deep neural net approach. Implementation is on top of Caffe and Dlib. Transfer learning helped us save time in labeling data and in training.
 
     Video URL: {\em \href{https://youtu.be/USakPP45WvM}{https://youtu.be/USakPP45WvM}}
 &
@@ -62,5 +62,6 @@ Helps a cooking novice prepare sandwiches according to a recipe. Since real food
 
 \end{tabular}
 \caption{Prototype Wearable Cognitive Assistance Applications}
+\captiontext{(Adapted from Chen et al~\cite{chen2018application})}
 \label{fig:bg-apps-table}
 \end{table*}

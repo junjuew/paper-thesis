@@ -1,12 +1,12 @@
 
 \begin{figure}
     \centering
-        \includegraphics[width=\linewidth]{FIGS/fig-jitl.pdf}
-\caption{JITL Pipeline}
-\label{fig:jitl}
+    \includegraphics[width=\linewidth]{FIGS/fig-jitl.pdf}
+    \caption{JITL Pipeline}
+    \label{fig:jitl}
 \end{figure}
 
-\section{Just-in-time-Learning Strategy To Improve Early Discard}
+\section{Just-In-Time-Learning (JITL) Strategy To Improve Early Discard}
 \label{sec:jitl}
 
 \begin{figure}
@@ -14,32 +14,32 @@
     \includegraphics[trim={0 1.8cm 0 0},clip,width=0.7\linewidth]{FIGS/fig-jitl-legend.pdf}\\
     \vspace{.5in}
     \begin{subfigure}[b]{.48\linewidth}
-    \centering
-    \includegraphics[width=\linewidth]{FIGS/fig-jitl-okutama-eventrecall-step.pdf}
-    \caption{T1}
+        \centering
+        \includegraphics[width=\linewidth]{FIGS/fig-jitl-okutama-eventrecall-step.pdf}
+        \caption{T1}
     \end{subfigure}
     \begin{subfigure}[b]{.48\linewidth}
-    \centering
-    \includegraphics[width=\linewidth]{FIGS/fig-jitl-stanford-eventrecall-step.pdf}
-    \caption{T2}
+        \centering
+        \includegraphics[width=\linewidth]{FIGS/fig-jitl-stanford-eventrecall-step.pdf}
+        \caption{T2}
     \end{subfigure}
 
     \vspace{.5in}
 
     \begin{subfigure}[b]{.48\linewidth}
-    \centering
+        \centering
         \includegraphics[width=\linewidth]{FIGS/fig-jitl-raft-eventrecall-step.pdf}
-    \caption{T3}
+        \caption{T3}
     \end{subfigure}
     \begin{subfigure}[b]{.48\linewidth}
-    \centering
+        \centering
         \includegraphics[width=\linewidth]{FIGS/fig-jitl-elephant-eventrecall-step.pdf}
-    \caption{T4}
+        \caption{T4}
     \end{subfigure}
 
     \vspace{.5in}
-\caption{JITL Fraction of Frames under Different Event Recall}
-\label{fig:jitl-eventrecall}
+    \caption{JITL Fraction of Frames under Different Event Recall}
+    \label{fig:jitl-eventrecall}
 \end{figure}
 
 While EarlyDiscard filters are customized and optimized for specific tasks (e.g.
@@ -52,18 +52,18 @@ We propose Just-in-time-learning  (JITL), which tunes the Tier-3 processing
 pipeline to the characteristics of the current task in order to reduce
 transmitted false positives from the Tier-3 device, and thereby reducing wasted
 bandwidth.  Intuitively, JITL leverages temporal locality in video streams to
-quickly adapt processing outcomes based on recent feedback. 
+quickly adapt processing outcomes based on recent feedback.
 
 It is inspired by the ideas of cascade architecture from the computer vision
 community~\cite{Viola2001}, but is different in construction. A JITL filter is a
 cheap cascade filter that distinguishes between the EarlyDiscard DNN's
 \emph{true positives} (frames that are actually interesting) and \emph{false
-positives} (frames that are wrongly considered interesting). Specifically, when
+    positives} (frames that are wrongly considered interesting). Specifically, when
 a frame is reported as positive by EarlyDiscard, it is then passed through a
 JITL filter. If the JITL filter reports negative, the frame is regarded as a
 false positive and will not be sent. Ideally, all \emph{true positives} from
 EarlyDiscard are marked \emph{positive} by the JITL filter, and all \emph{false
-positives} from EarlyDiscard are marked \emph{negative}.  Frames dropped by
+    positives} from EarlyDiscard are marked \emph{negative}.  Frames dropped by
 EarlyDiscard are not processed by the JITL filter, so this approach can only
 serve to improve precision, but not recall.
 
@@ -115,7 +115,7 @@ deployment, the frames would be marked as true positives or false positives by
 an accurate DNN running on the cloudlet since ground-truth labels are not
 available. In our experiments, we used ground-truth labels to control variables
 and remove the effect of imperfect prediction of DNN models running on the
-cloudlet. 
+cloudlet.
 
 In addition, we used the true and false positives from all previous intervals,
 not just the last ten seconds when training the SVM. The SVM, once trained, is
@@ -145,5 +145,5 @@ duration in T2, which results in fewer positive training examples to learn
 from. Depending on tasks, getting enough positive training examples for JITL
 could be difficult, especially when events are short or occurrences are few. To
 overcome this problem in practice, techniques such as synthetic data
-generation~\cite{Dwibedi2017} could be explored to synthesize true positives
+generation~\cite{dwibedi2017cut} could be explored to synthesize true positives
 from the background of the current task.
