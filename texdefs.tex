@@ -6,6 +6,8 @@
 \usepackage{comment}
 % \usepackage[ruled,vlined]{algorithm2e}
 \usepackage[boxed,ruled,vlined,figure]{algorithm2e}
+\usepackage[utf8]{inputenc} % usually not needed (loaded by default)
+\usepackage[T1]{fontenc}
 \usepackage{url}
 \usepackage{ifthen}
 \usepackage{framed}
@@ -34,8 +36,8 @@
 \usepackage{listings}
 
 \lstset{
-frame=single, 
-framexleftmargin=15pt
+    frame=single,
+    framexleftmargin=15pt
 }
 
 %% paramgraph
@@ -47,12 +49,12 @@ framexleftmargin=15pt
 %%%
 \newcommand{\showComments}{yes}
 \newcommand{\note}[2]{
-	\ifthenelse{\equal{\showComments}{yes}}{\textcolor{#1}{#2}}{}
+    \ifthenelse{\equal{\showComments}{yes}}{\textcolor{#1}{#2}}{}
 }
 
 \newcommand{\showRevision}{no}
 \newcommand{\revision}[1]{
-	\ifthenelse{\equal{\showRevision}{yes}}{\textcolor{red}{#1}}{#1}
+    \ifthenelse{\equal{\showRevision}{yes}}{\textcolor{red}{#1}}{#1}
 }
 
 
@@ -69,22 +71,22 @@ framexleftmargin=15pt
 
 % Itemize and Enumerate with less white space wasted
 \newenvironment{smitemize}%
-  {\begin{list}{$\bullet$}%
-     {\setlength{\parsep}{1pt}%
-      \setlength{\topsep}{1pt}%
-      \setlength{\itemsep}{1pt}}}%
-  {\end{list}}
+{\begin{list}{$\bullet$}%
+        {\setlength{\parsep}{1pt}%
+        \setlength{\topsep}{1pt}%
+        \setlength{\itemsep}{1pt}}}%
+              {\end{list}}
 
 \newenvironment{smenumerate}{
-\begin{enumerate}
-  \setlength{\itemsep}{2.5pt}
-  \setlength{\parskip}{0pt}
-  \setlength{\parsep}{0pt}
-}{\end{enumerate}}
+    \begin{enumerate}
+        \setlength{\itemsep}{2.5pt}
+              \setlength{\parskip}{0pt}
+              \setlength{\parsep}{0pt}
+              }{\end{enumerate}}
 
 \newenvironment{mypara}{
-   \vspace{0.1in}
-   \textbf}
+    \vspace{0.1in}
+    \textbf}
 {\plain}
 
 
@@ -94,8 +96,8 @@ framexleftmargin=15pt
 
 
 \newenvironment{captiontext}{%
-   \par\vspace{0.1in}\renewcommand{\baselinestretch}{0.9}}%
-   {\renewcommand{\baselinestretch}{1.0}\par}
+    \par\vspace{0.1in}\renewcommand{\baselinestretch}{0.9}}%
+{\renewcommand{\baselinestretch}{1.0}\par}
 
 
 %
@@ -108,7 +110,7 @@ framexleftmargin=15pt
 
 % \settopmatter{printacmref=false} % Removes citation information below abstract
 % \renewcommand\footnotetextcopyrightpermission[1]{} % removes footnote with conference information in first column
-\pagestyle{plain}
+% \pagestyle{plain}
 
 
 % Abbreviations
@@ -120,4 +122,4 @@ framexleftmargin=15pt
 \usepackage[letterpaper,twoside,vscale=.8,hscale=.75,nomarginpar,hmarginratio=1:1]{geometry}
 
 % Provides a draft mark at the top of the document. 
-\draftstamp{\today}{DRAFT}
+% \draftstamp{\today}{DRAFT}

@@ -122,7 +122,7 @@
 	{\begin{psuedochapter}{Abstract}}{\end{psuedochapter}}
 
 % \newenvironment{acknowledgments}
-%	{\begin{psuedochapter}{Acknowledgments}}{\end{psuedochapter}}
+% 	{\begin{psuedochapter}{Acknowledgments}}{\end{psuedochapter}}
 
 %% DRL: for some reason, if you use pseudochapter macro, with more than
 %% one page of stuff

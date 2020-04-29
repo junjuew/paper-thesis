@@ -1,53 +1,139 @@
 \input{texdefs}
 
-\begin{document} 
+\begin{document}
 
 \frontmatter
 
 \title{
-{\bf Scaling Wearable Cognitive Assistance}}
-\author{Junjue Wang \\ \href{mailto:junjuew@cs.cmu.edu}{junjuew@cs.cmu.edu}}
-\date{January 2020}
+    {\bf Scaling Wearable Cognitive Assistance}
+}
+\author{Junjue Wang}
+\date{April 2020}
 \Year{2020}
 \trnumber{}
 
 \vspace{3cm}
 
-% \begin{dedication}
-% \end{dedication}
-
 \committee{
-Mahadev Satyanarayanan (Satya) (Chair), Carnegie Mellon University\\
-Daniel Siewiorek, Carnegie Mellon University \\
-Martial Hebert, Carnegie Mellon University \\
-Roberta Klatzky, Carnegie Mellon University \\
-Padmanabhan Pillai, Intel Labs
+    Mahadev Satyanarayanan (Satya) (Chair), Carnegie Mellon University\\
+    Daniel Siewiorek, Carnegie Mellon University \\
+    Martial Hebert, Carnegie Mellon University \\
+    Roberta Klatzky, Carnegie Mellon University \\
+    Padmanabhan Pillai, Intel Labs
 }
 
-\support{}
-\disclaimer{}
+% \support{}
+% \disclaimer{}
 
 % copyright notice generated automatically from Year and author.
 % permission added if \permission{} given.
 
-\keywords{Wearable Cognitive Assistance, Edge Computing, Cloudlet, Scalability}
+\keywords{Wearable Cognitive Assistance, Scalability, Adaptation, Wearable Computing, Augmented Reality, Edge Computing, Cloudlet}
 
 \maketitle
 
-
-\pagestyle{plain} % for toc, was empty
+\begin{dedication}
+    To the future of machines.
+\end{dedication}
 
 %% Obviously, it's probably a good idea to break the various sections of your thesis
 %% into different files and input them into this file...
 
-%% \begin{abstract}
-%% A short summary.
-%% \end{abstract}
+\begin{abstract}
+    It has been a long endeavour to augment human cognition with machine
+    intelligence. Recently, a new genre of applications, named Wearable
+    Cognitive Assistance, has advanced the boundaries of augmented cognition.
+    These applications continuously process data from body-worn sensors and
+    provide just-in-time guidance to help a user complete a specific task. While
+    previous research has demonstrated the technical feasibility of wearable
+    cognitive assistants, this dissertation addresses the problem of
+    \textit{scalability}. We identify two critical challenges to the widespread
+    deployment of these applications to be 1) the need to operate cloudlets and
+    wireless network at low utilization to achieve acceptable end-to-end latency
+    2) the level of specialized skills and the long development time needed to
+    create new applications. To address these challenges, we first design and
+    evaluate adaptation-centric optimizations that reduce resource consumption
+    and improve resource management in contentious systems while maintaining
+    acceptable end-to-end latency. We then propose and implement a new
+    prototyping methodology and a suite of development tools to lower the
+    barrier of application development.
+\end{abstract}
 
-%% \begin{acknowledgments}
-%% \end{acknowledgments}
+\begin{acknowledgments}
+    I have been extremely fortunate to be inspired and supported by a group of
+    talented and caring individuals throughout my PhD research. This
+    dissertation would not be possible without them.
 
-\clearpage
+    I am deeply indebted to my advisor Satya, who played a paramount role in
+    guiding me through this dissertation research. Satya taught me how to
+    design, implement, and evaluate mobile and distributed systems. His
+    knowledge and encouragement have been a constant source of inspiration for
+    me to work harder and produce more impactful system research. In addition to
+    an excellent academic advisor, Satya has also been a visionary mentor whom I
+    look up to. It has been invaluable for me to observe and learn from his
+    leadership in shaping new technologies and bringing people together for a
+    shared vision. Another person who has inspired and helped me tremendously is
+    Padmanabhan (Babu) Pillai. He demonstrated an exemplary researcher to me
+    with his broad and deep knowledge, kindness, and patience. In addition, I
+    would like to thank my thesis committee members, Daniel Siewiorek, Martial
+    Hebert, and Roberta (Bobby) Klatzky. As this dissertation is at the
+    intersection of multiple fields, they have given me many insightful feedback
+    and guidance on human-computer interaction and computer vision respectively.
+    Their comments from our weekly meetings have been vital for me to stay on
+    the correct course.
+
+    Brilliant and encouraging individuals in Satya`s research group have
+    provided many rapport and joy during my PhD study. In addition, many ideas
+    and experimental results presented in this dissertation come from close
+    collaborative work with them. They have also provided many system
+    infrastructure support to perform the experiments. I cannot dream of a
+    better team and environment to be in for a PhD student. My day-to-day
+    interactions with them helped me grow as a better researcher and a critical
+    thinker. Especially, I would like to give my appreciation to, in an
+    alphabetical order, Yoshihisa Abe, Brandon Amos, Jim Blakley, Zhuo Chen, Tom
+    Eiszler, Ziqiang (Edmond) Feng, Shilpa George, Kiryong Ha, Jan Harkes, Wenlu
+    Hu, Roger Iyengar, Natalie Janosik, and Haithem Turki. I also want to thank
+    Chase Klingensmith for his outstanding administrative assistance for the
+    group.
+
+    My PhD research has also benefited significantly from the larger research
+    community. I was fortunate enough to collaborate with many exceptional
+    academic researchers and industry professionals in the past few years. Thank
+    you all for the inspiration you have given me. In particular, thank you,
+    Pauline Anthonysamy, Mihir Bala, Richard Buchler, Kevin Christensen, Anupam
+    Das, Nigel Davies, Debidatta Dwibedi, Khalid Elgazzar, Wei Gao, Ying Gao,
+    James Gross, Alex Guerrero, Guenter Klas, Zico Kolter, Michael Kozuch,
+    Hongkun Leng, Grace Lewis, Tan Li, Haodong Liu, Yuqi Liu, Lin Ma, Mateusz
+    Mikusz, Manuel Olguín, Sai Teja Peddinti, Truong An Pham, Norman Sadeh, Rolf
+    Schuster, Asim Smailagic, Nihar B. Shah, Nina Taft, Joseph Wang, Guanhang
+    Wu, Yu Xiao, Shao-Wen Yang, Canbo (Albert) Ye, and Siyan Zhao.
+
+    My beloved family and friends have provided enormous understanding,
+    sympathy, and support throughout my PhD study. I could not have finished
+    this thesis research without knowing they are on my back. In particular, I
+    have always felt extremely lucky and gracious to be born to the most
+    attentive, considerable, and wise parents in the world. They instill the
+    value of perseverance and compassion early in my life through examples.
+    Without their trust and encouragement, I would never dream of completing a
+    doctorate degree halfway around the globe at one of the finest computer
+    science institutions in the world. Furthermore, as lucky as a man could be,
+    I met my dearest partner, Han, while pursuing my PhD. Since then, she has
+    been my closest friend and most cherished counselor who has provided an
+    immeasurable amount of love, strength, and comfort. I am able to become a
+    better version of myself because of her. As much as this dissertation is
+    written for the future of machines, it is the words unwritten about people
+    that will be treasured for the rest of my life.
+
+    \vfill
+
+    This research was supported by the National Science Foundation (NSF) under
+    grant number CNS-1518865. Additional support was provided by Intel,
+    Vodafone, Deutsche Telekom, Verizon, Crown Castle, Seagate, VMware,
+    MobiledgeX, InterDigital, and the Conklin Kistler family fund.
+
+    \clearpage
+
+\end{acknowledgments}
 
 \tableofcontents
 \listoffigures
@@ -82,18 +168,6 @@ Padmanabhan Pillai, Intel Labs
 \input{app-dev}
 % \input{app-deploy}
 \input{conclusion}
-
-% proposal outline
-% \input{introduction}
-% \input{motivation}
-% \input{bandwidth}
-% \input{virtualization}
-% \input{acceleration}
-% \input{tools}
-% \input{timeline}
-% \input{related}
-%\appendix
-%\include{appendix}
 
 \backmatter
 
