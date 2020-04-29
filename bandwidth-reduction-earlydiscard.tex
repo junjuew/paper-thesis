@@ -3,9 +3,9 @@
 \label{sec:earlydiscard}
 
 \begin{figure}
-\includegraphics[trim={0cm 13cm 14cm 0cm},clip,width=\linewidth]{FIGS/fig-early-discard.pdf}
-\caption{Early Discard on Tier-3 Devices}
-\label{fig:ondrone}
+    \includegraphics[trim={0cm 13cm 14cm 0cm},clip,width=\linewidth]{FIGS/fig-early-discard.pdf}
+    \caption{Early Discard on Tier-3 Devices}
+    \label{fig:ondrone}
 \end{figure}
 
 
@@ -60,7 +60,7 @@ occupy the majority of the image. Many Tier-3 devices, however, capture images
 from different viewpoints (e.g. aerial views) and need to recognize rare
 task-specific objects different from generic categories. To improve the
 classification accuracy for custom objects from different viewpoints, we used
-{\em transfer learning}~\cite{Yosinski2014} to finetune the pre-trained
+    {\em transfer learning}~\cite{Yosinski2014} to finetune the pre-trained
 classifiers on small training sets of images that were captured from correct
 viewpoint. The process of fine-tuning involves initial re-training of the last
 DNN layer, followed by re-training of the entire network until convergence.
@@ -77,10 +77,10 @@ objects without incurring the full cost of creating a large training set.
 
 
 \begin{figure}
-\centering
-\includegraphics[width=0.8\linewidth]{FIGS/fig-training.pdf}
-\caption{Tiling and DNN Fine Tuning}
-\label{fig:tiling}
+    \centering
+    \includegraphics[width=0.8\linewidth]{FIGS/fig-training.pdf}
+    \caption{Tiling and DNN Fine Tuning}
+    \label{fig:tiling}
 \end{figure}
 
 For live drone video analytics, images are typically captured from a significant
@@ -103,10 +103,10 @@ workloads can be batched together to leverage hardware parallelism for a reduced
 total inference time.
 
 \begin{figure}
-\centering
-\includegraphics[width=.8\linewidth]{FIGS/fig-tile-resolution-speed-accuracy.pdf}
-\caption{Speed-Accuracy Trade-off of Tiling}
-\label{fig:earlydiscard-tile-accuracy-speed}
+    \centering
+    \includegraphics[width=.8\linewidth]{FIGS/fig-tile-resolution-speed-accuracy.pdf}
+    \caption{Speed-Accuracy Trade-off of Tiling}
+    \label{fig:earlydiscard-tile-accuracy-speed}
 \end{figure}
 
 
@@ -121,36 +121,36 @@ effectiveness of EarlyDiscard. Both frame-based and event-based metrics are used
 in the evaluation.
 
 \begin{figure}
-\centering
-\includegraphics[width=\linewidth]{FIGS/fig-event-recall-frame-percentage-legend.pdf}\\
+    \centering
+    \includegraphics[width=\linewidth]{FIGS/fig-event-recall-frame-percentage-legend.pdf}\\
     \vspace{.5in}
-\begin{minipage}[]{0.45\linewidth}
-\centering
-\includegraphics[width=\linewidth]{FIGS/fig-event-recall-frame-percentage-vs-threshold-okutama.pdf}\\
-{(a) T1}
-\end{minipage}
-\begin{minipage}[]{0.45\linewidth}
-\centering
-    \includegraphics[width=\linewidth]{FIGS/fig-event-recall-frame-percentage-vs-threshold-stanford.pdf}\\
-{(b) T2}
-\end{minipage}
+    \begin{minipage}[]{0.45\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{FIGS/fig-event-recall-frame-percentage-vs-threshold-okutama.pdf}\\
+        {(a) T1}
+    \end{minipage}
+    \begin{minipage}[]{0.45\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{FIGS/fig-event-recall-frame-percentage-vs-threshold-stanford.pdf}\\
+        {(b) T2}
+    \end{minipage}
 
-\vspace{.5in}
+    \vspace{.5in}
 
-\begin{minipage}[]{0.45\linewidth}
-\centering
-    \includegraphics[width=\linewidth]{FIGS/fig-event-recall-frame-percentage-vs-threshold-raft.pdf}\\
-{(c) T3}
-\end{minipage}
-\begin{minipage}[]{0.45\linewidth}
-\centering
-    \includegraphics[width=\linewidth]{FIGS/fig-event-recall-frame-percentage-vs-threshold-elephant.pdf}\\
-{(c) T4}
-\end{minipage}
+    \begin{minipage}[]{0.45\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{FIGS/fig-event-recall-frame-percentage-vs-threshold-raft.pdf}\\
+        {(c) T3}
+    \end{minipage}
+    \begin{minipage}[]{0.45\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{FIGS/fig-event-recall-frame-percentage-vs-threshold-elephant.pdf}\\
+        {(c) T4}
+    \end{minipage}
 
-\vspace{.5in}
-\caption{Bandwidth Breakdown}
-\label{fig:earlydiscard-frame-percent-breakdown}
+    \vspace{.5in}
+    \caption{Bandwidth Breakdown}
+    \label{fig:earlydiscard-frame-percent-breakdown}
 \end{figure}
 
 \subsection{Evaluation}
@@ -173,7 +173,7 @@ sustainable frame rate drops.  We group all tiles from the same frame in a
 single batch to leverage parallelism, so the processing does not change linearly
 with the number of tiles. The choice of an operating point will need to strike a
 balance between the speed and accuracy.  In the rest of the chapter, we use two
-tiles per frame by default. 
+tiles per frame by default.
 
 \subsubsection{EarlyDiscard Filter Accuracy}
 
@@ -186,7 +186,7 @@ Since objects have temporal locality in videos, we define an event (of an
 object) in a video to be consecutive frames containing the same object of
 interests. For example, the appearance of the same red raft in T3 in consecutive
 45 frames constitutes a single event. A correct detection of an event is defined
-as at least one of the consecutive frames being transmitted to the cloudlet.  
+as at least one of the consecutive frames being transmitted to the cloudlet.
 
 Figure~\ref{fig:earlydiscard-frame-percent-breakdown} shows our results on all
 four tasks. Blue lines show how the event recalls of EarlyDiscard filters for different
@@ -213,30 +213,30 @@ the first frame containing the object that is transmitted to the
 backend (i.e., first detection).  The results in the fourth column of
 Table~\ref{fig:early-discard-results} confirm that early discard
 contributes little to result latency.  The amounts range from 0.1~s
-for T1 to 12.7~s for T3.  
+for T1 to 12.7~s for T3.
 
 % At the timescale of human actions
 % such as dispatching of a rescue team, these are negligible delays.
 
 \begin{table}
-\centering
-\begin{tabular}{|c|c|c|c|c|c|c|}
-\hline
-   &Task Total Events   &Detected Events       &Avg Delay & Total Data &Avg B/W &Peak B/W\\
-   & & &(s)&(MB)&(Mbps)&(Mbps)\\ 
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|c|}
+        \hline
+           & Task Total Events & Detected Events  & Avg Delay      & Total Data     & Avg B/W & Peak B/W       \\
+           &                   &                  & (s)            & (MB)           & (Mbps)  & (Mbps)         \\
 
-\hline
-T1 & \phantom{0}62  & 100~\%       &  \phantom{0}0.1&\phantom{0}441  &  5.10     &   10.7  \\
-\hline
-T2 & \phantom{0}11  & \phantom{0}73~\%      & \phantom{0}4.9 & \phantom{00}13            &  0.03 & \phantom{0}7.0 \\ % 100% recall at 47% of frames, 82% recall at 21% of frames
-\hline
-T3 & \phantom{0}31  & \phantom{0}90~\%  & 12.7 & \phantom{00}93  &  0.24 &  \phantom{0}7.0 \\ % 100% recall at 9% frames
-\hline
-T4 & \phantom{0}25  & 100~\%       & \phantom{0}0.3 & \phantom{0}167  &  0.43 &  \phantom{0}7.0 \\
-\hline
-\end{tabular}\\
-\caption{Recall, Event Latency and Bandwidth at Cutoff Threshold 0.5}
-\label{fig:early-discard-results}
+        \hline
+        T1 & \phantom{0}62     & 100~\%           & \phantom{0}0.1 & \phantom{0}441 & 5.10    & 10.7           \\
+        \hline
+        T2 & \phantom{0}11     & \phantom{0}73~\% & \phantom{0}4.9 & \phantom{00}13 & 0.03    & \phantom{0}7.0 \\ % 100% recall at 47% of frames, 82% recall at 21% of frames
+        \hline
+        T3 & \phantom{0}31     & \phantom{0}90~\% & 12.7           & \phantom{00}93 & 0.24    & \phantom{0}7.0 \\ % 100% recall at 9% frames
+        \hline
+        T4 & \phantom{0}25     & 100~\%           & \phantom{0}0.3 & \phantom{0}167 & 0.43    & \phantom{0}7.0 \\
+        \hline
+    \end{tabular}\\
+    \caption{Recall, Event Latency and Bandwidth at Cutoff Threshold 0.5}
+    \label{fig:early-discard-results}
 \end{table}
 
 
@@ -263,70 +263,70 @@ precision could be further improved, without hurting recall.
 
 \subsection{Use of Sampling}
 
-\begin{figure}[h]
+\begin{figure}
     \centering
     \includegraphics[width=.7\linewidth]{FIGS/fig-random-select-interval-recall-hatch.pdf}
-\caption{Event Recall at Different Sampling Intervals}
-\label{fig:sampling-only}
+    \caption{Event Recall at Different Sampling Intervals}
+    \label{fig:sampling-only}
 \end{figure}
 
 
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.7\linewidth]{FIGS/fig-recall-frame-aggregated-legend.pdf}
+\begin{figure}
+    \centering
+    \includegraphics[width=0.7\linewidth]{FIGS/fig-recall-frame-aggregated-legend.pdf}
 
-\begin{minipage}[]{0.47\linewidth}
-\centering
-\includegraphics[trim={0.5cm 0.5cm 0 0},clip,width=\linewidth]{FIGS/fig-random-select-and-filter-recall-frame-okutama-aggregated.pdf}\\
-{(a) T1}
-\end{minipage}
-\begin{minipage}[]{0.47\linewidth}
-\centering
-\includegraphics[trim={0.5cm 0.5cm 0 0},clip,width=\linewidth]{FIGS/fig-random-select-and-filter-recall-frame-stanford-aggregated.pdf}
-{(b) T2}
-\end{minipage}
-\begin{minipage}[]{0.47\linewidth}
-\centering
-\includegraphics[trim={0.5cm 0.5cm 0 0},clip,width=\linewidth]{FIGS/fig-random-select-and-filter-recall-frame-raft-aggregated.pdf}
-{(c) T3}
-\end{minipage}
-\begin{minipage}[]{0.47\linewidth}
-\centering
-\includegraphics[trim={0.5cm 0.5cm 0 0},clip,width=\linewidth]{FIGS/fig-random-select-and-filter-recall-frame-elephant-aggregated.pdf}
-{(c) T4}
-\end{minipage}
-\caption{Sample with Early Discard. Note the log scale on y-axis.}
-\label{fig:sampling-discard}
+    \begin{minipage}[]{0.47\linewidth}
+        \centering
+        \includegraphics[trim={0.5cm 0.5cm 0 0},clip,width=\linewidth]{FIGS/fig-random-select-and-filter-recall-frame-okutama-aggregated.pdf}\\
+        {(a) T1}
+    \end{minipage}
+    \begin{minipage}[]{0.47\linewidth}
+        \centering
+        \includegraphics[trim={0.5cm 0.5cm 0 0},clip,width=\linewidth]{FIGS/fig-random-select-and-filter-recall-frame-stanford-aggregated.pdf}
+        {(b) T2}
+    \end{minipage}
+    \begin{minipage}[]{0.47\linewidth}
+        \centering
+        \includegraphics[trim={0.5cm 0.5cm 0 0},clip,width=\linewidth]{FIGS/fig-random-select-and-filter-recall-frame-raft-aggregated.pdf}
+        {(c) T3}
+    \end{minipage}
+    \begin{minipage}[]{0.47\linewidth}
+        \centering
+        \includegraphics[trim={0.5cm 0.5cm 0 0},clip,width=\linewidth]{FIGS/fig-random-select-and-filter-recall-frame-elephant-aggregated.pdf}
+        {(c) T4}
+    \end{minipage}
+    \caption{Sample with Early Discard. Note the log scale on y-axis.}
+    \label{fig:sampling-discard}
 \end{figure}
 
-\begin{table}[h]
-\centering
-\begin{tabular}{|c|c|c|c|c|}
-\hline
-JPEG Frame Sequence  & H264 High Quality  & H264 Medium Quality & H264 Low Quality \\
-(MB) & (MB) & (MB) & (MB)\\
-\hline
-5823 & 3549  & 1833 & 147\\
-\hline
-\end{tabular}\\
-\vspace{0.1in}
-\begin{captiontext}
-H264 high quality uses Constant Rate Factor (CRF) 23. Medium
-uses CRF 28 and low uses CRF 40~\cite{Merritt2007}.
-\end{captiontext}
-\caption{Test Dataset Size With Different Encoding Settings}
-\label{fig:video-vs-images}
+\begin{table}
+    \centering
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        JPEG Frame Sequence & H264 High Quality & H264 Medium Quality & H264 Low Quality \\
+        (MB)                & (MB)              & (MB)                & (MB)             \\
+        \hline
+        5823                & 3549              & 1833                & 147              \\
+        \hline
+    \end{tabular}\\
+    \vspace{0.1in}
+    \begin{captiontext}
+        H264 high quality uses Constant Rate Factor (CRF) 23. Medium
+        uses CRF 28 and low uses CRF 40~\cite{Merritt2007}.
+    \end{captiontext}
+    \caption{Test Dataset Size With Different Encoding Settings}
+    \label{fig:video-vs-images}
 \end{table}
 
-Given the relatively low precision of the weak detectors, a significant number 
+Given the relatively low precision of the weak detectors, a significant number
 of false positives are transmitted.  Furthermore, the occurrence of an object will
-likely last through many frames, so true positives are also often redundant for 
+likely last through many frames, so true positives are also often redundant for
 simple detection tasks.  Both of these result in excessive
-consumption of precious bandwidth.  
+consumption of precious bandwidth.
 This suggests that simply restricting the number of transmitted
-frames by sampling may help reduce bandwidth consumption.  
+frames by sampling may help reduce bandwidth consumption.
 
-Figure~\ref{fig:sampling-only} shows the effects of 
+Figure~\ref{fig:sampling-only} shows the effects of
 sending a sample of frames from Tier-3, without any
 content-based filtering.  Based on these results, we can reduce
 the frames sent as little as one per second and still get
@@ -337,7 +337,7 @@ presences of a particular elephant) last for many seconds (100's
 of frames), so such sparse sampling does not hurt recall.
 However, if the events were of short duration, e.g., just a few
 frames long, then this method would be less effective, as
-sampling may lead to many missed events (false negatives).  
+sampling may lead to many missed events (false negatives).
 
 Can we use content-based filtering along with sampling to further
 reduce bandwidth consumption?  Figure~\ref{fig:sampling-discard}
@@ -349,14 +349,14 @@ consumed for our test videos to just a few hundred kilobits
 per second.  Furthermore, more processing time is available per
 processed frame, allowing more sophisticated algorithms to be
 employed, or to allow smaller tiles to be used, improving
-accuracy of early discard.  
+accuracy of early discard.
 
 One case where sampling is not an effective solution is when all frames
 containing an object need to be sent to the cloudlet for some form of activity
 or behavior analysis from a complete video sequence.  In this case, bandwidth
 will not reduce much, as all frames in the event sequence must be sent.
 However, the processing time benefits of sampling may still be exploited,
-provided all frames in a sample interval are transmitted on a match.  
+provided all frames in a sample interval are transmitted on a match.
 
 
 \subsection{Effects of Video Encoding}
@@ -367,7 +367,7 @@ reduce transmission bandwidth.  With early discard, only a subset
 of disparate frames are sent.  These will likely need to be
 individually compressed images, rather than a video stream.  How
 much does the switch from video to individual frames affect
-bandwidth?  
+bandwidth?
 
 In theory, this can be a significant impact. Video encoders leverage the
 similarity between consecutive frames, and model motion to efficiently encode
@@ -386,7 +386,7 @@ However, this compression does affect analytics. Even at medium quality level,
 visible compression artifacts, blurring, and motion distortions begin to appear.
 Initial experiments analyzing compressed videos show that these distortions do
 have a negative impact on accuracy of analytics. Using average precision
-analysis, a standard method to evaluate accuracy, we estimate that the 
+analysis, a standard method to evaluate accuracy, we estimate that the
 most accurate model (Faster-RCNN ResNet101) on low quality videos performs similarly
 to the less accurate model (Faster-RCNN InceptionV2) on high quality
 JPEG images. This negates the benefits of using the state-of-art models.
@@ -402,32 +402,8 @@ and employ video encoding at high quality. This can ultimately eliminate the per
 frame overhead while maintaining accuracy. However, this will require a complex setup with
 both low-latency encoders and decoders, which can generate output data
 corresponding to a frame as soon as input data is ingested, with no buffering,
-and can wait arbitrarily long for additional frame data to arrive. 
+and can wait arbitrarily long for additional frame data to arrive.
 
 For the experiments in the rest of this chapter, we only account for the
 fraction of frames transmitted, rather than the choice of specific encoding
 methods used for those frames.
-
-
-
-%-------------- LEAVE THIS AT THE END OF THIS FILE --------------------
-\begin{comment}
-% Satya: Save this old table because it has lots of details that 
-% are not included in the smaller table that is in the paper
-\begin{figure*}[]
-\centering
-\begin{tabular}{|p{2cm}|p{2cm}|p{2cm}|p{3cm}|p{3cm}|p{3cm}|}
-\hline
-Task                     & Task Description                                                                           & Dataset                & Dataset Description                                                                                                                & Train Videos                                                                                     & Test Videos                                                         \\ \hline
-Human Detection 	& Detect human beings in daily life scene. Report any humans detected.			& 	UCF Aerial Action Dataset \href{http://crcv.ucf.edu/data/UCF_Aerial_Action.php}{link}				& A video dataset for aerial view of human actions. 4 videos, 107184 frames in total. 720x480 @ 30FPS. 			&  Select 2 videos with drone moving.  57430 frames.			& Select 2 videos with drone moving. 49754 frames.\\ \hline
-Human Detection          & Detect human beings in a search and rescue scene. Report any humans detected.              & Okutama Action Dataset~\cite{Barekatain2017} 	& A video dataset for aerial view concurrent human action detection.  33 videos, 59842 frames in total. 3840x2160 @ 30FPS.           & Select 9 videos in which drones are actively moving, similar to search and rescue. 17763 frames. & Randomly select 3 videos in which drones are moving.  6014 frames.  \\ \hline
-Human Activity Detection & Detect human activities such as waving hands                                               & Okutama Action Dataset & Same as above                                                                                                                      & Same as above                                                                                    & Same as above                                                       \\ \hline
-Moving Car Detection     & Detect cars in a search and rescue scene that are moving. Report any moving cars detected. & Stanford Drone Dataset~\cite{Robicquet2016} & An aerial video dataset of cars and people navigating in a university campus. 60 videos, 522497 frames in total. $\sim$HD @ 30FPS. & Select 16 videos in which exists moving cars. 179992 frames.                                     & Randomly select 5 videos in which exists moving cars. 60249 frames. \\ \hline
-Raft Detection           & Detect raft in a flooding scene                               & Collected 11 Youtube Videos \href{https://www.dropbox.com/sh/zksp1pzc1ix5hlw/AAB3HEhx-yLAJVR1Q3HnFpsWa?dl=0}{[Links]}       & Aerial-view videos with rafts. 11 videos. 54395 frames in total. $\sim$720P @ 30 FPS.                                                                                                    & 8 videos of rafting as training set. 43017 frames.                                      &  3 videos that resemble search and rescue scenarios. 11378 frames.                                               \\ \hline
-Animal Detection         & Detect elephants in their natural habitat                     & Collected 11 Youtube Videos \href{https://www.dropbox.com/sh/3uly2qqwbzjasaa/AABiWSzPD_5uzmvCy3meqPKma?dl=0}{[Links]}      &  Aerial-view videos containing elephants in their natural habitat. 11 videos. 54203 frames in total. $\sim$720P @ 30FPS.                                                                         & Randomly selected 8 videos as training set. 39466 frames.                      & Randomly selected 3 videos as test set. 14737 frames.                \\ \hline
-\end{tabular}
-\caption{Task and Dataset}
-\label{fig:task-and-dataset}
-\end{figure*}
-\end{comment}
-

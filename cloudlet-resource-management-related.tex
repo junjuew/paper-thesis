@@ -3,12 +3,11 @@
 
 Deadline-based scheduling algorithms and mechanisms have been studied
 extensively in the literature. Many work~\cite{tokuda1990real, kao1993deadline,
-stankovic2012deadline, steiger2004operating} exist in the context of real-time
+    stankovic2012deadline, steiger2004operating} exist in the context of real-time
 systems. Some use utility functions for scheduling tasks with soft
 deadlines~\cite{ravindran2005recent, li2004utility}. While we draw
 inspiration from these systems, our resource allocation focuses on application
 adaptation characteristics in addition to meeting latency requirements.
-
 Many mobile systems leverage application adaptation. Notably,
 Odyssey~\cite{Noble1997} and extensions~\cite{Flinn1999} proposed upcall-based
 collaboration between a mobile's operating system and its applications to adapt
@@ -17,25 +16,21 @@ reactive by the mobile device; in our context, adaptation for a collection of
 devices can be centrally managed by their cloudlet, with failover to reactive
 methods as needed. Exploration of tradeoffs between application fidelity and
 resource demand led to the concept of {\em multi-fidelity
-applications}~\cite{Satya1999}; such concepts are relevant to our work, but the
+        applications}~\cite{Satya1999}; such concepts are relevant to our work, but the
 critical computing resources in our setting are those of the cloudlet rather
-than the mobile device.
-
-More recently,
+than the mobile device. More recently,
 ~\cite{boutin2014apollo,yao2014haste,verma2015large,ousterhout2013sparroW,delimitrou2014quasar,schwarzkopf2013omega}
 study cluster scheduling in data-center context. These systems target a diverse
 range of workload, take resource reservation demands, and focus on the
 scalability of scheduling. In contrast, our resource allocation scheme focuses
 on edge-native applications, in particular, wearable cognitive assistance, and
 profile their characteristics for better outcomes in oversubscribed edge
-scenarios.
-
-Closely related, dynamic resource management in the cloud for video analytics
-have been explored by~\cite{sembiring2013dynamic, fu2015drs, kaseb2015cloud}.
-Some also leverage profile-based adaptation for more efficient video analytics
-resource management~\cite{zhang2017live, hung2018videoedge, jiang2018chameleon}.
-However, most of these systems focus on throughput-oriented analytics
-application on large clusters. In contrast, we target interactive performance on
-relatively small edge deployments.
+scenarios. Closely related, dynamic resource management in the cloud for video
+analytics have been explored by~\cite{sembiring2013dynamic, fu2015drs,
+    kaseb2015cloud}. Some also leverage profile-based adaptation for more efficient
+video analytics resource management~\cite{zhang2017live, hung2018videoedge,
+    jiang2018chameleon}. However, most of these systems focus on throughput-oriented
+analytics application on large clusters. In contrast, we target interactive
+performance on relatively small edge deployments.
 
 

@@ -1,0 +1,63 @@
+\section{Related Work}
+\label{bw:relatedwork}
+
+In the context of drone video analytics, Wang et al.~\cite{Wang2017networked}
+shares our concern for wireless bandwidth, but focuses on coordinating a network
+of drones to capture and broadcast live sport event. In addition, Wang et
+al~\cite{Wang2016skyeyes} explored adaptive video streaming with drones using
+content-based compression and video rate adaptation. While we share their
+inspiration, our work leverages characteristics of DNNs to enable
+mission-specific optimization strategies.
+
+Much previous work on static camera networks explored efficient use of compute
+and network resources at scale. Zhang et al.~\cite{zhang2017live} studied
+resource-quality trade-off under result latency constraints in video analytics
+systems. Kang et al.~\cite{kang2017noscope} worked on optimizing DNN queries
+over videos at scale. While they focus on supporting a large number of computer
+vision workload, our work optimizes for the first hop wireless bandwidth. In
+addition, Zhang et al.~\cite{zhang2015design} designed a wireless distributed
+surveillance system that supports a large geographical area through frame
+selection and content-aware traffic scheduling. In contrast, our work does not
+assume static cameras. We explore techniques that tolerate changing scenes in
+video feeds and strategies that work for moving cameras.
+
+Some previous work on computer vision in mobile settings has relevance to
+aspects of our system design.  Chen et al.~\cite{chen2015glimpse} explore how
+continuous real-time object recognition can be done on mobile devices. They meet
+their design goals by combining expensive object detection with computationally
+cheap object tracking.  Although we do not use object tracking in our work, we
+share the resource concerns that motivate that work.  Naderiparizi et
+al.~\cite{naderiparizi2017glimpse} describe a programmable early-discard camera
+architecture for continuous mobile vision.  Our work shares their emphasis on
+early discard, but differs in all other aspects.  In fact, our work can be
+viewed as complementing that work: their programmable early-discard camera would
+be an excellent choice for Tier-3 devices. Lastly, Hu et al~\cite{Hu2015} have
+investigated the approach of using lightweight computation on a mobile device to
+improve the overall bandwidth efficiency of a computer vision pipeline that
+offloads computation to the edge.  We share their concern for wireless
+bandwidth, and their use of early discard using inexpensive algorithms on the
+mobile device.
+
+\section{Chapter Summary and Discussion}
+\label{bw:discussion}
+
+In this chapter, we address the bandwidth challenge of running many WCAs at
+scale. We propose two application-agnostic methods to reduce bandwidth
+consumption when offloading computation to edge servers.
+
+The EarlyDiscard technique employs on-board filters to select interesting frames
+and suppress the transmission of mundane frames to save bandwidth. In
+particular, cheap yet effective DNN filters are trained offline to fully
+leverage the large quantity of training data and the high learning capacities of
+DNNs. Building on top of EarlyDiscard, JITL adapts an EarlyDiscard filter to a
+specific environment online. While a WCA is running, JITL continuously evaluates
+the EarlyDiscard filter and reduces the number of false positives by predicting
+whether an EaryDiscard decision is made correctly. These two techniques together
+reduce the total number of unnecessary frames transmitted.
+
+We evaluate these two strategies first in the drone live video analytics context
+for search tasks in domains such as search-and-rescue, surveillance, and
+wildlife conservation, and then for WCAs. Our experimental results show that
+this judicious combination of Tier-3 processing and edge-based processing can
+save substantial wireless bandwidth and thus improve scalability, without
+compromising result accuracy or result latency.

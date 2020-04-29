@@ -14,25 +14,25 @@ comes 105ms after a user action for POOL is no longer of value, because it is
 too late to guide the next action.
 
 \begin{figure}
-\centering
-\includegraphics[width=\linewidth, trim=0em 3em 0em 3em, clip]{FIGS/fig-sec6-reduction-legend.pdf}
-\begin{minipage}[b]{0.38\linewidth}
-\centering
-\includegraphics[height=2.5in, trim=0em 1em 0em 0em, clip]{FIGS/fig-sec6-reduction-Pingpong.pdf}\\
-{(a) PING PONG}
-\end{minipage}
-\begin{minipage}[b]{0.3\linewidth}
-\centering
-\includegraphics[height=2.5in, trim=0em 1em 0em 0em, clip]{FIGS/fig-sec6-reduction-Lego.pdf}\\
-{(b) LEGO}
-\end{minipage}
-\begin{minipage}[b]{0.3\linewidth}
-\centering
-\includegraphics[height=2.5in, trim=0em 1em 0em 0em, clip]{FIGS/fig-sec6-reduction-Pool.pdf}\\
-{(c) POOL}
-\end{minipage}
-\caption{Effects of Workload Reduction}
-\label{figs:workload-reduction}
+  \centering
+  \includegraphics[width=\linewidth, trim=0em 3em 0em 3em, clip]{FIGS/fig-sec6-reduction-legend.pdf}
+  \begin{minipage}[b]{0.38\linewidth}
+    \centering
+    \includegraphics[height=2.5in, trim=0em 1em 0em 0em, clip]{FIGS/fig-sec6-reduction-Pingpong.pdf}\\
+    {(a) PING PONG}
+  \end{minipage}
+  \begin{minipage}[b]{0.3\linewidth}
+    \centering
+    \includegraphics[height=2.5in, trim=0em 1em 0em 0em, clip]{FIGS/fig-sec6-reduction-Lego.pdf}\\
+    {(b) LEGO}
+  \end{minipage}
+  \begin{minipage}[b]{0.3\linewidth}
+    \centering
+    \includegraphics[height=2.5in, trim=0em 1em 0em 0em, clip]{FIGS/fig-sec6-reduction-Pool.pdf}\\
+    {(c) POOL}
+  \end{minipage}
+  \caption{Effects of Workload Reduction}
+  \label{figs:workload-reduction}
 \end{figure}
 
 
@@ -56,25 +56,25 @@ affected. Thus, we confirm that we can significantly reduce cloudlet load
 without affecting the critical processing needed by these applications.
 
 \begin{table}[]
-\centering
-\begin{tabular}{|c|c||c|c|c|c|c|}
-  \hline
-  Exp & \multicolumn{6}{|c|}{Number of Clients} \\
-  \cline{2-7}
-  \#  & Total & FACE & LEGO & POOL & PING & IKEA \\
-      &      &   &   &  & PONG &  \\ \hline
-  1   & 15  & 3 & 3 & 3 & 3 & 3 \\ \hline
-  2   & 20  & 4 & 4 & 4 & 4 & 4 \\ \hline
-  3   & 23  & 5 & 5 & 4 & 4 & 5\\ \hline
-  4   & 25  & 5 & 5 & 5 & 5 & 5 \\ \hline
-  5   & 27  & 5 & 6 & 6 & 5 & 5 \\ \hline
-  6  & 30  & 5 & 7 & 6 & 6 & 6 \\ \hline
-  7  & 32  & 5 & 7 & 7 & 7 & 6 \\ \hline
-  8  & 40  & 8 & 8 & 8 & 8 & 8 \\ \hline
-\end{tabular}
-\vspace{0.1in}
-\caption{Resource Allocation Experiment Setup} 
-\label{tab:alloc-exps}
+  \centering
+  \begin{tabular}{|c|c||c|c|c|c|c|}
+    \hline
+    Exp & \multicolumn{6}{|c|}{Number of Clients}                                    \\
+    \cline{2-7}
+    \#  & Total                                   & FACE & LEGO & POOL & PING & IKEA \\
+        &                                         &      &      &      & PONG &      \\ \hline
+    1   & 15                                      & 3    & 3    & 3    & 3    & 3    \\ \hline
+    2   & 20                                      & 4    & 4    & 4    & 4    & 4    \\ \hline
+    3   & 23                                      & 5    & 5    & 4    & 4    & 5    \\ \hline
+    4   & 25                                      & 5    & 5    & 5    & 5    & 5    \\ \hline
+    5   & 27                                      & 5    & 6    & 6    & 5    & 5    \\ \hline
+    6   & 30                                      & 5    & 7    & 6    & 6    & 6    \\ \hline
+    7   & 32                                      & 5    & 7    & 7    & 7    & 6    \\ \hline
+    8   & 40                                      & 8    & 8    & 8    & 8    & 8    \\ \hline
+  \end{tabular}
+  \vspace{0.1in}
+  \caption{Resource Allocation Experiment Setup}
+  \label{tab:alloc-exps}
 \end{table}
 
 \subsection{Effectiveness of Resource Allocation}
@@ -138,13 +138,13 @@ throttling of LEGO throughput reduces such an effect.
     \includegraphics[width=\linewidth]{FIGS/fig-alloc-latency-cpushares.pdf}
     {(b) Scalable Gabriel}
   \end{center}
-\begin{captiontext}
-  \centering
-The normalization is  by per-application tight and loose
-bounds~\cite{chen2017empirical}.
+  \begin{captiontext}
+    \centering
+    The normalization is  by per-application tight and loose
+    bounds~\cite{chen2017empirical}.
 
-The allocation policy is to maximize the overall system utility.
-\end{captiontext}
+    The allocation policy is to maximize the overall system utility.
+  \end{captiontext}
   \caption{Normalized 90\%-tile Response Latency}
   \label{fig:alloc-latency}
 \end{figure}
@@ -178,68 +178,68 @@ to be complementary and latencies remain in better control than using
 resource allocation alone.
 
 \begin{figure}[]
-	\begin{center}
-		\includegraphics[width=\linewidth]{FIGS/fig-alloc-latency-legend.pdf}
-								
-		\begin{tabular}{c@{}c}
-			\includegraphics[width=.5\linewidth]{FIGS/fig-eval-latency-baseline.pdf}
-			            & \includegraphics[width=.5\linewidth]{FIGS/fig-eval-latency-cpushares.pdf} \\
-			{(a) Original  Gabriel} & {(b) Scalable Gabriel}                                                    
-		\end{tabular}
-	\end{center}
+  \begin{center}
+    \includegraphics[width=\linewidth]{FIGS/fig-alloc-latency-legend.pdf}
 
-\begin{captiontext}
-\centering
-The normalization is by per-application tight and loose
-bounds~\cite{chen2017empirical}.
-\end{captiontext}
-\vspace{-0.1in}
-	\caption{Normalized 90\%-tile Response Latency}
-	\label{fig:frame-latency}
+    \begin{tabular}{c@{}c}
+      \includegraphics[width=.5\linewidth]{FIGS/fig-eval-latency-baseline.pdf}
+                              & \includegraphics[width=.5\linewidth]{FIGS/fig-eval-latency-cpushares.pdf} \\
+      {(a) Original  Gabriel} & {(b) Scalable Gabriel}
+    \end{tabular}
+  \end{center}
+
+  \begin{captiontext}
+    \centering
+    The normalization is by per-application tight and loose
+    bounds~\cite{chen2017empirical}.
+  \end{captiontext}
+  \vspace{-0.1in}
+  \caption{Normalized 90\%-tile Response Latency}
+  \label{fig:frame-latency}
 \end{figure}
 
 \begin{figure}[]
-	\begin{center}
-		% \includegraphics[width=\linewidth]{FIGS/fig-alloc-latency-legend.pdf}
-		\begin{tabular}{c@{}c}
-			\includegraphics[width=.5\linewidth]{FIGS/fig-eval-fps-baseline.pdf}
-			            & \includegraphics[width=.5\linewidth]{FIGS/fig-eval-fps-cpushares.pdf} \\
-			{(a) Original Gabriel} & {(b) Scalable Gabriel}                                                
-		\end{tabular}
-	\end{center}
-	\caption{Processed Frames Per Second Per Application}
-	\label{fig:frame-fps}
+  \begin{center}
+    % \includegraphics[width=\linewidth]{FIGS/fig-alloc-latency-legend.pdf}
+    \begin{tabular}{c@{}c}
+      \includegraphics[width=.5\linewidth]{FIGS/fig-eval-fps-baseline.pdf}
+                             & \includegraphics[width=.5\linewidth]{FIGS/fig-eval-fps-cpushares.pdf} \\
+      {(a) Original Gabriel} & {(b) Scalable Gabriel}
+    \end{tabular}
+  \end{center}
+  \caption{Processed Frames Per Second Per Application}
+  \label{fig:frame-fps}
 \end{figure}
 
 \begin{figure}[]
-	\begin{center}
-		\includegraphics[width=.7\linewidth]{FIGS/fig-alloc-latency-legend.pdf}
-		\includegraphics[width=.7\linewidth]{FIGS/fig-sec6-latency-allocation.pdf}
-	\end{center}
-\vspace{-0.1in}
-	\caption{Fraction of Cloudlet Processing Allocated}
+  \begin{center}
+    \includegraphics[width=.7\linewidth]{FIGS/fig-alloc-latency-legend.pdf}
+    \includegraphics[width=.7\linewidth]{FIGS/fig-sec6-latency-allocation.pdf}
+  \end{center}
+  \vspace{-0.1in}
+  \caption{Fraction of Cloudlet Processing Allocated}
   \label{figs:resource-allocated}
 \end{figure}
 
 \begin{figure}[]
-\centering
-\includegraphics[width=0.5\linewidth, trim=0em 0em 0em 0em, clip]{FIGS/fig-sec6-latency-legend.pdf} \\
-\centering
-\begin{turn}{90}{\hspace{0.6in}\small (a) FACE}\end{turn}\hspace{0.2in}\includegraphics[width=2.5in, trim=0em 0em 0em 0em, clip]{FIGS/fig-sec6-latency-face.pdf}
-\begin{turn}{90}{\hspace{0.6in}\small (b)
-LEGO}\end{turn}\hspace{0.2in}\includegraphics[width=2.5in, trim=0em 0em 0em 0em,
-clip]{FIGS/fig-sec6-latency-lego.pdf}\\[0.08in]
+  \centering
+  \includegraphics[width=0.5\linewidth, trim=0em 0em 0em 0em, clip]{FIGS/fig-sec6-latency-legend.pdf} \\
+  \centering
+  \begin{turn}{90}{\hspace{0.6in}\small (a) FACE}\end{turn}\hspace{0.2in}\includegraphics[width=2.5in, trim=0em 0em 0em 0em, clip]{FIGS/fig-sec6-latency-face.pdf}
+  \begin{turn}{90}{\hspace{0.6in}\small (b)
+      LEGO}\end{turn}\hspace{0.2in}\includegraphics[width=2.5in, trim=0em 0em 0em 0em,
+    clip]{FIGS/fig-sec6-latency-lego.pdf}\\[0.08in]
   \vspace{0in}
-\begin{turn}{90}{\hspace{0.6in}\small (c) PING PONG}\end{turn}\hspace{0.2in}\includegraphics[width=2.5in, trim=0em 0em 0em 0em, clip]{FIGS/fig-sec6-latency-pingpong.pdf}
-\begin{turn}{90}{\hspace{0.6in}\small (d)
-POOL}\end{turn}\hspace{0.2in}\includegraphics[width=2.5in, trim=0em 0em 0em 0em,
-clip]{FIGS/fig-sec6-latency-pool.pdf}\\[0.08in]
+  \begin{turn}{90}{\hspace{0.6in}\small (c) PING PONG}\end{turn}\hspace{0.2in}\includegraphics[width=2.5in, trim=0em 0em 0em 0em, clip]{FIGS/fig-sec6-latency-pingpong.pdf}
+  \begin{turn}{90}{\hspace{0.6in}\small (d)
+      POOL}\end{turn}\hspace{0.2in}\includegraphics[width=2.5in, trim=0em 0em 0em 0em,
+    clip]{FIGS/fig-sec6-latency-pool.pdf}\\[0.08in]
   \vspace{0in}
-\begin{turn}{90}{\hspace{0.6in}\small (e) IKEA}\end{turn}\hspace{0.2in}\includegraphics[width=2.5in, trim=0em 0em 0em 0em, clip]{FIGS/fig-sec6-latency-ikea.pdf}
-\caption{Guidance Latency Compared to Loose Latency Bound}
-\label{figs:inst-delay}
+  \begin{turn}{90}{\hspace{0.6in}\small (e) IKEA}\end{turn}\hspace{0.2in}\includegraphics[width=2.5in, trim=0em 0em 0em 0em, clip]{FIGS/fig-sec6-latency-ikea.pdf}
+  \caption{Guidance Latency Compared to Loose Latency Bound}
+  \label{figs:inst-delay}
 \end{figure}
-		
+
 The previous plots consider per request latencies. The ultimate goal of our work
 is to maintain user experience as much as possible and degrade it gracefully
 when overloaded. For WCA applications, the key measure of user experience is
@@ -258,5 +258,3 @@ clients, scalable Gabriel sacrifices the LEGO application to maintain the
 quality of service for PINGPONG and POOL. This differentiated allocation is
 reflected in Figure~\ref{figs:resource-allocated}. In contrast, with original
 Gabriel, none of the applications are able to regularly meet deadlines.
-
-\clearpage
