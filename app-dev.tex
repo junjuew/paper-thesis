@@ -11,7 +11,7 @@ multiple person-months of effort to create a single application. The majority of
 development time is spent on learning new computer vision techniques, selecting
 robust algorithms to use through trial and error, and implementing the
 application. The high barrier to entry significantly limits the number of
-wearable cognitive assistants available today. Clearly, this is not scalable. 
+wearable cognitive assistants available today. Clearly, this is not scalable.
 
 In this chapter, we reflect on the existing ad hoc WCA development process,
 propose a new development methodology centered around DNN-based object
@@ -21,7 +21,7 @@ of WCA development. Our goal is to simplify the process so that a small team
 expertise, can create an initial version of a Gabriel application within a few
 days. This is a productivity improvement of at least one order of magnitude.
 Refinement and tuning may take longer, but can be guided by the early use of the
-application. 
+application.
 
 Simplification is difficult. The application needs a precise definition of the
 end-point state of each step (e.g., a particular screw mounted into a
@@ -36,8 +36,8 @@ skills, but not necessarily experience with wearable devices or computer vision.
 \begin{figure}
   \centering
   \includegraphics[trim={0 6cm 0 0},width=\linewidth]{FIGS/ad-hoc-workflow}
-	\caption{Ad Hoc Development Workflow}
-    \label{figs:workflow}
+  \caption{Ad Hoc Development Workflow}
+  \label{figs:workflow}
 \end{figure}
 
 The existing ad hoc development process of WCAs can be described as
@@ -79,27 +79,27 @@ The ad hoc development process has unnecessary high requirements and burden for
 WCA creators in the following aspects.
 \begin{enumerate}
   \item Developers need to be familiar with various computer vision algorithms
-to determine what visual states can be recognized reliably. The knowledge of
-selecting algorithms for specific objects, environments, and setups requires
-years of experience. This high bar of entry hinders the creation of WCAs.
+        to determine what visual states can be recognized reliably. The knowledge of
+        selecting algorithms for specific objects, environments, and setups requires
+        years of experience. This high bar of entry hinders the creation of WCAs.
   \item It takes a significant amount of time to implement computer vision
-algorithms in a trial and error fashion. Several months of coding time could
-turn into a fruitless outcome when the algorithm turns out to be a bad fit. For
-sophisticated WCAs with tens or hundreds of visual states, such a trial and
-error methodology is not scalable. Needed are unified and automated methods to
-create visual state recognizers.
+        algorithms in a trial and error fashion. Several months of coding time could
+        turn into a fruitless outcome when the algorithm turns out to be a bad fit. For
+        sophisticated WCAs with tens or hundreds of visual states, such a trial and
+        error methodology is not scalable. Needed are unified and automated methods to
+        create visual state recognizers.
   \item The tight coupling of task model design and visual state recognition
-calls for deep understanding in both task domain and computer vision. When
-visual states in the task model end up being too difficult for even the
-state-of-art algorithms, the development team needs to adjust the task model to
-either use alternative visual states or employ user assistance. For instance, in
-the RibLoc application, during development, a task step was changed to asking
-the user to read out a word on the gauge instead of performing optical character
-recognition on the lightly-colored characters. Close collaborations among task
-experts and developers are needed due to this tight intertwinement between task
-model design and computer vision algorithm exploration. Methodologies and tools
-that shorten the turn-around time when a task model changes can significantly
-reduce the overall development time.
+        calls for deep understanding in both task domain and computer vision. When
+        visual states in the task model end up being too difficult for even the
+        state-of-art algorithms, the development team needs to adjust the task model to
+        either use alternative visual states or employ user assistance. For instance, in
+        the RibLoc application, during development, a task step was changed to asking
+        the user to read out a word on the gauge instead of performing optical character
+        recognition on the lightly-colored characters. Close collaborations among task
+        experts and developers are needed due to this tight intertwinement between task
+        model design and computer vision algorithm exploration. Methodologies and tools
+        that shorten the turn-around time when a task model changes can significantly
+        reduce the overall development time.
 \end{enumerate}
 
 
@@ -134,7 +134,7 @@ To streamline the development process and lower the barrier of entry, we propose
 a new prototype methodology which focuses on the following two aspects.
 \begin{enumerate}
   \item  Use deep neural network (DNN) based object detection as the universal
-  building block for visual state recognition.
+        building block for visual state recognition.
   \item Use finite state machine to represent and implement application task model.
 \end{enumerate}
 We first introduce the concepts of this methodology and describe its benefits in
@@ -166,8 +166,8 @@ reasoning framework to decompose user states into visual states.
 \begin{figure}
   \centering
   \includegraphics[trim={0 0 0 0},width=.9\linewidth]{FIGS/pingpong}
-	\caption{A Frame Seen by the PING PONG Assistant}
-    \label{figs:pingpong-frame}
+  \caption{A Frame Seen by the PING PONG Assistant}
+  \label{figs:pingpong-frame}
 \end{figure}
 
 To illustrate the effectiveness of this object centered approach, we showcase
@@ -190,8 +190,8 @@ instruction is produced.
 \begin{figure}
   \centering
   \includegraphics[trim={0 0 0 0},width=.9\linewidth]{FIGS/lego}
-	\caption{A Frame Seen by the LEGO Assistant}
-    \label{fig:lego-image}
+  \caption{A Frame Seen by the LEGO Assistant}
+  \label{fig:lego-image}
 \end{figure}
 
 Similarly, we can express the user states using objects for another
@@ -203,9 +203,9 @@ spatial relationships among these block include:
 \begin{itemize}
   \item The yellow block should be at the bottom and longer than all other blocks.
   \item The white block should be in the middle of a blue block and the yellow
-  block. It should have the same width as the blue block.
+        block. It should have the same width as the blue block.
   \item Two black blocks should be on the left of a blue block and the white
-  block. It should also be on the bottom of a blue block.
+        block. It should also be on the bottom of a blue block.
   \item One blue bock should be at the top of all other pieces.
 \end{itemize}
 
@@ -244,12 +244,12 @@ process consists of the following steps.
 
 \begin{enumerate}
   \item Collect images of object of interests from diverse background,
-  perspectives, and lighting conditions.
+        perspectives, and lighting conditions.
   \item Annotate these images with bounding boxes and class names to create a
-  dataset of training data, evaluation data, and test data.
+        dataset of training data, evaluation data, and test data.
   \item Implement a DNN-based object detection network, typically using machine learning frameworks,
-  such as Tensorflow~\cite{abadi2016tensorflow} and
-  PyTorch~\cite{paszke2019pytorch}.
+        such as Tensorflow~\cite{abadi2016tensorflow} and
+        PyTorch~\cite{paszke2019pytorch}.
   \item Continuously train and evaluate a DNN model using the labeled dataset.
   \item Test the accuracy of the trained DNN model on the test data.
 \end{enumerate}
@@ -279,7 +279,7 @@ custom business logic for their own use cases. Since the task model can change
 frequently during development, a fast turn-around time to implement changes can
 reduce the overall development time. Therefore, we propose a finite state
 machine representation of application logic and a GUI tool to enable fast
-turn-around. 
+turn-around.
 
 Our choice of finite state machine representation is based on the observation
 that WCAs, in their nature, consist of states. A FSM State corresponds to a
@@ -301,8 +301,8 @@ guidance instruction is delivered to the user.
 \begin{figure}
   \centering
   \includegraphics[trim={0 0 0 0},width=\linewidth]{FIGS/fsm-example}
-	\caption{Example WCA FSM}
-    \label{figs:fsm-example}
+  \caption{Example WCA FSM}
+  \label{figs:fsm-example}
 \end{figure}
 
 Figure~\ref{figs:fsm-example} shows an example of a simple WCA represented as a
@@ -323,10 +323,67 @@ Bread'' would be delivered as the corrective guidance to the user.
 With an FSM representing custom application logic, we impose structure on the
 the WCA application. We provide OpenWorkflow (Section~\ref{sec: app-dev-fsm}),
 which consists of a python API and a web GUI, to enable developers to quickly
-create a FSM-based cognitive assistant. 
+create a FSM-based cognitive assistant.
 
 \input{app-dev-tpod.tex}
 \input{app-dev-fsm.tex}
+
+\section{Lessons for Practitioners}
+
+While the methodology and the suite of tools provided in this Chapter offer a
+recipe to follow when creating new wearable cognitive assistants, there are
+several valuable lessons we consider worth noting. In this section, we summarize
+and distill essential knowledge learned from our prototyping experience for
+practitioners.
+
+\subsubsection{Define Objects By Appearance}
+
+With object detection at the core of the prototyping methodology, carefully
+defining the objects to detect is crucial to the accuracy and the robustness of
+an assistant. Contrary to conventional definition of objects in computer vision,
+it is also often beneficial to define objects by strict appearance when building
+cognitive assistants. Many objects, when looking from various perspectives,
+appear significantly different. Defining objects by appearance means considering
+only similar views of an object to be the same class. Views that appear
+noticeably different from other views should be labeled as different classes
+when training the object detectors. Of course, the application logic can still
+maintain the knowledge that these different views, in fact, are associated with
+the same item. Considering different views as different classes makes many
+detection tasks inherently easier and often results in higher recognition
+accuracy. The fundamental reason that allows for this view-based detection for a
+higher accuracy is that we can leverage the human in the loop to create good
+conditions for machine intelligence. A commonly used technique in the
+implementation of several existing prototypes is to ask users to show a specific
+view of the objects. A few examples exist in the workflow of RibLoc application,
+as shown in Figure~\ref{fig:ribloc-app}.
+
+\subsubsection{Consider Partial Objects}
+
+When building cognitive assistants for step-by-step assembly tasks, a pragmatic
+technique is to consider detecting small parts of objects and reason about their
+spatial relationship to verify assembly. Treating a small portion of an object
+to be a standalone item makes many computer vision checks tractable. For
+example, in Figure~\ref{fig:disktray-challenge}, although the slot is a small
+portion of the larger cap. It would be very difficult to verify that the pin has
+been put into the slot with only the detected bounding boxes of the larger cap.
+Treating the slot, in addition to the cap, as an object of itself and building
+an object detector for it makes the check possible. In fact, following the
+rule of defining objects by appearance, we trained two separate object detectors
+for both the slot with a pin and the slot without a properly placed pin.
+
+\subsubsection{Leverage the Human in the Loop}
+
+Compared to fully automated robotic systems, cognitive assistance systems have a
+unique advantage --- the user in the loop. The availability of a collaborative
+human able and willing to follow instructions enables many out-of-band
+techniques to reduce the difficulty of the visual perception problem. For
+example, in RibLoc application (Figure~\ref{fig:ribloc-app}), the imprinted
+words on the gauge has too low contrast to be recognized. Instead, since
+imprinted are simple words of colors, we rely on the user to read them out and
+perform speech recognition of a few keywords, which is much simpler and
+reliable. In general, developers should consider using carefully designed
+unambiguous instructions to ask users to create favorable conditions for the
+assistant in order to solve hard or intractable recognition and perception problems.
 
 \section{Chapter Summary and Discussion}
 
@@ -335,7 +392,7 @@ entry and the lack of development methodology and tools. In this chapter, we
 present a unifying development methodology, centered around object detection and
 finite state machine representation to systematize the development process.
 Based on this methodology, we build a suite of development tools that helps
-object detector creation and speeds up task model implementation. 
+object detector creation and speeds up task model implementation.
 
 % Previous
 % experience with these tools, we have shown the productivity improvement can be 10x-20x for application
