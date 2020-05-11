@@ -12,6 +12,8 @@ This repository contains the latex source code for the PhD thesis,
 }
 ```
 
+To build the dissertation PDF, run make in the root directory.
+
 This research was supported by the National Science Foundation (NSF) under grant number CNS-1518865. 
 Additional support was provided by Intel, Vodafone, Deutsche Telekom, Verizon, Crown Castle, Seagate, VMware, 
 MobiledgeX, InterDigital, and the Conklin Kistler family fund.
